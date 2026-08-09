@@ -40,8 +40,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# lockfile intentionally not committed in this environment (see README);
-# regenerate locally with `npm install` and commit it from a machine/session
-# with full GitHub write access.
-package-lock.json
