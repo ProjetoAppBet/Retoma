@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#0B0B0B] text-white">
@@ -55,12 +57,12 @@ export default function Home() {
         </div>
 
         <div className="pt-10">
-          <button
-            type="button"
-            className="w-full rounded-2xl bg-white px-5 py-4 text-sm font-semibold text-black transition hover:bg-zinc-200"
+          <Link
+            href="/onboarding"
+            className="block w-full rounded-2xl bg-white px-5 py-4 text-center text-sm font-semibold text-black transition hover:bg-zinc-200"
           >
             Começar
-          </button>
+          </Link>
 
           <p className="mt-4 text-center text-xs leading-5 text-zinc-600">
             O Retoma não substitui atendimento profissional.
