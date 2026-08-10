@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function OnboardingPage() {
   return (
-    <main className="min-h-screen bg-[#0B0B0B] text-white">
+    <main className="min-h-screen bg-fundo text-texto">
       <div className="mx-auto flex min-h-screen max-w-md flex-col px-6 py-10">
         <PrimeiraPergunta />
       </div>

@@ -18,24 +18,30 @@ export function PrimeiraPergunta() {
 
   const respostaValida = resposta.trim().length > 0;
 
+  /* Números em IBM Plex Mono, conforme a identidade. */
+  const indicadorEtapa = (
+    <p className="tipo-rotulo text-texto-secundario">
+      Etapa <span className="font-mono tabular-nums">1</span> de{" "}
+      <span className="font-mono tabular-nums">6</span>
+    </p>
+  );
+
   if (enviada) {
     return (
       <div className="flex flex-1 flex-col">
         <div className="flex-1">
-          <p className="text-sm font-medium text-zinc-500">Etapa 1 de 6</p>
+          {indicadorEtapa}
 
-          <h1 className="mt-4 text-2xl font-semibold leading-tight tracking-tight">
-            Obrigado por compartilhar.
-          </h1>
+          <h1 className="tipo-titulo-tela mt-4">Obrigado por compartilhar.</h1>
 
-          <p className="mt-5 text-base leading-7 text-zinc-400">
+          <p className="tipo-corpo mt-5 text-texto-secundario">
             As próximas etapas do onboarding ainda não estão disponíveis. Sua
             resposta permanece apenas nesta tela e não foi gravada.
           </p>
 
-          <div className="mt-8 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
-            <p className="text-sm font-medium text-zinc-200">Sua resposta</p>
-            <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-zinc-400">
+          <div className="mt-8 rounded-lg border border-borda bg-superficie p-5">
+            <p className="tipo-subtitulo text-texto">Sua resposta</p>
+            <p className="tipo-corpo mt-2 whitespace-pre-wrap text-texto-secundario">
               {resposta.trim()}
             </p>
           </div>
@@ -45,7 +51,7 @@ export function PrimeiraPergunta() {
           <button
             type="button"
             onClick={() => setEnviada(false)}
-            className="w-full rounded-2xl border border-zinc-800 px-5 py-4 text-sm font-semibold text-zinc-200 transition hover:bg-zinc-900"
+            className="h-12 w-full rounded-md border border-pedra px-5 text-base font-semibold text-texto transition hover:bg-superficie"
           >
             Editar resposta
           </button>
@@ -63,16 +69,13 @@ export function PrimeiraPergunta() {
       className="flex flex-1 flex-col"
     >
       <div className="flex-1">
-        <p className="text-sm font-medium text-zinc-500">Etapa 1 de 6</p>
+        {indicadorEtapa}
 
-        <label
-          htmlFor="resposta"
-          className="mt-4 block text-2xl font-semibold leading-tight tracking-tight"
-        >
+        <label htmlFor="resposta" className="tipo-titulo-tela mt-4 block">
           O que te trouxe ao Retoma hoje?
         </label>
 
-        <p className="mt-5 text-base leading-7 text-zinc-400">
+        <p className="tipo-corpo mt-5 text-texto-secundario">
           Responda com suas palavras. Não existe resposta certa.
         </p>
 
@@ -83,8 +86,7 @@ export function PrimeiraPergunta() {
           onChange={(event) => setResposta(event.target.value)}
           rows={6}
           autoFocus
-          className="mt-6 w-full resize-none rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 text-base leading-7 text-zinc-100 outline-none placeholder:text-zinc-600 focus:border-zinc-600"
-          placeholder="Escreva aqui…"
+          className="tipo-corpo mt-6 w-full resize-none rounded-md border border-borda bg-superficie p-5 text-texto outline-none focus:border-destaque"
         />
       </div>
 
@@ -92,14 +94,14 @@ export function PrimeiraPergunta() {
         <button
           type="submit"
           disabled={!respostaValida}
-          className="w-full rounded-2xl bg-white px-5 py-4 text-sm font-semibold text-black transition hover:bg-zinc-200 disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-500"
+          className="h-12 w-full rounded-md bg-botao-primario px-5 text-base font-semibold text-botao-primario-texto transition hover:bg-botao-primario-hover disabled:cursor-not-allowed disabled:bg-botao-desabilitado disabled:text-botao-desabilitado-texto"
         >
           Continuar
         </button>
 
         <Link
           href="/"
-          className="mt-4 block text-center text-xs leading-5 text-zinc-600 transition hover:text-zinc-400"
+          className="tipo-apoio mt-4 block text-center text-texto-secundario transition hover:text-texto"
         >
           Voltar
         </Link>

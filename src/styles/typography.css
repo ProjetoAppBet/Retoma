@@ -1,0 +1,110 @@
+/* =============================================================
+   RETOMA — Camada de tipografia
+
+   Decisão oficial aplicada:
+   - Archivo 400 / 500 / 600 (peso 700 descartado)
+   - IBM Plex Mono para números, datas, horários e métricas
+   - texto principal >= 16 px, auxiliar 14 px, nada abaixo de 12 px
+
+   Hierarquia: tabela do v2 (seção 11), adotada em definitivo para o
+   produto digital, com Rótulo em 14 px por decisão de produto.
+   ============================================================= */
+
+/* -------------------------------------------------------------
+   TEXTO — família Archivo
+   ------------------------------------------------------------- */
+
+/* Display — landing e capas. v2: Archivo 600, 40-72 / 1,05 / -3% */
+.tipo-display {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: clamp(2.5rem, 6vw, 4.5rem); /* 40 -> 72 px */
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+/* Título de tela — topo de cada tela. v2: Archivo 600, 24 / 1,2 / -2% */
+.tipo-titulo-tela {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 1.5rem; /* 24 px */
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+/* Subtítulo — pergunta de check-in. v2: Archivo 500, 18 / 1,4 */
+.tipo-subtitulo {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 1.125rem; /* 18 px */
+  line-height: 1.4;
+}
+
+/* Corpo — texto corrente. v2: Archivo 400, 16 / 1,6
+   Piso de acessibilidade: menor tamanho lido pelo usuário. */
+.tipo-corpo {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 1rem; /* 16 px */
+  line-height: 1.6;
+}
+
+/* Apoio — legendas e ajuda. v2: Archivo 400, 14 / 1,5
+   Uso restrito a texto auxiliar; nunca para conteúdo principal. */
+.tipo-apoio {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 0.875rem; /* 14 px */
+  line-height: 1.5;
+}
+
+/* Rótulo — categorias e eyebrow. Archivo 500, 14 px, caixa alta, +8%.
+   O piso absoluto do sistema é 12 px; nada pode ficar abaixo disso. */
+.tipo-rotulo {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.875rem; /* 14 px */
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* -------------------------------------------------------------
+   NÚMEROS — família IBM Plex Mono
+   Toda quantidade do produto: dias, reais, escalas, horários, PGSI.
+   Monoespaçada trava o alinhamento e evita tremor visual em
+   contadores que mudam de largura. Nunca em texto corrido.
+   ------------------------------------------------------------- */
+
+/* Dado grande — contador, valor. v2: Plex Mono 500, 36-56 / 1,1 */
+.tipo-dado-grande {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: clamp(2.25rem, 5vw, 3.5rem); /* 36 -> 56 px */
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Dado inline — escalas, horários, PGSI. v2: Plex Mono 400, 14 / 1,5 */
+.tipo-dado-inline {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 0.875rem; /* 14 px */
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+}
+
+/* -------------------------------------------------------------
+   WORDMARK — RETOMA
+   Archivo SemiBold (600), caixa alta sempre, tracking +60/1000 em.
+   A barra assimétrica do T (public/brand/wordmark-t.svg) só entra
+   acima de 32 px de altura de caixa; abaixo disso, T padrão da fonte.
+   A marca é sempre grafada RETOMA, com um único O.
+   ------------------------------------------------------------- */
+.tipo-wordmark {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em; /* +60/1000 em */
+  line-height: 1;
+}

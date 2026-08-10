@@ -1,0 +1,127 @@
+/* =============================================================
+   RETOMA — Tokens de design (camada canônica)
+
+   Fonte de verdade:
+   - docs/retoma-identidade-de-marca-v2.html  (estratégia + design system)
+   - docs/RETOMA Brand Book.dc.html           (manual normativo)
+   - decisões oficiais registradas pelo produto
+
+   REGRA: nenhuma cor fora das 11 oficiais. Não criar cores novas.
+   Este arquivo ainda NÃO está importado em globals.css — importar é o
+   passo de aplicação, pendente de aprovação.
+   ============================================================= */
+
+@theme {
+  /* ---------------------------------------------------------
+     PALETA OFICIAL — 11 cores. Nomes de marca.
+     Hierarquia: Principal / Apoio / Segurança.
+     --------------------------------------------------------- */
+
+  /* Principal: Ardósia -> Grafite -> Grafite Elevado -> Cal */
+  --color-ardosia: #0f1719;
+  --color-grafite: #1c282c;
+  --color-grafite-elevado: #223035;
+  --color-cal: #e9e7e2;
+
+  /* Apoio: Névoa -> Pedra -> Mineral -> Mineral Claro -> Mineral Profundo */
+  --color-nevoa: #c9c6bf;
+  --color-pedra: #6f7d82;
+  --color-mineral: #5a82a6;
+  --color-mineral-claro: #7fa6c8;
+  --color-mineral-profundo: #3f6485;
+
+  /* Segurança — uso exclusivo de segurança e crise.
+     NUNCA em comportamento, recaída, meta ou desempenho. */
+  --color-ambar-sinal: #b8792f;
+  --color-brasa: #a24a45;
+
+  /* ---------------------------------------------------------
+     PAPÉIS SEMÂNTICOS — sempre apontam para a paleta acima.
+     Nenhum valor literal novo é introduzido aqui.
+     --------------------------------------------------------- */
+
+  /* Superfícies (hierarquia por cor de superfície, não por sombra) */
+  --color-fundo: var(--color-ardosia);
+  --color-superficie: var(--color-grafite);
+  --color-superficie-elevada: var(--color-grafite-elevado);
+
+  /* Texto sobre fundo escuro.
+     REGRA DE CONTRASTE: Pedra sobre Ardósia mede 4,34:1 — abaixo do
+     mínimo AA de 4,5:1 para texto pequeno. Pedra NÃO é usada em texto
+     pequeno; para esses casos usa-se Névoa (10,8:1). Pedra permanece
+     disponível para elementos não textuais e para texto grande. */
+  --color-texto: var(--color-cal);
+  --color-texto-secundario: var(--color-nevoa);
+  --color-texto-terciario: var(--color-pedra);
+
+  /* Texto sobre fundo claro (Cal) — impressos, relatórios, social */
+  --color-texto-claro: var(--color-ardosia);
+  --color-texto-claro-secundario: var(--color-mineral-profundo);
+
+  /* Estrutura */
+  --color-borda: var(--color-grafite-elevado);
+
+  /* Destaque — significa "onde você está agora", nada mais.
+     Mineral Claro é funcional/contextual: NÃO é a cor padrão do logotipo. */
+  --color-destaque: var(--color-mineral);
+  --color-destaque-sobre-escuro: var(--color-mineral-claro);
+  --color-destaque-sobre-claro: var(--color-mineral-profundo);
+
+  /* Botão primário — uma ação primária por tela.
+     Em decisões genuinamente binárias (ex.: "Registrar" / "Agora não"),
+     as duas opções recebem peso visual equivalente e nenhuma usa esta
+     variante. Não existe botão de sucesso verde nem destrutivo vermelho.
+
+     Par Ardósia sobre Cal: 14,69:1 (padrão) e 10,64:1 (hover).
+     A família Mineral foi descartada aqui por aritmética, não por gosto:
+     nenhuma das 11 cores oficiais atinge 4,5:1 sobre Mineral, Mineral
+     Claro ou Mineral Profundo nos dois estados. Manter Mineral fora do
+     botão também preserva seu único significado no sistema — "onde você
+     está agora" —, que é estado, não ação. */
+  --color-botao-primario: var(--color-cal);
+  --color-botao-primario-texto: var(--color-ardosia);
+  --color-botao-primario-hover: var(--color-nevoa);
+  --color-botao-desabilitado: var(--color-grafite-elevado);
+  --color-botao-desabilitado-texto: var(--color-pedra);
+
+  /* ---------------------------------------------------------
+     RAIOS
+     Sobrescrevem a escala padrão do Tailwind.
+     sm tags / md botões e inputs / lg cards / xl folhas e modais
+     --------------------------------------------------------- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-xl: 22px;
+
+  /* ---------------------------------------------------------
+     TIPOGRAFIA — famílias
+     As variáveis --font-archivo / --font-ibm-plex-mono são fornecidas
+     por next/font em layout.tsx (passo de aplicação, pendente).
+     Os fallbacks mantêm a página legível antes disso.
+     --------------------------------------------------------- */
+  --font-sans: var(--font-archivo), "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-ibm-plex-mono), "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+/* -------------------------------------------------------------
+   SOMBRA — um único nível permitido.
+   Hierarquia se resolve por cor de superfície e por espaço.
+   Sombras empilhadas produzem aparência de dashboard financeiro,
+   explicitamente recusada pela identidade.
+   ------------------------------------------------------------- */
+:root {
+  --sombra-1: 0 1px 2px rgba(0, 0, 0, 0.3);
+
+  /* Alvo mínimo de toque e altura de botão. */
+  --altura-botao: 48px;
+  --toque-minimo: 48px;
+}
+
+/* -------------------------------------------------------------
+   ESPAÇAMENTO
+   A escala oficial (4 8 12 16 24 32 48 72) já é coberta pela escala
+   padrão do Tailwind, que é de 4 px:
+     4=1  8=2  12=3  16=4  24=6  32=8  48=12  72=18
+   Por isso NÃO redefinimos spacing — usar as utilidades nativas.
+   ------------------------------------------------------------- */

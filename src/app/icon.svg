@@ -1,0 +1,11 @@
+<!-- Favicon — fundo Ardósia, símbolo Cal.
+     Traço 15 (versão pesada) porque o favicon é sempre renderizado
+     abaixo de 24 px, onde o traço 12 perde peso óptico.
+     Respiro de 22,5 un. de cada lado = 1,5 x a espessura 15.
+     Sem texto, sem círculo, sem gradiente, sem sombra.
+     Servido automaticamente pelo Next.js como favicon. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-11 -11 118 118" width="48" height="48" role="img" aria-label="Retoma">
+  <title>Retoma</title>
+  <rect x="-11" y="-11" width="118" height="118" fill="#0F1719"/>
+  <path d="M 19 62 L 43 62 L 43 34 L 77 34" fill="none" stroke="#E9E7E2" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
