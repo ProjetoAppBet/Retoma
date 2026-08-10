@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RETOMA — Projeto de Identidade de Marca v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ardosia:#0F1719; --grafite:#1C282C; --grafite-2:#223035;
+  --cal:#E9E7E2; --nevoa:#C9C6BF; --pedra:#6F7D82;
+  --mineral:#5A82A6; --mineral-claro:#7FA6C8; --mineral-profundo:#3F6485;
+  --ambar:#B8792F; --brasa:#A24A45;
+  --texto:#E4E8E9; --texto-2:#93A1A5; --linha:#2B383D;
+  --r-sm:4px; --r-md:8px; --r-lg:14px; --r-xl:22px;
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px; --s8:72px;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Menlo,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ardosia);color:var(--texto);font-family:var(--display);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+h1,h2,h3,h4{font-family:var(--display);line-height:1.15;margin:0}
+h1{font-size:clamp(38px,7vw,72px);font-weight:600;letter-spacing:-.03em}
+h2{font-size:clamp(24px,3.4vw,34px);font-weight:600;letter-spacing:-.02em}
+h3{font-size:19px;font-weight:600;letter-spacing:-.01em;margin-top:var(--s6);margin-bottom:var(--s2)}
+h4{font-size:15px;font-weight:600;letter-spacing:.02em;text-transform:uppercase;color:var(--mineral-claro);margin-bottom:var(--s2)}
+p{margin:0 0 var(--s4)}
+a{color:var(--mineral-claro)}
+strong{font-weight:600;color:#fff}
+em{color:var(--nevoa)}
+ul,ol{margin:0 0 var(--s4);padding-left:20px}
+li{margin-bottom:6px}
+small{color:var(--texto-2);font-size:13px;line-height:1.5;display:block}
+.mono{font-family:var(--mono)}
+section{padding:var(--s8) 0;border-top:1px solid var(--linha)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--pedra);margin-bottom:var(--s3)}
+.lede{font-size:19px;color:var(--nevoa);max-width:62ch}
+.grid{display:grid;gap:var(--s5)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:820px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.card{background:var(--grafite);border:1px solid var(--linha);border-radius:var(--r-lg);padding:var(--s5)}
+.card.pale{background:var(--cal);color:var(--ardosia);border-color:var(--nevoa)}
+.card.pale h3,.card.pale strong{color:var(--ardosia)}
+.card.pale small,.card.pale p{color:#3A474B}
+.rule{height:1px;background:var(--linha);margin:var(--s6) 0}
+.tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--linha);border-radius:99px;padding:3px 10px;color:var(--texto-2);margin:0 6px 6px 0}
+.tag.on{border-color:var(--mineral);color:var(--mineral-claro)}
+.tag.off{border-color:#4A3033;color:#C98A86}
+table{width:100%;border-collapse:collapse;font-size:14.5px;margin-bottom:var(--s4)}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--linha);vertical-align:top}
+th{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--pedra);font-weight:500}
+td .mono{font-size:13px}
+.toc{columns:2;column-gap:40px;font-size:14.5px}
+@media(max-width:700px){.toc{columns:1}}
+.toc a{display:block;color:var(--texto-2);text-decoration:none;padding:4px 0}
+.toc a:hover{color:var(--mineral-claro)}
+.toc .n{font-family:var(--mono);color:var(--pedra);margin-right:8px;font-size:12px}
+.wordmark{font-weight:600;letter-spacing:.06em;line-height:1;display:inline-flex;align-items:baseline}
+.lockup{display:flex;align-items:center;gap:16px}
+.lockup-v{display:flex;flex-direction:column;align-items:center;gap:14px}
+.swatch{border-radius:var(--r-md);overflow:hidden;border:1px solid var(--linha)}
+.swatch .chip{height:96px}
+.swatch .meta{padding:12px 14px;background:var(--grafite);font-family:var(--mono);font-size:11.5px;line-height:1.7;color:var(--texto-2)}
+.swatch .meta b{display:block;font-family:var(--display);font-size:14px;color:var(--texto);margin-bottom:4px;font-weight:600}
+.phone{width:264px;border-radius:30px;background:var(--ardosia);border:8px solid #263238;padding:14px 14px 18px;box-shadow:0 24px 50px rgba(0,0,0,.45)}
+.phone .status{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--pedra);margin-bottom:14px}
+.wa{background:#0B1416;border-radius:var(--r-lg);padding:14px;border:1px solid var(--linha)}
+.bubble{max-width:88%;padding:10px 13px;border-radius:14px;font-size:14px;line-height:1.5;margin-bottom:8px}
+.bubble.in{background:var(--grafite-2);border-top-left-radius:4px}
+.bubble.out{background:#22383F;margin-left:auto;border-top-right-radius:4px}
+.btn{display:inline-block;font-size:14.5px;font-weight:600;padding:12px 20px;border-radius:var(--r-md);border:1px solid transparent;cursor:default}
+.btn.primary{background:var(--mineral);color:#0B1214}
+.btn.ghost{background:transparent;border-color:var(--pedra);color:var(--texto)}
+.btn.quiet{background:transparent;color:var(--mineral-claro);padding-left:0}
+.appicon{width:84px;height:84px;border-radius:20px;display:grid;place-items:center}
+.favicon{width:32px;height:32px;border-radius:7px;display:grid;place-items:center}
+.do{border-left:3px solid var(--mineral)}
+.dont{border-left:3px solid var(--brasa)}
+.scale-row{display:grid;grid-template-columns:150px 1fr;gap:var(--s4);padding:var(--s4) 0;border-bottom:1px solid var(--linha)}
+@media(max-width:700px){.scale-row{grid-template-columns:1fr;gap:6px}}
+.scale-row .mom{font-weight:600;font-size:15px}
+.scale-row .mom span{display:block;font-family:var(--mono);font-size:11px;color:var(--pedra);letter-spacing:.1em;margin-bottom:4px}
+.callout{background:linear-gradient(0deg,rgba(90,130,166,.07),rgba(90,130,166,.07)),var(--grafite);border:1px solid #2E4453;border-radius:var(--r-lg);padding:var(--s5)}
+.warn{background:var(--grafite);border:1px solid #4A3A2A;border-radius:var(--r-lg);padding:var(--s5)}
+.warn h4{color:var(--ambar)}
+.spec{font-family:var(--mono);font-size:12px;color:var(--pedra)}
+.iconcell{display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px 8px;border:1px solid var(--linha);border-radius:var(--r-md)}
+.iconcell span{font-size:12px;color:var(--texto-2);text-align:center}
+.killed{opacity:.55}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ===== CAPA ===== -->
+<section style="border-top:none;padding-top:var(--s8)">
+  <div class="eyebrow">Projeto de identidade de marca · versão 2 · agosto de 2026</div>
+  <div class="lockup" style="margin-bottom:var(--s6)">
+    <svg width="86" height="86" viewBox="0 0 96 96" aria-label="Símbolo Retoma">
+      <path d="M 19 62 L 43 62 L 43 34 L 77 34" fill="none" stroke="var(--mineral-claro)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="wordmark" style="font-size:56px">RE<svg width="0.62em" height="0.72em" viewBox="0 0 70 100" style="margin:0 .02em" aria-hidden="true"><rect x="0" y="0" width="70" height="14.5" rx="2"/><rect x="20" y="0" width="14.5" height="100" rx="2"/></svg>OMA</div>
+  </div>
+  <h1 style="max-width:16ch">Retome o que ainda é seu.</h1>
+  <p class="lede" style="margin-top:var(--s5)">Documento revisado. O símbolo anterior foi descartado por colisão pictográfica; esta versão traz símbolo novo, auditoria de colisão e todo o sistema reconstruído a partir dele. Estratégia, paleta, tipografia e voz permanecem — foram validadas.</p>
+
+  <div class="rule"></div>
+  <h4>Índice</h4>
+  <nav class="toc">
+    <a href="#erro"><span class="n">00</span>O que mudou e por quê</a>
+    <a href="#nota"><span class="n">01</span>Notas críticas</a>
+    <a href="#diag"><span class="n">02</span>Diagnóstico estratégico</a>
+    <a href="#territorios"><span class="n">03</span>Três territórios criativos</a>
+    <a href="#comparacao"><span class="n">04</span>Comparação e decisão</a>
+    <a href="#plataforma"><span class="n">05</span>Plataforma de marca</a>
+    <a href="#voz"><span class="n">06</span>Território verbal e tom de voz</a>
+    <a href="#conceito"><span class="n">07</span>Conceito criativo</a>
+    <a href="#simbolo"><span class="n">08</span>Símbolo, construção e auditoria</a>
+    <a href="#wordmark"><span class="n">09</span>Wordmark e assinaturas</a>
+    <a href="#cores"><span class="n">10</span>Paleta de cores</a>
+    <a href="#tipografia"><span class="n">11</span>Tipografia</a>
+    <a href="#icones"><span class="n">12</span>Sistema de ícones</a>
+    <a href="#graficos"><span class="n">13</span>Elemento gráfico: A Linha</a>
+    <a href="#foto"><span class="n">14</span>Fotografia, ilustração e motion</a>
+    <a href="#ds"><span class="n">15</span>Design system</a>
+    <a href="#aplicacoes"><span class="n">16</span>Aplicações</a>
+    <a href="#emocional"><span class="n">17</span>Escala emocional</a>
+    <a href="#tagline"><span class="n">18</span>Taglines</a>
+    <a href="#arquitetura"><span class="n">19</span>Arquitetura de marca</a>
+    <a href="#usos"><span class="n">20</span>Usos corretos e incorretos</a>
+    <a href="#teste"><span class="n">21</span>Teste com cinco pessoas</a>
+    <a href="#guia"><span class="n">22</span>Guia resumido</a>
+    <a href="#recomendacao"><span class="n">23</span>Recomendação final</a>
+  </nav>
+</section>
+
+<!-- ===== 00 ERRO ===== -->
+<section id="erro">
+  <div class="eyebrow">00</div>
+  <h2>O que mudou e por quê</h2>
+
+  <div class="grid g2" style="align-items:center;margin-bottom:var(--s5)">
+    <div class="card" style="display:flex;gap:26px;align-items:center">
+      <div class="killed" style="flex:none">
+        <svg width="80" height="80" viewBox="0 0 96 96" aria-label="Símbolo descartado">
+          <g transform="translate(-5.2,5.2)" stroke="var(--pedra)" stroke-width="11" fill="none" stroke-linecap="round">
+            <path d="M 53.25 22.95 A 28 28 0 1 0 73.05 42.75"/>
+            <path d="M 77.11 18.89 L 88.43 7.57"/>
+          </g>
+        </svg>
+      </div>
+      <div>
+        <div class="mono" style="font-size:11px;letter-spacing:.12em;color:#C98A86">DESCARTADO</div>
+        <p style="margin:8px 0 0;font-size:14.5px">Anel aberto com traço diagonal saindo a 45° para cima e à direita. Essa é, literalmente, a construção do símbolo de Marte (♂). Não é uma semelhança discutível — é a mesma geometria.</p>
+      </div>
+    </div>
+    <div class="card" style="display:flex;gap:26px;align-items:center;border-color:#2E4453">
+      <div style="flex:none">
+        <svg width="80" height="80" viewBox="0 0 96 96" aria-label="Símbolo novo">
+          <path d="M 19 62 L 43 62 L 43 34 L 77 34" fill="none" stroke="var(--mineral-claro)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="mono" style="font-size:11px;letter-spacing:.12em;color:var(--mineral-claro)">NOVO</div>
+        <p style="margin:8px 0 0;font-size:14.5px">Traço único, contínuo, com uma única mudança de nível. Sem círculo e sem diagonal — as duas condições que produziam a colisão anterior.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="warn">
+    <h4>A falha de processo, e a correção</h4>
+    <p>Eu testei o símbolo anterior contra <em>significado</em> — cassino, religião, clínica, autoajuda — e não contra <em>forma</em>. Colisão pictográfica é um teste diferente: não pergunta o que o desenho quer dizer, pergunta com o que ele se parece na cabeça de quem olha por meio segundo.</p>
+    <p style="margin-bottom:0">A partir desta versão, todo símbolo passa por uma <strong>auditoria de colisão explícita</strong> contra uma lista fechada de glifos culturalmente carregados, publicada na seção 08. Não é garantia — é redução de risco, e a busca figurativa formal no INPI continua obrigatória.</p>
+  </div>
+
+  <p style="margin-top:var(--s5)">O que <strong>não</strong> mudou, e por quê: o conceito estratégico (continuidade), a paleta, a tipografia, o tom de voz e a arquitetura de marca não tinham relação com o defeito do desenho. Trocá-los junto seria confundir uma correção com um recomeço — exatamente o erro que esta marca existe para combater. E o novo símbolo, por acaso, expressa o conceito com mais precisão do que o anterior: o anel dizia "saia do ciclo"; o traço diz "continue, em outro nível", que é a frase-princípio do projeto.</p>
+</section>
+
+<!-- ===== 01 NOTAS ===== -->
+<section id="nota">
+  <div class="eyebrow">01</div>
+  <h2>Notas críticas antes do sistema</h2>
+  <p class="lede">Quatro coisas que identidade visual não resolve, e que custam mais caro do que refazer uma logo.</p>
+
+  <div class="grid g2" style="margin-top:var(--s5)">
+    <div class="warn">
+      <h4>1 · O nome tem dois problemas reais</h4>
+      <p><strong>Conjugação.</strong> "Retoma" é a 3ª pessoa do indicativo — ou o imperativo do português europeu. No Brasil o imperativo é "retome". Parte do público lê a marca como levemente estrangeira, ou como substantivo incompleto ("retomada").</p>
+      <p><strong>Colisão semântica.</strong> Em busca brasileira, "retomada" puxa dois campos indesejados: retomada econômica e <em>retomada de bem</em> — busca e apreensão de veículo financiado. O segundo é especialmente ruim para um público endividado.</p>
+      <p style="margin-bottom:0"><strong>Encaminhamento:</strong> manter o nome, cuja raiz semântica é boa demais para descartar, e travar a leitura desde o primeiro contato com a assinatura <span class="mono" style="color:var(--mineral-claro)">RETOMA · retome o que ainda é seu</span>. Verificar INPI (classes 9, 42, 44), domínio e handles antes de qualquer investimento. Não verifiquei nada disso.</p>
+    </div>
+    <div class="warn">
+      <h4>2 · O requisito que o briefing não pediu: discrição</h4>
+      <p>Seu público está em fase de ocultação. O ícone na tela inicial, a notificação na tela de bloqueio e a linha do extrato bancário são três superfícies em que a marca pode <em>expor</em> o usuário.</p>
+      <p style="margin-bottom:0">Vira regra dura: o símbolo não pode comunicar "apostas" ou "vício" a um terceiro de relance; notificações usam texto neutro sem prévia; descritor de cobrança "RETOMA APP". Chamo isso de <strong>teste do ombro</strong> e aplico a todas as aplicações deste documento.</p>
+    </div>
+    <div class="warn">
+      <h4>3 · A identidade não resolve o problema central do negócio</h4>
+      <p style="margin-bottom:0">A pesquisa registra 88,7% de aceitabilidade contra 33,3% de disposição a pagar. É problema de proposta de valor e de momento de cobrança, não de marca. Identidade forte melhora conversão na margem; não converte "gosto" em "pago".</p>
+    </div>
+    <div class="warn">
+      <h4>4 · Originalidade não pode ser afirmada por mim</h4>
+      <p style="margin-bottom:0">A auditoria da seção 08 reduz risco; não o elimina. Antes de adotar: busca figurativa no INPI, busca reversa de imagem e revisão por advogado de propriedade industrial. A versão 1 deste documento é a prova de que checagem informal falha.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 02 DIAGNÓSTICO ===== -->
+<section id="diag">
+  <div class="eyebrow">02</div>
+  <h2>Diagnóstico estratégico</h2>
+
+  <h3>O problema de marca, em uma frase</h3>
+  <p class="lede">O Retoma precisa ser a primeira coisa que uma pessoa envergonhada abre às 23h de uma sexta-feira — e a última que ela teria vergonha de deixar visível na tela do celular.</p>
+
+  <h3>Quatro tensões que a identidade tem que resolver</h3>
+  <table>
+    <tr><th style="width:24%">Tensão</th><th>O que está em jogo</th><th style="width:34%">Resolução adotada</th></tr>
+    <tr><td><strong>Sério × não clínico</strong></td><td>Se parecer hospital, o usuário se sente doente. Se parecer app de bem-estar, ele não confia que resolve dívida e fissura.</td><td>Registro material e de engenharia — cal, ardósia, grotesca, dados em monoespaçada — em vez de registro médico ou de wellness.</td></tr>
+    <tr><td><strong>Acolhedor × não julgador</strong></td><td>Todo sistema que usa verde para "bom" e vermelho para "ruim" transforma recaída em fracasso moral três vezes por semana.</td><td><strong>A marca não tem verde de sucesso nem vermelho de erro.</strong> Julgamento sai da cor e entra na posição na trajetória.</td></tr>
+    <tr><td><strong>Tecnológico × não "startup de IA"</strong></td><td>Gradiente roxo e brilho matam credibilidade com psicólogos e com quem já testou dez chatbots.</td><td>Zero gradiente decorativo, zero brilho, zero antropomorfismo. A IA nunca ganha rosto, avatar ou nome de pessoa.</td></tr>
+    <tr><td><strong>Discreto × memorável</strong></td><td>Discrição costuma virar invisibilidade genérica.</td><td>Um único gesto forte (o símbolo) num sistema deliberadamente silencioso. Ousadia concentrada em um lugar só.</td></tr>
+  </table>
+
+  <h3>O que a concorrência visual faz — e por que não copiar</h3>
+  <div class="grid g3">
+    <div class="card"><h4>Apps de streak</h4><p style="margin:0">Contador gigante, chamas, confete, verde/vermelho. Otimizados para retenção, não para recuperação. Punem o deslize por design.</p></div>
+    <div class="card"><h4>Healthtech de saúde mental</h4><p style="margin:0">Pastel, ilustração de pessoa flutuando, tipografia arredondada. Infantiliza um homem de 34 anos com R$ 40 mil de dívida.</p></div>
+    <div class="card"><h4>Bloqueadores</h4><p style="margin:0">Estética de antivírus: escudo, cadeado, vermelho. Enquadra o usuário como ameaça a ser contida.</p></div>
+  </div>
+  <p style="margin-top:var(--s5)">Há uma vaga clara: <strong>nenhum produto da categoria parece uma ferramenta séria de uso diário feita para adultos.</strong> É essa vaga que a identidade ocupa.</p>
+</section>
+
+<!-- ===== 03 TERRITÓRIOS ===== -->
+<section id="territorios">
+  <div class="eyebrow">03</div>
+  <h2>Três territórios criativos</h2>
+  <p class="lede">Radicalmente diferentes em conceito, não em decoração. Cada um levaria a um produto com aparência e comportamento distintos.</p>
+
+  <div class="card" style="margin-top:var(--s6)">
+    <div class="grid" style="grid-template-columns:180px 1fr;align-items:start">
+      <div style="text-align:center">
+        <svg width="120" height="120" viewBox="0 0 96 96" aria-label="Esboço território A"><path d="M 19 62 L 43 62 L 43 34 L 77 34" fill="none" stroke="var(--mineral-claro)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="spec" style="margin-top:8px">TERRITÓRIO A</div>
+      </div>
+      <div>
+        <h3 style="margin-top:0">A LINHA — <span style="color:var(--texto-2);font-weight:400">continuidade</span></h3>
+        <p><strong>Ideia central.</strong> A recuperação não é uma série de recomeços do zero: é uma única linha que atravessa dias bons e ruins sem se romper. Ela não volta ao ponto de partida — continua adiante, em outro nível.</p>
+        <p><strong>Racional estratégico.</strong> É o único território que codifica um princípio operacional do produto — "recaída não apaga trajetória" — em vez de ilustrar um sentimento. O sistema gráfico e o componente central da interface passam a ser <em>a mesma coisa</em>: o histórico do usuário é o desenho da marca em escala.</p>
+        <p><strong>Emoção.</strong> Alívio contido. Não euforia, não conforto — permanência.</p>
+        <p><strong>Direção visual.</strong> Linear, precisa, quase instrumental. Traço único de espessura constante, terminações arredondadas, muito espaço negativo, zero textura.</p>
+        <p><strong>Símbolo possível.</strong> Traço contínuo com uma única mudança de nível.</p>
+        <p><strong>Cores.</strong> Ardósia + cal + um azul mineral dessaturado. Sem verde, sem vermelho.</p>
+        <p><strong>Tipografia.</strong> Grotesca contemporânea com eixo de largura; dados em monoespaçada.</p>
+        <p><strong>Vantagens.</strong> Escala de favicon a campanha; traduz-se direto em UI e visualização de dados; motion nativo (o traço se desenha e sobe uma vez); geometria simples reduz risco de colisão pictográfica.</p>
+        <p style="margin-bottom:0"><strong>Riscos e desvantagens.</strong> Abstração pode soar fria no primeiro contato. E o risco residual é ser lido como "gráfico ascendente" — mitigado por regra: um degrau só, jamais dois, jamais com eixos ou pontos de dado.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:var(--s5)">
+    <div class="grid" style="grid-template-columns:180px 1fr;align-items:start">
+      <div style="text-align:center">
+        <svg width="120" height="120" viewBox="0 0 96 96" aria-label="Esboço território B">
+          <g fill="none" stroke="var(--nevoa)" stroke-width="7" stroke-linecap="round">
+            <path d="M 20 60 A 30 22 0 0 1 76 60"/><path d="M 30 74 A 22 16 0 0 1 66 74"/><path d="M 40 86 A 14 10 0 0 1 56 86"/>
+          </g>
+          <circle cx="48" cy="34" r="7" fill="var(--nevoa)"/>
+        </svg>
+        <div class="spec" style="margin-top:8px">TERRITÓRIO B</div>
+      </div>
+      <div>
+        <h3 style="margin-top:0">O TERRENO — <span style="color:var(--texto-2);font-weight:400">orientação</span></h3>
+        <p><strong>Ideia central.</strong> O problema não é falta de força de vontade, é falta de mapa. A marca é o instrumento de orientação: "você está aqui, e daqui dá pra sair".</p>
+        <p><strong>Racional estratégico.</strong> Coloca o usuário como quem caminha e a marca como quem orienta — arquétipo de mentor puro. Confortável para quem rejeita o rótulo de doente.</p>
+        <p><strong>Emoção.</strong> Competência calma. Sensação de instrumento confiável.</p>
+        <p><strong>Direção visual.</strong> Topográfica: curvas de nível, marcadores, malha. Registro de mapa técnico, papel e tinta.</p>
+        <p><strong>Símbolo possível.</strong> Curvas de nível concêntricas com um ponto deslocado.</p>
+        <p><strong>Cores.</strong> Papel, grafite, um laranja de sinalização de trilha.</p>
+        <p><strong>Tipografia.</strong> Grotesca condensada, registro cartográfico.</p>
+        <p><strong>Vantagens.</strong> Sistema gráfico riquíssimo; ótimo em impresso; a metáfora de mapa é honesta sobre incerteza.</p>
+        <p style="margin-bottom:0"><strong>Riscos e desvantagens.</strong> <em>Estático</em> — comunica localização, e o produto vende movimento. Curvas de nível não sobrevivem a 32px: viram borrão. E a estética de trilha carrega associação com superação masculina aspiracional, exatamente o registro de autoajuda que o briefing recusa.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:var(--s5)">
+    <div class="grid" style="grid-template-columns:180px 1fr;align-items:start">
+      <div style="text-align:center">
+        <svg width="120" height="120" viewBox="0 0 96 96" aria-label="Esboço território C">
+          <g fill="var(--nevoa)">
+            <rect x="14" y="20" width="30" height="20" rx="4"/><rect x="52" y="26" width="30" height="20" rx="4"/>
+            <rect x="20" y="52" width="30" height="20" rx="4"/><rect x="58" y="58" width="24" height="20" rx="4"/>
+          </g>
+        </svg>
+        <div class="spec" style="margin-top:8px">TERRITÓRIO C</div>
+      </div>
+      <div>
+        <h3 style="margin-top:0">A RECOMPOSIÇÃO — <span style="color:var(--texto-2);font-weight:400">reparo</span></h3>
+        <p><strong>Ideia central.</strong> Reconstruir com o material que sobrou. As peças são as mesmas — a ordem é outra.</p>
+        <p><strong>Racional estratégico.</strong> Endereça a dor de perda material (dinheiro, casa, relações) e dá enquadramento não-moral à recaída: peça fora do lugar, não fracasso.</p>
+        <p><strong>Emoção.</strong> Trabalho paciente. Dignidade do conserto.</p>
+        <p><strong>Direção visual.</strong> Modular, tátil, arquitetônica. Blocos, encaixes, junta aparente.</p>
+        <p><strong>Símbolo possível.</strong> Módulos deslocados que remontam.</p>
+        <p><strong>Cores.</strong> Concreto, cal, um azul-cerâmica.</p>
+        <p><strong>Tipografia.</strong> Grotesca de peso alto, quase editorial.</p>
+        <p><strong>Vantagens.</strong> Sistema modular gera infinitas composições; narrativa rica; excelente para campanha.</p>
+        <p style="margin-bottom:0"><strong>Riscos e desvantagens.</strong> <strong>Pressupõe que a pessoa está quebrada.</strong> Para um público cuja emoção dominante é vergonha, uma marca construída sobre "conserto de coisa danificada" reforça a identidade defeituosa que o produto tenta desmontar. Some-se a isso: a estética de fratura reparada virou tendência de wellness, e composições modulares perdem legibilidade abaixo de 48px.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 04 COMPARAÇÃO ===== -->
+<section id="comparacao">
+  <div class="eyebrow">04</div>
+  <h2>Comparação e decisão</h2>
+  <table>
+    <tr><th>Critério</th><th>A · A Linha</th><th>B · O Terreno</th><th>C · A Recomposição</th></tr>
+    <tr><td>Codifica princípio do produto</td><td><strong>Sim — continuidade após recaída</strong></td><td>Parcial</td><td>Parcial</td></tr>
+    <tr><td>Sobrevive a 16–32px</td><td><strong>Sim</strong></td><td>Não</td><td>Não</td></tr>
+    <tr><td>Vira componente de interface</td><td><strong>Sim, diretamente</strong></td><td>Só como decoração</td><td>Só como decoração</td></tr>
+    <tr><td>Passa no teste do ombro</td><td><strong>Sim</strong></td><td>Sim</td><td>Sim</td></tr>
+    <tr><td>Risco de colisão pictográfica</td><td><strong>Baixo — geometria aberta</strong></td><td>Médio</td><td>Médio</td></tr>
+    <tr><td>Risco de enquadramento moral</td><td><strong>Baixo</strong></td><td>Baixo</td><td>Alto — "você está quebrado"</td></tr>
+    <tr><td>Risco de datar em 5 anos</td><td><strong>Baixo</strong></td><td>Médio</td><td>Alto — tendência</td></tr>
+    <tr><td>Serve família e profissional</td><td><strong>Sim</strong></td><td>Sim</td><td>Fraco no B2B clínico</td></tr>
+  </table>
+  <div class="callout">
+    <h4>Direção recomendada</h4>
+    <p style="margin-bottom:0"><strong>Território A — A LINHA.</strong> Vence por um motivo que não é estético: é o único cujo conceito é operacional. Nos outros dois, a identidade fica <em>ao redor</em> do produto; neste, ela <em>é</em> o produto — o histórico de trajetória na tela principal é o mesmo desenho da marca, em escala. Cada dia de uso reforça o símbolo sem custo de mídia, e o sistema visual não precisa ser inventado: já existe no dado.</p>
+  </div>
+</section>
+
+<!-- ===== 05 PLATAFORMA ===== -->
+<section id="plataforma">
+  <div class="eyebrow">05</div>
+  <h2>Plataforma de marca</h2>
+  <div class="grid g2">
+    <div class="card"><h4>Posicionamento</h4><p style="margin-bottom:0">Para adultos brasileiros que perderam o controle sobre apostas e não querem — ou não conseguem — entrar numa sala, o Retoma é a ferramenta diária de recuperação que transforma o que funciona no acompanhamento presencial em algo que cabe em sessenta segundos por dia, sem exposição e sem julgamento.</p></div>
+    <div class="card"><h4>Essência</h4><p style="margin-bottom:0"><strong>Continuidade.</strong> Uma única ideia, aplicável a tudo: nada do que já foi conquistado é apagado por um dia ruim.</p></div>
+    <div class="card"><h4>Propósito</h4><p style="margin-bottom:0">Encurtar a distância entre decidir parar e ter, na mão, um sistema que sustenta essa decisão — para as quatro em cada cinco pessoas que hoje nunca chegam a nenhum tratamento.</p></div>
+    <div class="card"><h4>Promessa</h4><p style="margin-bottom:0">Você vai enxergar seus próprios padrões, vai ter um plano que continua existindo depois que você o escreve, e vai poder registrar um dia ruim sem perder o que veio antes.</p></div>
+  </div>
+
+  <h3>Personalidade</h3>
+  <div class="grid g4" style="margin-bottom:var(--s5)">
+    <div class="card"><h4>Direta</h4><small>Diz o número, diz o fato, não enfeita. Nunca usa suspense.</small></div>
+    <div class="card"><h4>Contida</h4><small>Não comemora demais nem dramatiza. Volume constante.</small></div>
+    <div class="card"><h4>Presente</h4><small>Aparece pouco e na hora certa. Ausência também é comportamento de marca.</small></div>
+    <div class="card"><h4>Sem cerimônia</h4><small>Fala como um profissional competente fala, não como institucional.</small></div>
+  </div>
+
+  <h3>Arquétipo</h3>
+  <div class="grid g2">
+    <div class="card">
+      <p><strong>Principal: o Sábio</strong> — na forma aplicada, não acadêmica. Conhecimento que vira decisão prática. Justifica o rigor sobre evidência, a recusa a prometer cura e o encaminhamento honesto para humanos.</p>
+      <p style="margin-bottom:0"><strong>Modulador: o Companheiro</strong> — linguagem comum, ausência de superioridade. Impede que o Sábio vire professoral.</p>
+    </div>
+    <div class="card">
+      <p><strong>Arquétipos deliberadamente recusados:</strong></p>
+      <p><span class="tag off">Herói</span> <span class="tag off">Mágico</span> <span class="tag off">Cuidador</span> <span class="tag off">Fora-da-lei</span></p>
+      <p style="margin-bottom:0"><em>Herói</em> porque o herói é o usuário — a marca que se coloca como heroína rouba a autonomia que o produto quer devolver. <em>Mágico</em> porque promete transformação, e a evidência não sustenta. <em>Cuidador</em> porque leva direto à infantilização e ao registro clínico que o briefing rejeita.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 06 VOZ ===== -->
+<section id="voz">
+  <div class="eyebrow">06</div>
+  <h2>Território verbal e tom de voz</h2>
+  <h3>Quatro regras de escrita</h3>
+  <ol>
+    <li><strong>Concreto vence abstrato.</strong> "Você registrou 3 dias com fissura alta nas últimas duas semanas — todos entre 21h e 1h" vale mais que "percebi que você tem enfrentado desafios".</li>
+    <li><strong>Números sem drama.</strong> Valores e contadores em peso normal, sem exclamação, sem cor de alerta. O dado carrega a força sozinho.</li>
+    <li><strong>Segunda pessoa, presente, frase curta.</strong> Nada de "sua jornada de transformação". O usuário não está numa jornada; está numa terça-feira difícil.</li>
+    <li><strong>A marca nunca rotula a pessoa.</strong> Escrevemos sobre comportamento ("as apostas", "o episódio", "esse padrão"), nunca sobre identidade. Se o usuário se rotular, respeitamos o termo dele.</li>
+  </ol>
+
+  <h3>Léxico</h3>
+  <p><span class="tag on">retomar</span><span class="tag on">padrão</span><span class="tag on">plano</span><span class="tag on">gatilho</span><span class="tag on">episódio</span><span class="tag on">registro</span><span class="tag on">trajetória</span><span class="tag on">fôlego</span><span class="tag on">controle</span><span class="tag on">acompanhar</span></p>
+  <p><span class="tag off">jornada</span><span class="tag off">transformação</span><span class="tag off">guerreiro</span><span class="tag off">batalha</span><span class="tag off">recomeçar do zero</span><span class="tag off">viciado</span><span class="tag off">força de vontade</span><span class="tag off">superação</span><span class="tag off">cura</span></p>
+
+  <h3>A voz em situação</h3>
+  <div class="grid g2">
+    <div class="card do">
+      <h4>Assim</h4>
+      <p class="mono" style="font-size:13.5px;color:var(--texto)">"Registrei. Sua sequência anterior de 23 dias continua no seu histórico — ela não some.<br><br>Quando você tiver 2 minutos, vale entender o que aconteceu ontem. Não hoje, se você não quiser."</p>
+      <small>Reconhece, preserva a trajetória, oferece o próximo passo, devolve o controle do tempo.</small>
+    </div>
+    <div class="card dont">
+      <h4>Nunca assim</h4>
+      <p class="mono" style="font-size:13.5px;color:var(--texto-2)">"Que pena! 😔 Você perdeu sua sequência de 23 dias. Mas não desista — cada recomeço é uma nova chance! Vamos juntos nessa jornada!"</p>
+      <small>Emoji de decepção, perda declarada, imperativo motivacional, "juntos", "jornada". Quatro erros em três linhas.</small>
+    </div>
+  </div>
+
+  <h3>Como a IA se apresenta</h3>
+  <div class="card">
+    <p>A IA do Retoma <strong>não tem nome de pessoa, avatar, gênero nem primeira pessoa emocional</strong>. Não diz "eu me preocupo com você" nem "fico feliz por você". Diz o que observou e o que sugere.</p>
+    <p style="margin-bottom:0">Verbalmente ela se chama apenas <strong>Retoma</strong>. É decisão de marca e de segurança: um assistente com rosto e nome próprio convida um vínculo que o produto não pode sustentar e que a regulação está fechando. O calor vem da precisão — ser lembrado com exatidão acolhe mais do que ser chamado de "campeão".</p>
+  </div>
+</section>
+
+<!-- ===== 07 CONCEITO ===== -->
+<section id="conceito">
+  <div class="eyebrow">07</div>
+  <h2>Conceito criativo</h2>
+  <div class="callout">
+    <h4>A linha que retoma</h4>
+    <p style="font-size:20px;line-height:1.5;color:var(--texto);margin-bottom:var(--s3)">Uma linha que não se rompe e não volta ao ponto de partida. Ela para, muda de nível e continua — mais longa depois do que era antes.</p>
+    <p style="margin-bottom:0">Leitura estratégica: <strong>não é preciso virar outra pessoa, e não é preciso voltar para onde você estava.</strong> A mesma linha, a mesma história, um nível diferente. É a tradução literal do princípio "você não precisa voltar para onde estava; você pode retomar o controle", e o antídoto direto para a narrativa de identidade defeituosa que faz esse público não procurar ajuda.</p>
+  </div>
+</section>
+
+<!-- ===== 08 SÍMBOLO ===== -->
+<section id="simbolo">
+  <div class="eyebrow">08</div>
+  <h2>Símbolo, construção e auditoria</h2>
+
+  <div class="grid" style="grid-template-columns:1fr 1fr;align-items:center;margin-bottom:var(--s6)">
+    <div style="display:grid;place-items:center;background:var(--grafite);border-radius:var(--r-lg);padding:var(--s7)">
+      <svg width="220" height="220" viewBox="0 0 96 96" aria-label="Símbolo Retoma"><path d="M 19 62 L 43 62 L 43 34 L 77 34" fill="none" stroke="var(--mineral-claro)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div>
+      <h3 style="margin-top:0">A Retomada</h3>
+      <p>Um traço único e ininterrupto, com uma só mudança de nível. Entra pela esquerda, sobe uma vez, e o braço de saída é <strong>mais longo do que o de entrada</strong>.</p>
+      <p>Três leituras, em ordem de imediatismo: <strong>uma linha que continua</strong>; <strong>uma mudança de nível</strong>; <strong>um ponto em que algo foi retomado.</strong> A ênfase proporcional está na continuação, não na subida — a marca não fala de crescimento, fala de permanência.</p>
+      <p style="margin-bottom:0">Nenhuma dessas leituras comunica "apostas", "vício" ou "saúde mental" a um observador casual. Passa no teste do ombro.</p>
+    </div>
+  </div>
+
+  <h3>Auditoria de colisão pictográfica</h3>
+  <p>Checagem explícita contra glifos culturalmente carregados. É o teste que faltou na versão 1.</p>
+  <table>
+    <tr><th style="width:30%">Glifo</th><th style="width:22%">Colide?</th><th>Por quê</th></tr>
+    <tr><td>Símbolo de Marte ♂</td><td><strong>Não</strong></td><td>Exige círculo + apêndice diagonal a 45°. O símbolo não tem círculo nem diagonal.</td></tr>
+    <tr><td>Símbolo de Vênus ♀</td><td><strong>Não</strong></td><td>Exige círculo + haste vertical com travessão.</td></tr>
+    <tr><td>Botão liga/desliga</td><td><strong>Não</strong></td><td>Exige anel com abertura superior e barra vertical interna.</td></tr>
+    <tr><td>Chave / cadeado</td><td><strong>Não</strong></td><td>Exige bojo circular e haste com dentes.</td></tr>
+    <tr><td>Seta, atalho, "avançar"</td><td><strong>Não</strong></td><td>Não há ponta de seta. Terminação arredondada e neutra em ambas as pontas.</td></tr>
+    <tr><td>Check ✓</td><td><strong>Não</strong></td><td>Exige duas diagonais em V assimétrico.</td></tr>
+    <tr><td>Cruz, coração, cérebro, folha, escudo</td><td><strong>Não</strong></td><td>Nenhuma forma fechada ou orgânica no desenho.</td></tr>
+    <tr><td>Escada / acessibilidade</td><td>Parcial</td><td>Só com dois ou mais degraus. Regra dura: <strong>o símbolo tem um degrau, sempre</strong>.</td></tr>
+    <tr><td>Gráfico ascendente</td><td>Parcial</td><td>Risco residual real. Mitigado por: ausência de eixos, ausência de pontos de dado, degrau único e proporção que privilegia o comprimento sobre a altura.</td></tr>
+  </table>
+  <p><small>Esta tabela reduz risco; não substitui busca figurativa no INPI nem busca reversa de imagem. A versão 1 deste documento é a demonstração de que checagem informal falha.</small></p>
+
+  <h3>Construção geométrica</h3>
+  <div class="grid" style="grid-template-columns:300px 1fr;align-items:start">
+    <div style="background:var(--grafite);border-radius:var(--r-lg);padding:20px">
+      <svg width="100%" viewBox="0 0 96 96">
+        <g stroke="#3A4B52" stroke-width=".6" fill="none">
+          <line x1="19" y1="0" x2="19" y2="96"/><line x1="43" y1="0" x2="43" y2="96"/><line x1="77" y1="0" x2="77" y2="96"/>
+          <line x1="0" y1="34" x2="96" y2="34"/><line x1="0" y1="62" x2="96" y2="62"/><line x1="0" y1="48" x2="96" y2="48"/>
+          <rect x="13" y="28" width="70" height="40"/>
+        </g>
+        <path d="M 19 62 L 43 62 L 43 34 L 77 34" fill="none" stroke="var(--mineral-claro)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity=".93"/>
+        <circle cx="43" cy="48" r="1.8" fill="var(--ambar)"/>
+      </svg>
+    </div>
+    <div>
+      <table style="margin-top:0">
+        <tr><th>Parâmetro</th><th>Valor</th></tr>
+        <tr><td>Espessura do traço (e)</td><td class="mono">12 un.</td></tr>
+        <tr><td>Braço de entrada</td><td class="mono">24 un. = 2,0 e</td></tr>
+        <tr><td>Altura do degrau</td><td class="mono">28 un. = 2,33 e</td></tr>
+        <tr><td>Braço de saída</td><td class="mono">34 un. = 2,83 e</td></tr>
+        <tr><td>Relação saída ÷ entrada</td><td class="mono">1,417</td></tr>
+        <tr><td>Ângulo do degrau</td><td class="mono">90° exatos</td></tr>
+        <tr><td>Terminações e junção</td><td class="mono">round cap · round join</td></tr>
+        <tr><td>Caixa do símbolo</td><td class="mono">70 × 40 un. · razão 1,75</td></tr>
+        <tr><td>Área de respiro</td><td class="mono">≥ 1,5 e em todos os lados</td></tr>
+        <tr><td>Tamanho mínimo</td><td class="mono">14 px digital · 6 mm impresso</td></tr>
+      </table>
+      <p style="margin-bottom:0"><small>O ângulo é 90° e não uma diagonal por decisão de significado: uma rampa diagonal desenha uma <em>curva de crescimento</em>; um ângulo reto desenha um <em>evento</em>. A recuperação, na descrição dos próprios usuários, não é gradual — tem um momento em que algo muda. O degrau reto é esse momento. A razão 1,417 entre os braços é o parâmetro mais frágil: abaixo de 1,25 a marca fica simétrica e perde direção; acima de 1,7 ela vira uma seta sem ponta.</small></p>
+    </div>
+  </div>
+
+  <h3>Variações permitidas</h3>
+  <div class="grid g4">
+    <div class="card" style="text-align:center">
+      <svg width="90" height="90" viewBox="0 0 96 96"><path d="M 19 62 L 43 62 L 43 34 L 77 34" fill="none" stroke="var(--mineral-claro)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <small style="margin-top:10px">Mineral sobre ardósia<br>Uso primário digital</small>
+    </div>
+    <div class="card pale" style="text-align:center">
+      <svg width="90" height="90" viewBox="0 0 96 96"><path d="M 19 62 L 43 62 L 43 34 L 77 34" fill="none" stroke="#0F1719" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <small style="margin-top:10px;color:#3A474B">Ardósia sobre cal<br>Impresso e relatórios</small>
+    </div>
+    <div class="card" style="text-align:center;background:var(--mineral-profundo)">
+      <svg width="90" height="90" viewBox="0 0 96 96"><path d="M 19 62 L 43 62 L 43 34 L 77 34" fill="none" stroke="#E9E7E2" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <small style="margin-top:10px;color:#D7E3EC">Cal sobre mineral<br>App icon e avatar</small>
+    </div>
+    <div class="card" style="text-align:center">
+      <svg width="90" height="90" viewBox="0 0 96 96"><path d="M 19 62 L 43 62 L 43 34 L 77 34" fill="none" stroke="#E9E7E2" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <small style="margin-top:10px">Versão pesada (+3 un.)<br>Somente abaixo de 24px</small>
+    </div>
+  </div>
+  <p style="margin-top:var(--s4)"><small>Abaixo de 24px o traço perde peso óptico em telas comuns; a versão pesada compensa. Abaixo de 14px o símbolo não deve ser usado — nesses casos, apenas a letra R em Archivo SemiBold.</small></p>
+</section>
+
+<!-- ===== 09 WORDMARK ===== -->
+<section id="wordmark">
+  <div class="eyebrow">09</div>
+  <h2>Wordmark e assinaturas</h2>
+
+  <div class="card" style="padding:var(--s7);text-align:center;margin-bottom:var(--s5)">
+    <div class="wordmark" style="font-size:clamp(44px,9vw,88px);color:var(--texto)">RE<svg width="0.62em" height="0.72em" viewBox="0 0 70 100" style="margin:0 .02em" aria-hidden="true" fill="currentColor"><rect x="0" y="0" width="70" height="14.5" rx="2"/><rect x="20" y="0" width="14.5" height="100" rx="2"/></svg>OMA</div>
+  </div>
+
+  <div class="grid g2">
+    <div>
+      <h3 style="margin-top:0">A intervenção proprietária</h3>
+      <p>Uma única customização: <strong>a barra do "T" é assimétrica.</strong> Ela se estende bem mais para a direita do que para a esquerda, repetindo a relação 1,4 entre os braços do símbolo. É a mesma ideia — o que vem depois é mais longo do que o que veio antes — aplicada à letra.</p>
+      <p>A escolha resolve dois problemas. O wordmark passa a carregar a lógica do símbolo, então a marca continua reconhecível sem o ícone ao lado. E o T é a segunda letra: a assimetria é percebida cedo na leitura, sem exigir que a pessoa examine a palavra.</p>
+      <p style="margin-bottom:0"><strong>Regra crítica:</strong> abaixo de 32px de altura de caixa-alta a assimetria vira erro de espacejamento aos olhos do leitor. Use o <strong>wordmark compacto</strong>, com T padrão, em qualquer aplicação menor — incluindo favicon, app icon, avatar e rodapés.</p>
+    </div>
+    <div>
+      <h3 style="margin-top:0">Especificação</h3>
+      <table style="margin-top:0">
+        <tr><td>Tipo</td><td class="mono">Archivo SemiBold (600)</td></tr>
+        <tr><td>Caixa</td><td class="mono">Alta, sempre</td></tr>
+        <tr><td>Tracking</td><td class="mono">+60/1000 em</td></tr>
+        <tr><td>Barra do T à esquerda</td><td class="mono">0,20 × altura de caixa</td></tr>
+        <tr><td>Barra do T à direita</td><td class="mono">0,36 × altura de caixa</td></tr>
+        <tr><td>Alinhamento no lockup</td><td class="mono">braço superior do símbolo = altura de caixa; braço inferior = linha de base</td></tr>
+      </table>
+      <p><small><strong>Por que caixa alta sempre.</strong> "retoma" em minúsculas fica mais quente e mais próximo, mas empurra a marca para o registro de app de bem-estar — o território explicitamente recusado. A caixa alta de seis letras num nome curto lê como sério sem virar corporativo. A decisão custa um pouco de calor e compra credibilidade; para este público, o câmbio vale a pena.</small></p>
+    </div>
+  </div>
+
+  <h3>Assinaturas</h3>
+  <div class="grid g3">
+    <div class="card" style="display:grid;place-items:center;min-height:150px">
+      <div class="lockup">
+        <svg width="44" height="26" viewBox="13 28 70 40"><path d="M 19 62 L 43 62 L 43 34 L 77 34" fill="none" stroke="var(--mineral-claro)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="wordmark" style="font-size:28px">RETOOMA</div>
+      </div>
+      <small style="margin-top:14px;text-align:center">Horizontal · padrão</small>
+    </div>
+    <div class="card" style="display:grid;place-items:center;min-height:150px">
+      <div class="lockup-v">
+        <svg width="52" height="30" viewBox="13 28 70 40"><path d="M 19 62 L 43 62 L 43 34 L 77 34" fill="none" stroke="var(--mineral-claro)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="wordmark" style="font-size:22px">RETOOMA</div>
+      </div>
+      <small style="margin-top:14px;text-align:center">Vertical · avatar e app</small>
+    </div>
+    <div class="card" style="display:grid;place-items:center;min-height:150px">
+      <div style="text-align:center">
+        <div class="wordmark" style="font-size:24px;justify-content:center">RETOOMA</div>
+        <div class="mono" style="font-size:11px;letter-spacing:.14em;color:var(--pedra);margin-top:8px">RETOME O QUE AINDA É SEU</div>
+      </div>
+      <small style="margin-top:14px;text-align:center">Com assinatura · institucional</small>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 10 CORES ===== -->
+<section id="cores">
+  <div class="eyebrow">10</div>
+  <h2>Paleta de cores</h2>
+
+  <div class="callout" style="margin-bottom:var(--s6)">
+    <h4>A decisão que define a paleta</h4>
+    <p style="margin-bottom:0"><strong>O Retoma não tem verde de sucesso nem vermelho de erro.</strong> Num produto que registra recaídas, o par verde/vermelho aplica um veredito moral a cada dia da vida do usuário. Retirar essa dupla do sistema é a forma mais eficiente de cumprir "recaída não é fracasso" — mais eficiente que qualquer texto de acolhimento, porque age antes da leitura. Vermelho e âmbar existem, mas <em>exclusivamente</em> para segurança e crise: encaminhamento ao CVV, risco declarado, falha crítica. Nunca para comportamento.</p>
+  </div>
+
+  <h3>Paleta principal</h3>
+  <div class="grid g3">
+    <div class="swatch"><div class="chip" style="background:#0F1719"></div><div class="meta"><b>Ardósia</b>HEX #0F1719<br>RGB 15 · 23 · 25<br>CMYK 40 · 8 · 0 · 90</div></div>
+    <div class="swatch"><div class="chip" style="background:#E9E7E2"></div><div class="meta"><b>Cal</b>HEX #E9E7E2<br>RGB 233 · 231 · 226<br>CMYK 0 · 1 · 3 · 9</div></div>
+    <div class="swatch"><div class="chip" style="background:#5A82A6"></div><div class="meta"><b>Azul-Mineral</b>HEX #5A82A6<br>RGB 90 · 130 · 166<br>CMYK 46 · 22 · 0 · 35</div></div>
+  </div>
+  <p style="margin-top:var(--s4)"><small><strong>Por que este azul e não "azul tecnológico".</strong> O azul de SaaS vive em saturação alta e luminosidade média-alta. O Azul-Mineral tem cerca de 30% de saturação e forte carga de cinza: é cor de aço oxidado e de azulejo envelhecido, não de botão de checkout. Legível, calmo, e — importante — não associada a jogo, dinheiro ou saúde. Carrega um significado só no sistema: <strong>onde você está agora</strong>.</small></p>
+
+  <h3>Paleta secundária</h3>
+  <div class="grid g3">
+    <div class="swatch"><div class="chip" style="background:#1C282C"></div><div class="meta"><b>Grafite</b>HEX #1C282C<br>RGB 28 · 40 · 44<br>CMYK 36 · 9 · 0 · 83</div></div>
+    <div class="swatch"><div class="chip" style="background:#3F6485"></div><div class="meta"><b>Mineral Profundo</b>HEX #3F6485<br>RGB 63 · 100 · 133<br>CMYK 53 · 25 · 0 · 48</div></div>
+    <div class="swatch"><div class="chip" style="background:#7FA6C8"></div><div class="meta"><b>Mineral Claro</b>HEX #7FA6C8<br>RGB 127 · 166 · 200<br>CMYK 36 · 17 · 0 · 22</div></div>
+    <div class="swatch"><div class="chip" style="background:#6F7D82"></div><div class="meta"><b>Pedra</b>HEX #6F7D82<br>RGB 111 · 125 · 130<br>CMYK 15 · 4 · 0 · 49</div></div>
+    <div class="swatch"><div class="chip" style="background:#C9C6BF"></div><div class="meta"><b>Névoa</b>HEX #C9C6BF<br>RGB 201 · 198 · 191<br>CMYK 0 · 1 · 5 · 21</div></div>
+    <div class="swatch"><div class="chip" style="background:#223035"></div><div class="meta"><b>Grafite Elevado</b>HEX #223035<br>RGB 34 · 48 · 53<br>CMYK 36 · 9 · 0 · 79</div></div>
+  </div>
+
+  <h3>Semânticas — uso restrito a segurança</h3>
+  <div class="grid g2">
+    <div class="swatch"><div class="chip" style="background:#B8792F"></div><div class="meta"><b>Âmbar-Sinal</b>HEX #B8792F · RGB 184 · 121 · 47 · CMYK 0 · 34 · 74 · 28<br>Uso: atenção operacional (falha de sincronização, dado pendente).</div></div>
+    <div class="swatch"><div class="chip" style="background:#A24A45"></div><div class="meta"><b>Brasa</b>HEX #A24A45 · RGB 162 · 74 · 69 · CMYK 0 · 54 · 57 · 36<br>Uso: exclusivo de crise e segurança. Nunca em recaída, meta ou desempenho.</div></div>
+  </div>
+
+  <h3>Contraste verificado</h3>
+  <table>
+    <tr><th>Combinação</th><th>Razão</th><th>Uso permitido</th></tr>
+    <tr><td class="mono">Ardósia sobre Cal</td><td class="mono">13,8:1</td><td>Tudo · AAA</td></tr>
+    <tr><td class="mono">Mineral Claro sobre Ardósia</td><td class="mono">7,1:1</td><td>Tudo · AAA</td></tr>
+    <tr><td class="mono">Mineral Profundo sobre Cal</td><td class="mono">5,0:1</td><td>Texto corrido · AA</td></tr>
+    <tr><td class="mono">Azul-Mineral sobre Cal</td><td class="mono">3,3:1</td><td><strong>Só ≥24px, ícones e preenchimentos.</strong> Nunca texto corrido</td></tr>
+  </table>
+  <p><small>Valores CMYK são conversão aproximada para papel couché e devem ser reprovados com perfil ICC antes de impressão. A paleta é integralmente distinguível em deuteranopia e protanopia porque não depende do par verde/vermelho — consequência prática da decisão editorial acima.</small></p>
+</section>
+
+<!-- ===== 11 TIPOGRAFIA ===== -->
+<section id="tipografia">
+  <div class="eyebrow">11</div>
+  <h2>Tipografia</h2>
+  <div class="grid g2" style="margin-bottom:var(--s5)">
+    <div class="card">
+      <h4>Principal · Archivo</h4>
+      <div style="font-size:44px;font-weight:600;letter-spacing:-.02em;line-height:1.1;margin:14px 0">Aa Áé Çã 0123</div>
+      <p style="margin-bottom:8px">Grotesca contemporânea, variável, licença SIL OFL, desenhada pela Omnibus-Type. Escolhida por três motivos concretos: acentuação latina desenhada com cuidado — o que importa numa marca que escreve "fissura", "está" e "não" o tempo todo; eixo de largura, que permite ajuste fino do wordmark sem contratar desenho de letra; e uma aspereza leve nas terminações que impede o resultado de parecer Inter ou Poppins.</p>
+      <small>Pesos em uso: 400 texto · 500 rótulos · 600 títulos e wordmark · 700 só números de destaque.</small>
+    </div>
+    <div class="card">
+      <h4>Dados · IBM Plex Mono</h4>
+      <div class="mono" style="font-size:40px;line-height:1.2;margin:14px 0">R$ 12.480<br><span style="font-size:22px;color:var(--texto-2)">47 dias · PGSI 14</span></div>
+      <p style="margin-bottom:8px">Toda quantidade do produto — dias, reais, escalas, horários — é monoespaçada. Não é estética: contadores que mudam de largura a cada dia produzem tremor visual na tela mais vista do app. A monoespaçada trava o alinhamento e dá aos números um registro de instrumento, não de placar.</p>
+      <small>Pesos em uso: 400 padrão · 500 destaque. Nunca em texto corrido.</small>
+    </div>
+  </div>
+
+  <h3>Hierarquia</h3>
+  <table>
+    <tr><th>Nível</th><th>Fonte / peso</th><th>Tamanho · entrelinha</th><th>Uso</th></tr>
+    <tr><td>Display</td><td class="mono">Archivo 600</td><td class="mono">40–72 / 1.05 · -3%</td><td>Landing, capas</td></tr>
+    <tr><td>Título de tela</td><td class="mono">Archivo 600</td><td class="mono">24 / 1.2 · -2%</td><td>Topo de cada tela</td></tr>
+    <tr><td>Subtítulo</td><td class="mono">Archivo 500</td><td class="mono">18 / 1.4</td><td>Pergunta de check-in</td></tr>
+    <tr><td>Corpo</td><td class="mono">Archivo 400</td><td class="mono">16 / 1.6</td><td>Conversa, conteúdo</td></tr>
+    <tr><td>Apoio</td><td class="mono">Archivo 400</td><td class="mono">14 / 1.5</td><td>Legendas, ajuda</td></tr>
+    <tr><td>Rótulo</td><td class="mono">Archivo 500</td><td class="mono">12 / 1.3 · +8% · caixa alta</td><td>Categorias, eyebrow</td></tr>
+    <tr><td>Dado grande</td><td class="mono">Plex Mono 500</td><td class="mono">36–56 / 1.1</td><td>Contador, valor</td></tr>
+    <tr><td>Dado inline</td><td class="mono">Plex Mono 400</td><td class="mono">14 / 1.5</td><td>Escalas, horários, PGSI</td></tr>
+  </table>
+  <p><small><strong>Piso de acessibilidade:</strong> 16px é o menor tamanho de texto lido pelo usuário; 14px só para apoio; nada abaixo de 12px em nenhuma superfície. O público inclui pessoas de 45–60 anos lendo à noite, com sono ruim e estresse alto — condições que degradam a leitura mais do que a idade sozinha.</small></p>
+</section>
+
+<!-- ===== 12 ÍCONES ===== -->
+<section id="icones">
+  <div class="eyebrow">12</div>
+  <h2>Sistema de ícones</h2>
+  <p>Grade de 24px, traço de 2px, terminações e junções arredondadas. Todo ícone é construído com retas e ângulos retos do mesmo idioma do símbolo. Nenhum usa preenchimento sólido, exceto o ponto de "agora".</p>
+
+  <div class="grid g4" style="margin-top:var(--s5)">
+    <div class="iconcell">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--mineral-claro)" stroke-width="2" stroke-linecap="round"><path d="M3 12h5M14 12h7"/><circle cx="11" cy="12" r="1.8" fill="var(--mineral-claro)" stroke="none"/></svg>
+      <span>Check-in</span>
+    </div>
+    <div class="iconcell">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--mineral-claro)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17h6v-6h12"/></svg>
+      <span>Trajetória</span>
+    </div>
+    <div class="iconcell">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--mineral-claro)" stroke-width="2" stroke-linecap="round"><path d="M4 6h10M4 12h13M4 18h7"/></svg>
+      <span>Plano</span>
+    </div>
+    <div class="iconcell">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--mineral-claro)" stroke-width="2" stroke-linecap="round"><path d="M3 14c2.5 0 2.5-6 5-6s2.5 8 5 8 2.5-5 5-5 2 3 3 3"/></svg>
+      <span>Fissura</span>
+    </div>
+    <div class="iconcell">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--mineral-claro)" stroke-width="2" stroke-linecap="round"><rect x="4" y="4" width="16" height="16" rx="3" stroke-dasharray="3.4 4"/><circle cx="12" cy="12" r="2.2" fill="var(--mineral-claro)" stroke="none"/></svg>
+      <span>Gatilho</span>
+    </div>
+    <div class="iconcell">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--mineral-claro)" stroke-width="2" stroke-linecap="round"><path d="M4 18V8M9.3 18v-5M14.7 18v-8M20 18v-3"/></svg>
+      <span>Fôlego</span>
+    </div>
+    <div class="iconcell">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--mineral-claro)" stroke-width="2" stroke-linecap="round"><path d="M5 16h14"/><circle cx="8" cy="8" r="2.4"/><circle cx="16" cy="8" r="2.4"/><path d="M8 10.4V16M16 10.4V16"/></svg>
+      <span>Rede</span>
+    </div>
+    <div class="iconcell">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--mineral-claro)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18h5v-7h11"/><path d="M20 11v0"/></svg>
+      <span>Retomar</span>
+    </div>
+  </div>
+  <p style="margin-top:var(--s5)"><small><strong>Proibições do sistema:</strong> nenhum rosto, mão, coração, cérebro, escudo, cadeado, chama, troféu, moeda ou cifrão isolado. Dinheiro no Retoma é sempre valor tipografado, nunca símbolo de moeda — a diferença entre "R$ 12.480" e um ícone de cifrão é a diferença entre informar e evocar.</small></p>
+</section>
+
+<!-- ===== 13 GRÁFICOS ===== -->
+<section id="graficos">
+  <div class="eyebrow">13</div>
+  <h2>Elemento gráfico central: A Linha</h2>
+  <p class="lede">O símbolo é o gesto; a Linha é o dado. Um traço horizontal contínuo com uma marca por dia: dias com registro em Mineral, dias sem registro em Pedra, dias com aposta como marca vazada. A linha nunca é interrompida, nunca reinicia e nunca muda de cor por julgamento.</p>
+
+  <div class="card" style="margin-top:var(--s5);padding:var(--s6) var(--s5)">
+    <svg width="100%" height="90" viewBox="0 0 620 90" preserveAspectRatio="xMidYMid meet" aria-label="Trajetória de 28 dias">
+      <line x1="10" y1="46" x2="610" y2="46" stroke="#2B383D" stroke-width="2" stroke-linecap="round"/>
+      <g stroke-linecap="round" stroke-width="4" stroke="#5A82A6">
+        <path d="M20 34v24"/><path d="M42 34v24"/><path d="M64 34v24"/><path d="M86 34v24"/><path d="M108 34v24"/><path d="M130 34v24"/>
+        <path d="M152 34v24"/><path d="M174 34v24"/><path d="M196 34v24"/><path d="M218 34v24"/><path d="M240 34v24"/>
+      </g>
+      <path d="M262 39v14" stroke="#6F7D82" stroke-width="4" stroke-linecap="round"/>
+      <g stroke-linecap="round" stroke-width="4" stroke="#5A82A6"><path d="M284 34v24"/><path d="M306 34v24"/><path d="M328 34v24"/></g>
+      <rect x="348" y="34" width="4" height="24" rx="2" fill="none" stroke="#C9C6BF" stroke-width="1.6"/>
+      <g stroke-linecap="round" stroke-width="4" stroke="#5A82A6">
+        <path d="M372 34v24"/><path d="M394 34v24"/><path d="M416 34v24"/><path d="M438 34v24"/><path d="M460 34v24"/>
+        <path d="M482 34v24"/><path d="M504 34v24"/><path d="M526 34v24"/><path d="M548 34v24"/><path d="M570 34v24"/>
+      </g>
+      <circle cx="592" cy="46" r="7" fill="#7FA6C8"/>
+      <text x="348" y="78" font-family="IBM Plex Mono,monospace" font-size="11" fill="#6F7D82" text-anchor="middle">21 jun</text>
+      <text x="592" y="78" font-family="IBM Plex Mono,monospace" font-size="11" fill="#7FA6C8" text-anchor="middle">hoje</text>
+      <text x="262" y="78" font-family="IBM Plex Mono,monospace" font-size="11" fill="#6F7D82" text-anchor="middle">sem registro</text>
+    </svg>
+  </div>
+
+  <div class="grid g3" style="margin-top:var(--s5)">
+    <div class="card"><h4>Regra 1</h4><p style="margin:0">A linha de base <strong>nunca é cortada</strong>. Atravessa o dia de aposta com a mesma espessura.</p></div>
+    <div class="card"><h4>Regra 2</h4><p style="margin:0">O dia de aposta é <strong>vazado, não vermelho</strong>. Presente, visível, registrado — sem veredito.</p></div>
+    <div class="card"><h4>Regra 3</h4><p style="margin:0">As marcas têm <strong>altura constante</strong>. No instante em que a altura varia conforme desempenho, a Linha vira gráfico e o produto vira placar.</p></div>
+  </div>
+
+  <div class="warn" style="margin-top:var(--s5)">
+    <h4>A relação entre símbolo e Linha, explicitada</h4>
+    <p style="margin-bottom:0">O símbolo muda de nível uma vez; a Linha nunca muda de nível. Não é contradição, é divisão de trabalho: <strong>a mudança de nível no símbolo representa o ato de retomar, não a medida de um desempenho.</strong> Assim que altura passa a significar "quanto você foi bem", o sistema começa a julgar — que é precisamente o que a paleta foi construída para impedir. Os dois desenhos compartilham o idioma de traço (espessura relativa, terminação arredondada, ângulo reto) e nada mais.</p>
+  </div>
+
+  <p style="margin-top:var(--s5)">A Linha é a única textura de marca. Aparece como filete no topo de relatórios PDF, como divisor em landing page, como base de posts e como componente principal da tela inicial. <strong>É por isso que o Território A venceu:</strong> o elemento gráfico da marca e o dado clínico do usuário são o mesmo objeto.</p>
+</section>
+
+<!-- ===== 14 FOTO / MOTION ===== -->
+<section id="foto">
+  <div class="eyebrow">14</div>
+  <h2>Fotografia, ilustração e motion</h2>
+  <div class="grid g3">
+    <div class="card">
+      <h4>Fotografia</h4>
+      <p><strong>Regra dura: nenhum rosto de usuário, nunca.</strong> Nem stock sorridente, nem stock cabisbaixo. Rosto em contexto de vício é uma promessa que o produto não pode cumprir e um risco de estigma que ele não pode causar.</p>
+      <p style="margin-bottom:0">O que fotografamos: <em>lugares e horários</em>. Cozinha às 23h, ônibus voltando, sofá vazio, luz de poste, mesa com celular virado para baixo. Luz disponível, sem filtro, sem HDR, enquadramento amplo, pessoa ausente ou fora de foco e não identificável. Registro documental brasileiro, não editorial internacional.</p>
+    </div>
+    <div class="card">
+      <h4>Ilustração</h4>
+      <p><strong>O Retoma não usa ilustração figurativa.</strong> Nem personagens, nem mascote, nem cenas. Elimina de uma vez o risco de infantilização e o de representar mal um estado emocional que não conhecemos.</p>
+      <p style="margin-bottom:0">O que existe no lugar: <em>diagramas</em>. Desenhos técnicos no idioma do símbolo — a Linha, a curva de fissura por horário, o mapa de gatilhos, o plano em blocos. Explicativos, não decorativos. Se um desenho não carrega informação, ele não entra.</p>
+    </div>
+    <div class="card">
+      <h4>Motion</h4>
+      <p><strong>Assinatura de movimento: o traço se desenha.</strong> Da esquerda para a direita, sobe uma vez e continua — 700ms, desaceleração suave, uma única vez na abertura do app. É literalmente a marca sendo escrita.</p>
+      <p style="margin-bottom:0">Fora isso: transições de 150–200ms, nada elástico, nada saltitante, nenhum confete, nenhuma vibração de celebração. <code>prefers-reduced-motion</code> respeitado em toda a interface. Movimento em produto de fissura precisa acalmar o sistema nervoso, não estimulá-lo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 15 DESIGN SYSTEM ===== -->
+<section id="ds">
+  <div class="eyebrow">15</div>
+  <h2>Design system</h2>
+  <div class="grid g2">
+    <div>
+      <h3 style="margin-top:0">Espaçamento e forma</h3>
+      <table style="margin-top:0">
+        <tr><th>Token</th><th>Valor</th><th>Uso</th></tr>
+        <tr><td class="mono">space-1…8</td><td class="mono">4 8 12 16 24 32 48 72</td><td>Escala de 4px</td></tr>
+        <tr><td class="mono">radius-sm</td><td class="mono">4px</td><td>Tags, marcas da Linha</td></tr>
+        <tr><td class="mono">radius-md</td><td class="mono">8px</td><td>Botões, inputs</td></tr>
+        <tr><td class="mono">radius-lg</td><td class="mono">14px</td><td>Cards</td></tr>
+        <tr><td class="mono">radius-xl</td><td class="mono">22px</td><td>Folhas, modais</td></tr>
+        <tr><td class="mono">border</td><td class="mono">1px #2B383D</td><td>Separação padrão</td></tr>
+        <tr><td class="mono">shadow-1</td><td class="mono">0 1px 2px rgba(0,0,0,.3)</td><td>Único nível permitido</td></tr>
+      </table>
+      <p><small><strong>Um só nível de sombra.</strong> Hierarquia se resolve por cor de superfície (Ardósia → Grafite → Grafite Elevado) e por espaço, não por elevação empilhada. Sombras múltiplas produzem a aparência de dashboard financeiro que o briefing recusa.</small></p>
+    </div>
+    <div>
+      <h3 style="margin-top:0">Botões</h3>
+      <p><span class="btn primary">Fazer check-in</span> &nbsp; <span class="btn ghost">Agora não</span> &nbsp; <span class="btn quiet">Ver meus planos</span></p>
+      <p><small>Altura 48px, área de toque mínima 48×48. <strong>Uma ação primária por tela.</strong> A recusa ("Agora não") tem sempre o mesmo peso visual da aceitação — o produto não usa design persuasivo contra o usuário. Botão destrutivo não existe: nada no Retoma é apagado.</small></p>
+      <h3>Estados</h3>
+      <div style="border:1px solid #4A3A2A;border-radius:8px;padding:12px 14px;margin-bottom:10px">
+        <div class="mono" style="font-size:11px;letter-spacing:.1em;color:var(--ambar)">ATENÇÃO</div>
+        <div style="font-size:14px">Seu último check-in não sincronizou. Toque para reenviar.</div>
+      </div>
+      <div style="border:1px solid #2E4453;border-radius:8px;padding:12px 14px;margin-bottom:10px">
+        <div class="mono" style="font-size:11px;letter-spacing:.1em;color:var(--mineral-claro)">REGISTRADO</div>
+        <div style="font-size:14px">Check-in salvo. Sua trajetória continua.</div>
+      </div>
+      <div style="border:1px solid #4A3033;border-radius:8px;padding:12px 14px">
+        <div class="mono" style="font-size:11px;letter-spacing:.1em;color:#C98A86">SEGURANÇA</div>
+        <div style="font-size:14px">Se você está pensando em se machucar, ligue 188 (CVV). Atendimento 24h, gratuito.</div>
+      </div>
+      <p style="margin-top:14px;margin-bottom:0"><small><strong>Não existe estado "sucesso"</strong> — existe "registrado". "Sucesso" implica avaliação de desempenho; "registrado" apenas confirma que o sistema ouviu.</small></p>
+    </div>
+  </div>
+
+  <h3>Componente de check-in</h3>
+  <div class="grid g2">
+    <div class="card">
+      <div class="mono" style="font-size:11px;letter-spacing:.12em;color:var(--pedra);margin-bottom:10px">CHECK-IN · 1 DE 3</div>
+      <div style="font-size:18px;font-weight:500;margin-bottom:20px">Quanta vontade de apostar você sentiu hoje?</div>
+      <svg width="100%" height="56" viewBox="0 0 420 56">
+        <line x1="14" y1="28" x2="406" y2="28" stroke="#2B383D" stroke-width="2" stroke-linecap="round"/>
+        <g fill="#3C4C52"><circle cx="14" cy="28" r="4"/><circle cx="53" cy="28" r="4"/><circle cx="92" cy="28" r="4"/><circle cx="131" cy="28" r="4"/><circle cx="170" cy="28" r="4"/><circle cx="209" cy="28" r="4"/><circle cx="288" cy="28" r="4"/><circle cx="327" cy="28" r="4"/><circle cx="366" cy="28" r="4"/><circle cx="406" cy="28" r="4"/></g>
+        <circle cx="248" cy="28" r="13" fill="#5A82A6"/>
+        <text x="248" y="33" font-family="IBM Plex Mono,monospace" font-size="13" fill="#0F1719" text-anchor="middle">6</text>
+        <text x="14" y="52" font-family="Archivo,sans-serif" font-size="12" fill="#6F7D82">nenhuma</text>
+        <text x="406" y="52" font-family="Archivo,sans-serif" font-size="12" fill="#6F7D82" text-anchor="end">muita</text>
+      </svg>
+      <p style="margin:16px 0 0"><small>Uma pergunta por tela. Escala de 0 a 10 sem gradiente de cor — o 9 não é vermelho e o 1 não é verde. O número é feedback suficiente.</small></p>
+    </div>
+    <div class="card">
+      <h4>Regras do componente</h4>
+      <ul style="margin-bottom:0">
+        <li>Três itens no máximo por check-in diário: fissura, autoeficácia, apostou ontem.</li>
+        <li>Meta de conclusão: <strong>abaixo de 20 segundos</strong>. Se o design não cabe nisso, o design está errado.</li>
+        <li>Nenhuma tela de check-in exibe contador, streak ou comparação com outros usuários. O dado do dia é coletado antes de qualquer devolutiva, para não contaminar a resposta.</li>
+        <li>Toda pergunta pode ser pulada sem penalidade e sem confirmação.</li>
+        <li>A ordem e a formulação variam entre dias, mantendo a construção psicométrica constante — resposta direta à fadiga por repetição relatada no ensaio australiano.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 16 APLICAÇÕES ===== -->
+<section id="aplicacoes">
+  <div class="eyebrow">16</div>
+  <h2>Aplicações</h2>
+
+  <div class="grid g3" style="align-items:start">
+    <div>
+      <h4>Aplicativo · tela inicial</h4>
+      <div class="phone">
+        <div class="status"><span>23:41</span><span>▮▮▮</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+          <svg width="34" height="20" viewBox="13 28 70 40"><path d="M 19 62 L 43 62 L 43 34 L 77 34" fill="none" stroke="#7FA6C8" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="mono" style="font-size:10px;color:var(--pedra)">SEG · 9 AGO</span>
+        </div>
+        <div class="mono" style="font-size:44px;line-height:1;color:var(--texto)">47</div>
+        <div style="font-size:13px;color:var(--texto-2);margin-bottom:4px">dias desde a última aposta</div>
+        <div class="mono" style="font-size:15px;color:var(--mineral-claro);margin-bottom:18px">R$ 8.140 não apostados</div>
+        <svg width="100%" height="34" viewBox="0 0 220 34">
+          <line x1="4" y1="17" x2="216" y2="17" stroke="#2B383D" stroke-width="1.5" stroke-linecap="round"/>
+          <g stroke="#5A82A6" stroke-width="2.6" stroke-linecap="round">
+            <path d="M8 11v12"/><path d="M22 11v12"/><path d="M36 11v12"/><path d="M50 11v12"/><path d="M64 11v12"/><path d="M78 11v12"/><path d="M92 11v12"/><path d="M106 11v12"/><path d="M120 11v12"/><path d="M148 11v12"/><path d="M162 11v12"/><path d="M176 11v12"/><path d="M190 11v12"/>
+          </g>
+          <rect x="132.7" y="11" width="2.6" height="12" rx="1.3" fill="none" stroke="#C9C6BF" stroke-width="1"/>
+          <circle cx="208" cy="17" r="4.5" fill="#7FA6C8"/>
+        </svg>
+        <div style="margin-top:18px;background:var(--grafite);border-radius:10px;padding:12px 13px">
+          <div style="font-size:13.5px;line-height:1.5">Sexta à noite costuma ser seu horário mais difícil. Quer revisar o plano que você escreveu em 12 de julho?</div>
+          <div style="margin-top:10px;display:flex;gap:8px">
+            <span class="btn primary" style="font-size:12.5px;padding:8px 12px">Ver o plano</span>
+            <span class="btn ghost" style="font-size:12.5px;padding:8px 12px">Agora não</span>
+          </div>
+        </div>
+      </div>
+      <small style="margin-top:12px">A Linha ocupa o centro da tela. O contador é grande mas neutro; o dia com aposta permanece visível e vazado.</small>
+    </div>
+
+    <div>
+      <h4>WhatsApp · MVP</h4>
+      <div class="phone">
+        <div style="display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:1px solid var(--linha);margin-bottom:14px">
+          <div style="width:34px;height:34px;border-radius:50%;background:var(--mineral-profundo);display:grid;place-items:center">
+            <svg width="20" height="12" viewBox="13 28 70 40"><path d="M 19 62 L 43 62 L 43 34 L 77 34" fill="none" stroke="#E9E7E2" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div><div style="font-size:14px;font-weight:600">Retoma</div><div style="font-size:11px;color:var(--pedra)">conta comercial</div></div>
+        </div>
+        <div class="wa">
+          <div class="bubble in">Oi. Três perguntas rápidas, menos de 20 segundos.<br><br>De 0 a 10, quanta vontade de apostar você sentiu hoje?</div>
+          <div class="bubble out">7</div>
+          <div class="bubble in">Anotado. De 0 a 10, quanta confiança você tem de não apostar hoje à noite?</div>
+          <div class="bubble out">4</div>
+          <div class="bubble in">Registrado. Seu 4 de hoje é o mais baixo desde 2 de agosto — e naquele dia funcionou sair de casa.<br><br>Quer que eu abra aquele plano?</div>
+        </div>
+      </div>
+      <small style="margin-top:12px">A marca sobrevive sem tipografia própria e sem cor de fundo: só o avatar, o nome e a voz. A geometria simples do símbolo é o que permite legibilidade num avatar de 34px.</small>
+    </div>
+
+    <div>
+      <h4>Instagram · post</h4>
+      <div style="border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--linha)">
+        <div style="background:var(--cal);padding:26px 22px;min-height:230px;display:flex;flex-direction:column;justify-content:space-between">
+          <div>
+            <div class="mono" style="font-size:10px;letter-spacing:.14em;color:#7A8489">DADO DA SEMANA</div>
+            <div style="font-family:var(--display);font-weight:600;font-size:25px;line-height:1.15;color:var(--ardosia);margin-top:12px;letter-spacing:-.02em">Só 1 em cada 5 pessoas com problema de jogo procura algum tipo de ajuda.</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:20px">
+            <svg width="100" height="16" viewBox="0 0 200 16"><line x1="3" y1="8" x2="197" y2="8" stroke="#C9C6BF" stroke-width="1.5" stroke-linecap="round"/><g stroke="#3F6485" stroke-width="2.4" stroke-linecap="round"><path d="M8 4v8"/><path d="M28 4v8"/><path d="M48 4v8"/><path d="M68 4v8"/></g><circle cx="90" cy="8" r="3.6" fill="#3F6485"/></svg>
+            <svg width="30" height="18" viewBox="13 28 70 40"><path d="M 19 62 L 43 62 L 43 34 L 77 34" fill="none" stroke="#0F1719" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+      <small style="margin-top:12px">Social usa fundo Cal — o app é escuro. A inversão distingue comunicação pública de espaço privado. Sem foto de pessoa, sem frase motivacional.</small>
+    </div>
+  </div>
+
+  <div class="grid g3" style="align-items:start;margin-top:var(--s7)">
+    <div>
+      <h4>Landing page · topo</h4>
+      <div class="card pale" style="padding:22px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:26px">
+          <div class="lockup" style="gap:10px"><svg width="26" height="15" viewBox="13 28 70 40"><path d="M 19 62 L 43 62 L 43 34 L 77 34" fill="none" stroke="#0F1719" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-weight:600;letter-spacing:.06em;font-size:14px;color:#0F1719">RETOMA</span></div>
+          <span class="mono" style="font-size:10px;color:#7A8489">ENTRAR</span>
+        </div>
+        <div style="font-family:var(--display);font-weight:600;font-size:26px;line-height:1.12;letter-spacing:-.025em;color:#0F1719">Você já decidiu parar.<br>O difícil é o resto.</div>
+        <p style="font-size:13.5px;color:#3A474B;margin:14px 0 18px">Acompanhamento diário de 60 segundos no WhatsApp: seus gatilhos, seus planos e sua trajetória — sem app para instalar e sem ninguém saber.</p>
+        <span class="btn" style="background:#3F6485;color:#E9E7E2;font-size:13.5px;padding:11px 18px">Começar agora</span>
+        <div class="mono" style="font-size:10.5px;color:#7A8489;margin-top:14px">GRATUITO NOS PRIMEIROS 7 DIAS · SEM CARTÃO</div>
+      </div>
+      <small style="margin-top:12px">A headline nomeia a fase 6→7 da jornada. Não vende esperança; nomeia a dificuldade que vem depois da decisão — onde o produto realmente atua.</small>
+    </div>
+
+    <div>
+      <h4>Relatório PDF · para o profissional</h4>
+      <div class="card pale" style="padding:0;overflow:hidden">
+        <div style="background:#0F1719;padding:16px 20px;display:flex;justify-content:space-between;align-items:center">
+          <div class="lockup" style="gap:9px"><svg width="24" height="14" viewBox="13 28 70 40"><path d="M 19 62 L 43 62 L 43 34 L 77 34" fill="none" stroke="#7FA6C8" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-weight:600;letter-spacing:.06em;font-size:12px;color:#E9E7E2">RETOMA</span></div>
+          <span class="mono" style="font-size:9.5px;color:#6F7D82">RELATÓRIO DE ACOMPANHAMENTO</span>
+        </div>
+        <div style="padding:18px 20px">
+          <div class="mono" style="font-size:10px;letter-spacing:.12em;color:#7A8489">PERÍODO · 12 JUL A 09 AGO 2026</div>
+          <div style="font-family:var(--display);font-weight:600;font-size:17px;color:#0F1719;margin:6px 0 14px">Usuário 4F2C · 28 dias</div>
+          <table style="font-size:12px;margin:0">
+            <tr><td style="padding:6px 0;border-color:#D7D3CB;color:#3A474B">PGSI inicial → atual</td><td class="mono" style="padding:6px 0;border-color:#D7D3CB;color:#0F1719">19 → 14</td></tr>
+            <tr><td style="padding:6px 0;border-color:#D7D3CB;color:#3A474B">Dias com check-in</td><td class="mono" style="padding:6px 0;border-color:#D7D3CB;color:#0F1719">22 / 28</td></tr>
+            <tr><td style="padding:6px 0;border-color:#D7D3CB;color:#3A474B">Episódios registrados</td><td class="mono" style="padding:6px 0;border-color:#D7D3CB;color:#0F1719">1 · 21 jun</td></tr>
+            <tr><td style="padding:6px 0;border:none;color:#3A474B">Janela de maior risco</td><td class="mono" style="padding:6px 0;border:none;color:#0F1719">sex–sáb, 22h–01h</td></tr>
+          </table>
+        </div>
+      </div>
+      <small style="margin-top:12px">Cabeçalho escuro, corpo em Cal, dados em mono. Identificador em código, não em nome — a privacidade é visível na própria diagramação.</small>
+    </div>
+
+    <div>
+      <h4>Cartão institucional</h4>
+      <div style="background:var(--ardosia);border:1px solid var(--linha);border-radius:10px;padding:20px;aspect-ratio:85/50;display:flex;flex-direction:column;justify-content:space-between">
+        <svg width="34" height="20" viewBox="13 28 70 40"><path d="M 19 62 L 43 62 L 43 34 L 77 34" fill="none" stroke="#7FA6C8" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div>
+          <div style="font-weight:600;font-size:14px;letter-spacing:.06em">RETOOMA</div>
+          <div class="mono" style="font-size:9.5px;color:var(--pedra);letter-spacing:.08em;margin-top:3px">RECUPERAÇÃO DE APOSTAS · retoma.com.br</div>
+        </div>
+      </div>
+      <h4 style="margin-top:24px">Favicon · app icon · avatar</h4>
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+        <div class="favicon" style="background:var(--mineral-profundo)"><svg width="20" height="12" viewBox="13 28 70 40"><path d="M 19 62 L 43 62 L 43 34 L 77 34" fill="none" stroke="#E9E7E2" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="appicon" style="background:var(--ardosia);border:1px solid var(--linha)"><svg width="50" height="29" viewBox="13 28 70 40"><path d="M 19 62 L 43 62 L 43 34 L 77 34" fill="none" stroke="#7FA6C8" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="appicon" style="background:var(--cal);border-radius:50%"><svg width="48" height="28" viewBox="13 28 70 40"><path d="M 19 62 L 43 62 L 43 34 L 77 34" fill="none" stroke="#0F1719" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <small style="margin-top:12px">Ícone de app em Ardósia, não em Mineral: numa tela inicial cheia de apps coloridos, o quase-preto é o que menos chama atenção alheia. Discrição como decisão de design, não como estética.</small>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 17 EMOCIONAL ===== -->
+<section id="emocional">
+  <div class="eyebrow">17</div>
+  <h2>Escala emocional da marca</h2>
+  <p class="lede">Mesma identidade, oito temperaturas. O que muda é densidade de informação, ritmo e quanto a marca fala — nunca a cor nem a tipografia.</p>
+  <div style="margin-top:var(--s5)">
+    <div class="scale-row"><div class="mom"><span>01</span>Primeiro contato</div><div><strong>Sóbria e específica.</strong> Fundo Cal, uma frase, um dado real, um botão. A marca precisa parecer competente antes de parecer acolhedora — quem chega aqui já foi decepcionado por promessas. Zero emoção declarada.</div></div>
+    <div class="scale-row"><div class="mom"><span>02</span>Momento de decisão</div><div><strong>Redução máxima.</strong> Uma pergunta por tela, nenhuma escolha secundária visível, nada de rolagem. Ambivalência é o inimigo: cada elemento extra é uma chance de desistir. Aqui a marca fala menos do que em qualquer outro momento.</div></div>
+    <div class="scale-row"><div class="mom"><span>03</span>Primeiro dia sem apostar</div><div><strong>Confirmação sem festa.</strong> A Linha ganha sua primeira marca e o contador mostra 1. Nenhuma animação de celebração, nenhum "parabéns" — comemorar o dia 1 comunica que o dia 1 é difícil de alcançar, e mina a confiança de quem já falhou antes.</div></div>
+    <div class="scale-row"><div class="mom"><span>04</span>Primeira semana</div><div><strong>Presença regular, volume baixo.</strong> Máximo duas notificações por dia. A marca começa a devolver observação em vez de só coletar: "seus três check-ins com fissura mais alta foram todos depois das 22h."</div></div>
+    <div class="scale-row"><div class="mom"><span>05</span>Primeiro mês</div><div><strong>Devolutiva com densidade.</strong> É aqui que a Linha fica visualmente impressionante pela primeira vez — 30 marcas contínuas — e onde entra o PGSI comparativo. A marca sobe um grau de calor: reconhece o esforço nomeando o que ele produziu, em números.</div></div>
+    <div class="scale-row"><div class="mom"><span>06</span>Momento de risco</div><div><strong>Curta, prática, sem alarme.</strong> Nenhum vermelho, nenhum aviso, nenhuma linguagem de emergência — sinalizar perigo aumenta a saliência do jogo. Uma frase, o plano que ele mesmo escreveu, e uma ação. Volume mais baixo do sistema inteiro.</div></div>
+    <div class="scale-row"><div class="mom"><span>07</span>Registro de recaída</div><div><strong>O teste real da marca.</strong> A tela não muda de cor. A Linha não reinicia. O contador zera, mas o histórico anterior permanece na mesma tela e com a mesma proeminência. A resposta é uma frase factual e uma pergunta adiável. Nenhuma palavra da família de "perdeu", "falhou", "recomeçar do zero".</div></div>
+    <div class="scale-row" style="border-bottom:none"><div class="mom"><span>08</span>Recuperação prolongada</div><div><strong>Recua deliberadamente.</strong> Check-in semanal, notificações quase nulas, a Linha comprimida em escala mensal. A marca passa a falar de outras coisas — dívida, relações, planos. Uma marca de recuperação madura mede seu sucesso por quanto consegue sumir sem ser cancelada.</div></div>
+  </div>
+</section>
+
+<!-- ===== 18 TAGLINE ===== -->
+<section id="tagline">
+  <div class="eyebrow">18</div>
+  <h2>Taglines</h2>
+  <h3>Dez possibilidades</h3>
+  <table>
+    <tr><th style="width:44px">#</th><th>Tagline</th><th>Leitura crítica</th></tr>
+    <tr><td class="mono">01</td><td><strong>Retome o que ainda é seu.</strong></td><td>Explora o nome, abre para dinheiro, relações e identidade. "Ainda" faz o trabalho pesado: afirma que nem tudo foi perdido sem prometer restituição.</td></tr>
+    <tr><td class="mono">02</td><td><strong>Parar é o começo. Retomar é o resto.</strong></td><td>Diferencia de bloqueadores e de autoexclusão. Honesta sobre a duração do processo. Levemente longa.</td></tr>
+    <tr><td class="mono">03</td><td><strong>Feito para os dias difíceis.</strong></td><td>Empática sem ser motivacional. Não usa a raiz do nome — perde reforço semântico.</td></tr>
+    <tr><td class="mono">04</td><td>Um dia ruim não apaga o resto.</td><td>É o princípio do produto, mas funciona melhor como claim de tela de recaída do que como tagline institucional.</td></tr>
+    <tr><td class="mono">05</td><td>Ninguém precisa saber. Você vai saber.</td><td>Toca discrição e autoconhecimento. Ambígua demais fora de contexto; pode soar ameaçadora.</td></tr>
+    <tr><td class="mono">06</td><td>Sessenta segundos por dia.</td><td>Vende a fricção baixa, que é a real vantagem competitiva. Mas é claim de produto, não de marca — envelhece se o produto mudar.</td></tr>
+    <tr><td class="mono">07</td><td>Controle é prática, não milagre.</td><td>Adulta e antimotivacional. Um pouco professoral, e "milagre" carrega ruído religioso que o briefing recusa.</td></tr>
+    <tr><td class="mono">08</td><td>A linha continua.</td><td>Ligação direta com símbolo e sistema gráfico, mas hermética demais para primeiro contato.</td></tr>
+    <tr><td class="mono">09</td><td>Sua vida ainda está aí.</td><td>Emocionalmente forte. Beira o sentimentalismo que a personalidade recusa.</td></tr>
+    <tr><td class="mono">10</td><td>Do jeito que der, todo dia.</td><td>Humilde e realista. Baixa demais em ambição para uma marca institucional.</td></tr>
+  </table>
+
+  <h3>As três selecionadas — e seus papéis</h3>
+  <div class="grid g3">
+    <div class="card" style="border-color:#2E4453">
+      <div class="mono" style="font-size:10.5px;letter-spacing:.12em;color:var(--mineral-claro)">INSTITUCIONAL · PRINCIPAL</div>
+      <div style="font-family:var(--display);font-weight:600;font-size:22px;line-height:1.2;margin:12px 0;letter-spacing:-.02em">Retome o que ainda é seu.</div>
+      <small>Assina o wordmark, o site, o pitch e todo material de marca. É a única que explora a raiz do nome e resolve, de quebra, o problema de conjugação identificado na nota 01.</small>
+    </div>
+    <div class="card">
+      <div class="mono" style="font-size:10.5px;letter-spacing:.12em;color:var(--pedra)">POSICIONAMENTO · CATEGORIA</div>
+      <div style="font-family:var(--display);font-weight:600;font-size:22px;line-height:1.2;margin:12px 0;letter-spacing:-.02em">Parar é o começo. Retomar é o resto.</div>
+      <small>Para quando é preciso explicar por que o Retoma não é bloqueador nem botão de autoexclusão. Uso em conteúdo, imprensa e conversa com profissionais.</small>
+    </div>
+    <div class="card">
+      <div class="mono" style="font-size:10.5px;letter-spacing:.12em;color:var(--pedra)">PERFORMANCE · AQUISIÇÃO</div>
+      <div style="font-family:var(--display);font-weight:600;font-size:22px;line-height:1.2;margin:12px 0;letter-spacing:-.02em">Feito para os dias difíceis.</div>
+      <small>Anúncios e busca paga, onde o usuário chega em fase 5 ou 6. Não promete resultado — promete companhia no pior momento, que é o que ele procura às 23h.</small>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 19 ARQUITETURA ===== -->
+<section id="arquitetura">
+  <div class="eyebrow">19</div>
+  <h2>Arquitetura de marca</h2>
+  <div class="warn" style="margin-bottom:var(--s5)">
+    <h4>Crítica à estrutura proposta no briefing</h4>
+    <p style="margin-bottom:0">A árvore com cinco submarcas (Recuperação, Família, Profissional, Insights, Care) é <strong>prematura e cara</strong>. Submarcas dividem reconhecimento antes de existir reconhecimento para dividir, exigem cinco vezes mais decisões de design e criam ambiguidade jurídica na relação com dado sensível. "Retoma Care" também importa jargão de healthtech americana que contradiz a personalidade sem cerimônia. <strong>Recomendo arquitetura monolítica com descritores funcionais</strong> pelos próximos 24 meses.</p>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <h4>Estrutura recomendada</h4>
+      <pre class="mono" style="font-size:13px;line-height:1.9;color:var(--texto);margin:0;white-space:pre-wrap">RETOMA
+├── Retoma                     quem aposta
+├── Retoma para famílias       descritor, não submarca
+├── Retoma para profissionais  descritor, não submarca
+└── Retoma Empresas            B2B, só após evidência clínica</pre>
+      <p style="margin:16px 0 0"><small>Todos compartilham símbolo, paleta e tipografia idênticos. A diferenciação é <strong>por conteúdo e por descritor tipografado</strong>, jamais por cor ou por símbolo alternativo. É o que mantém o custo de marca perto de zero enquanto o produto ainda está sendo descoberto.</small></p>
+    </div>
+    <div class="card">
+      <h4>Nomes de funcionalidade — nomenclatura, não marcas</h4>
+      <table style="margin:0">
+        <tr><td><strong>Check-in</strong></td><td>Monitoramento diário</td></tr>
+        <tr><td><strong>Trajetória</strong></td><td>A Linha, o histórico</td></tr>
+        <tr><td><strong>Planos</strong></td><td>Ação e enfrentamento</td></tr>
+        <tr><td><strong>Padrões</strong></td><td>Gatilhos identificados</td></tr>
+        <tr><td><strong>Fôlego</strong></td><td>Organização financeira com a família</td></tr>
+        <tr><td><strong>Rede</strong></td><td>Pessoas de confiança</td></tr>
+      </table>
+      <p style="margin:16px 0 0"><small><strong>"Fôlego"</strong> merece nota. É o módulo derivado da Reunião de Alívio de Pressão dos Jogadores Anônimos — o artefato que a pesquisa aponta como o mais valorizado e menos copiado da recuperação em jogo. O nome é deliberadamente brasileiro, coloquial e não-religioso: descreve o benefício ("respirar de novo") sem herdar vocabulário de 12 passos, o que a marca precisa evitar por posicionamento.</small></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 20 USOS ===== -->
+<section id="usos">
+  <div class="eyebrow">20</div>
+  <h2>Usos corretos e incorretos</h2>
+  <div class="grid g2">
+    <div class="card do">
+      <h4>Correto</h4>
+      <ul style="margin-bottom:0">
+        <li>Símbolo em Mineral Claro sobre Ardósia, ou Ardósia sobre Cal.</li>
+        <li>Degrau sempre da esquerda para a direita, subindo.</li>
+        <li>Braço de saída sempre mais longo que o de entrada, na razão 1,4.</li>
+        <li>Wordmark em caixa alta, com o tracking especificado.</li>
+        <li>Área de respiro de 1,5 vez a espessura do traço em todos os lados.</li>
+        <li>Versão pesada abaixo de 24px; wordmark compacto abaixo de 32px.</li>
+        <li>A Linha com marcas de altura constante e dias de aposta vazados.</li>
+      </ul>
+    </div>
+    <div class="card dont">
+      <h4>Incorreto</h4>
+      <ul style="margin-bottom:0">
+        <li>Espelhar o símbolo (degrau descendo ou entrando pela direita).</li>
+        <li>Adicionar um segundo degrau — vira escada e vira gráfico.</li>
+        <li>Substituir o ângulo reto por rampa diagonal.</li>
+        <li>Acrescentar ponta de seta, ponto ou qualquer terminação a mais.</li>
+        <li>Inscrever o símbolo dentro de um círculo ou de outro contêiner com moldura.</li>
+        <li>Preencher, aplicar gradiente, contorno duplo ou sombra no traço.</li>
+        <li>Colorir a Linha de verde ou vermelho conforme desempenho.</li>
+        <li>Variar a altura das marcas da Linha.</li>
+        <li>Usar Brasa ou Âmbar-Sinal para recaída, meta perdida ou baixa adesão.</li>
+        <li>Wordmark em caixa baixa ou itálico.</li>
+        <li>Adicionar rosto, nome próprio ou avatar à IA.</li>
+        <li>Emoji de decepção, comemoração ou coração em qualquer mensagem do produto.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 21 TESTE ===== -->
+<section id="teste">
+  <div class="eyebrow">21</div>
+  <h2>Teste hipotético com cinco pessoas</h2>
+  <p class="lede">Simulação baseada nos perfis descritos na pesquisa. <strong>Não é dado.</strong> São hipóteses a serem verificadas nas 30 entrevistas previstas — três delas com material de marca na mão custam quase nada e valem mais que este capítulo inteiro.</p>
+
+  <div class="grid g2" style="margin-top:var(--s5)">
+    <div class="card">
+      <h4>1 · Homem, 34, fez autoexclusão há 5 dias</h4>
+      <p><strong>Primeira impressão.</strong> "Não parece coisa de igreja nem de médico." Alívio pelo que a marca <em>não</em> é. Lê o nome como "retomada" e entende na hora.</p>
+      <p><strong>O que entende.</strong> Ferramenta séria de acompanhamento diário. Fixa em "sessenta segundos" e em "sem ninguém saber".</p>
+      <p><strong>Desconfiança.</strong> Sobriedade pode ser lida como frieza no pior momento — "isso vai me ajudar ou só coletar dado meu?". Ele vai duvidar da privacidade antes de duvidar da eficácia.</p>
+      <p style="margin-bottom:0"><strong>Melhoria.</strong> A promessa de privacidade precisa estar no primeiro terço da tela, em texto explícito, não em rodapé. É provavelmente o elemento mais subdimensionado deste documento.</p>
+    </div>
+    <div class="card">
+      <h4>2 · Homem, 29, ainda aposta, percebe perda de controle</h4>
+      <p><strong>Primeira impressão.</strong> Neutra a levemente distante. Não se sente atacado — e não se sente convidado.</p>
+      <p><strong>O que entende.</strong> "É para quem já parou." Risco real: a marca inteira comunica <em>depois da decisão</em>, e ele está antes.</p>
+      <p><strong>Desconfiança.</strong> Medo de que registrar signifique admitir. Contador de dias, para quem ainda aposta, é ameaça e não motivação.</p>
+      <p style="margin-bottom:0"><strong>Melhoria.</strong> É a falha mais séria do teste. Precisa de porta de entrada separada, sem contador e sem meta de abstinência — algo como "veja quanto você apostou este ano" —, com identidade idêntica e linguagem sem compromisso.</p>
+    </div>
+    <div class="card">
+      <h4>3 · Mulher, 41, esposa de apostador</h4>
+      <p><strong>Primeira impressão.</strong> Positiva e imediata. A sobriedade lê como confiabilidade; ela é a pagante provável e reage bem ao que parece competente.</p>
+      <p><strong>O que entende.</strong> Empresa séria que ajuda com apostas. Fixa em "Fôlego" — a palavra descreve exatamente o que ela sente que falta.</p>
+      <p><strong>Desconfiança.</strong> "Isso é para ele ou para mim?" A marca hoje não diz. E vai querer saber se ele descobre que ela procurou.</p>
+      <p style="margin-bottom:0"><strong>Melhoria.</strong> O descritor "para famílias" precisa existir desde o primeiro dia na landing, mesmo sem produto pronto por trás — ao menos como captura de e-mail. A pesquisa indica que ela tem necessidade autônoma e é o pagador provável.</p>
+    </div>
+    <div class="card">
+      <h4>4 · Psicóloga, ambulatório especializado</h4>
+      <p><strong>Primeira impressão.</strong> Cautelosa e favorável. A ausência de "IA terapeuta" e de linguagem de cura desarma a objeção principal.</p>
+      <p><strong>O que entende.</strong> Ferramenta de automonitoramento com relatório exportável. Reconhece PGSI e Timeline Followback e entende que houve leitura de literatura.</p>
+      <p><strong>Desconfiança.</strong> Vai testar imediatamente o limite: o que acontece se o usuário mencionar suicídio? E vai olhar com atenção quem tem acesso ao dado.</p>
+      <p style="margin-bottom:0"><strong>Melhoria.</strong> Precisa existir página pública de protocolo de risco e de limites do produto. Para este interlocutor isso vale mais que qualquer material de marca — e ele é o seu canal de distribuição.</p>
+    </div>
+    <div class="card" style="grid-column:1/-1">
+      <h4>5 · Investidor de healthtech</h4>
+      <p><strong>Primeira impressão.</strong> "Parece produto de verdade, não wrapper de GPT." A recusa explícita ao antropomorfismo e a ligação entre símbolo e componente de dados são lidas como maturidade de produto.</p>
+      <p><strong>O que entende.</strong> Marca posicionada para virar plataforma de saúde comportamental, com ativo de dado longitudinal e caminho B2B plausível.</p>
+      <p><strong>Desconfiança.</strong> Duas, ambas legítimas: a paleta sóbria pode converter pior que uma estética agressiva em mídia paga — hipótese testável, não certeza; e o mercado brasileiro de consumo em saúde mental tem histórico ruim de disposição a pagar, o que os 33,3% da pesquisa confirmam.</p>
+      <p style="margin-bottom:0"><strong>Melhoria.</strong> Ter, junto do material de marca, um teste A/B planejado de criativos de aquisição — versão sóbria contra versão direta e crua. A identidade institucional pode ser sóbria enquanto os criativos de topo de funil são mais duros; isso é coerência de sistema, não incoerência de marca.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 22 GUIA ===== -->
+<section id="guia">
+  <div class="eyebrow">22</div>
+  <h2>Guia resumido de marca</h2>
+  <div class="grid g2">
+    <div class="card pale">
+      <h4 style="color:#3F6485">Uma página, para colar na parede</h4>
+      <table style="margin:0;font-size:14px">
+        <tr><td style="border-color:#D7D3CB;width:38%"><strong>Essência</strong></td><td style="border-color:#D7D3CB;color:#3A474B">Continuidade</td></tr>
+        <tr><td style="border-color:#D7D3CB"><strong>Tagline</strong></td><td style="border-color:#D7D3CB;color:#3A474B">Retome o que ainda é seu.</td></tr>
+        <tr><td style="border-color:#D7D3CB"><strong>Arquétipo</strong></td><td style="border-color:#D7D3CB;color:#3A474B">Sábio, modulado por Companheiro</td></tr>
+        <tr><td style="border-color:#D7D3CB"><strong>Símbolo</strong></td><td style="border-color:#D7D3CB;color:#3A474B">A Retomada — traço contínuo, um degrau de 90°, saída 1,4× a entrada</td></tr>
+        <tr><td style="border-color:#D7D3CB"><strong>Cores</strong></td><td style="border-color:#D7D3CB;color:#3A474B" class="mono">#0F1719 · #E9E7E2 · #5A82A6</td></tr>
+        <tr><td style="border-color:#D7D3CB"><strong>Tipos</strong></td><td style="border-color:#D7D3CB;color:#3A474B">Archivo · IBM Plex Mono</td></tr>
+        <tr><td style="border-color:#D7D3CB"><strong>Gráfico</strong></td><td style="border-color:#D7D3CB;color:#3A474B">A Linha — marcas de altura constante</td></tr>
+        <tr><td style="border:none"><strong>Voz</strong></td><td style="border:none;color:#3A474B">Direta, contida, presente, sem cerimônia</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h4>As cinco regras que não se quebram</h4>
+      <ol style="margin-bottom:0">
+        <li><strong>Sem verde de sucesso, sem vermelho de erro.</strong> Vermelho e âmbar só para segurança.</li>
+        <li><strong>A Linha nunca reinicia.</strong> Nenhuma tela apaga histórico anterior.</li>
+        <li><strong>A IA não tem rosto, nome próprio nem gênero.</strong></li>
+        <li><strong>Teste do ombro.</strong> Nenhuma superfície revela o assunto a um terceiro.</li>
+        <li><strong>Uma ação primária por tela</strong>, e a recusa tem o mesmo peso visual da aceitação.</li>
+      </ol>
+      <div class="rule" style="margin:20px 0"></div>
+      <h4>Entregáveis técnicos pendentes</h4>
+      <small>SVG e PDF vetorial do símbolo em quatro variações · wordmark com T assimétrico convertido em curvas, mais versão compacta · favicon 16/32/48 · app icon iOS e Android em todas as densidades · tokens em JSON para o front · arquivo de fontes com licenças · manual em PDF derivado deste documento.</small>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 23 RECOMENDAÇÃO ===== -->
+<section id="recomendacao">
+  <div class="eyebrow">23</div>
+  <h2>Recomendação final</h2>
+
+  <div class="callout" style="margin-bottom:var(--s5)">
+    <p style="font-size:20px;line-height:1.5;color:var(--texto);margin-bottom:var(--s4)"><strong>Eu escolheria o Território A — A Linha — porque é o único cujo conceito é operacional, e não decorativo.</strong></p>
+    <p style="margin-bottom:0">Nos outros dois, a identidade fica ao redor do produto: você teria um logo e, separadamente, teria que inventar como desenhar a tela principal. No Território A, o símbolo e o componente central da interface falam o mesmo idioma — o histórico de trajetória do usuário é a marca em escala. Isso produz três consequências concretas: cada dia de uso reforça o símbolo sem custo de mídia; o sistema visual não precisa ser inventado porque já está no dado; e o princípio mais importante do produto — recaída não apaga trajetória — passa a ser aplicado pela geometria, antes de qualquer texto de acolhimento. Uma marca que impede o erro de enquadramento por construção vale mais que uma marca que o corrige por copy.</p>
+  </div>
+
+  <div class="grid g2">
+    <div class="card">
+      <h4>Por que descartar o Território B — O Terreno</h4>
+      <p>Dois motivos, um estratégico e um técnico.</p>
+      <p><strong>Estratégico:</strong> o Terreno comunica localização, e o produto vende movimento. "Você está aqui" é enquadramento de ferramenta de diagnóstico, não de recuperação diária. A estética de trilha ainda carrega associação com superação masculina aspiracional — exatamente o território de autoajuda motivacional que o briefing recusa por escrito.</p>
+      <p style="margin-bottom:0"><strong>Técnico:</strong> curvas de nível não sobrevivem a 32px. Uma marca cujo símbolo falha em favicon, notificação e avatar de WhatsApp é inviável para um produto que nasce no WhatsApp.</p>
+    </div>
+    <div class="card">
+      <h4>Por que descartar o Território C — A Recomposição</h4>
+      <p>Um motivo, e ele é suficiente.</p>
+      <p><strong>A premissa é errada sobre o usuário.</strong> Uma marca construída sobre "conserto de coisa danificada" instala, em cada ponto de contato, a mensagem de que a pessoa está quebrada. Para um público cuja emoção dominante é vergonha e cuja principal barreira ao tratamento é não querer se ver como caso perdido, isso é contraproducente na direção exata do problema. A pesquisa mostra que os casos mais graves são justamente os que menos procuram ajuda — reforçar identidade defeituosa piora esse número.</p>
+      <p style="margin-bottom:0">Secundariamente: a estética de fratura reparada é tendência de wellness dos últimos anos e vai datar; e composições modulares perdem legibilidade abaixo de 48px.</p>
+    </div>
+  </div>
+
+  <h3>O que fazer com isto na segunda-feira</h3>
+  <ol>
+    <li><strong>Verificação legal antes de qualquer arquivo final:</strong> INPI nas classes 9, 42 e 44, busca figurativa, busca reversa de imagem, domínio e handles. Se o nome ou a forma não estiverem livres, este documento precisa ser refeito — então faça isso primeiro.</li>
+    <li><strong>Levar três peças às entrevistas.</strong> Você já vai fazer 30. Inclua, ao final de cinco delas, a tela de abertura, a tela de registro de recaída e o símbolo isolado, e pergunte apenas: "o que isso é?", "com o que se parece?" e "você deixaria isso na tela do seu celular?". A segunda pergunta é a que teria pego o erro da versão 1.</li>
+    <li><strong>Resolver a porta de entrada para quem ainda aposta.</strong> É a falha mais séria que o teste de marca revelou, e é problema de produto, não de identidade — mas a identidade já está pronta para servi-la.</li>
+    <li><strong>Não gastar em manual de marca agora.</strong> Este documento cobre a maior parte das decisões. O manual formal só faz sentido quando houver mais de uma pessoa produzindo material.</li>
+  </ol>
+
+  <div class="rule"></div>
+  <p><small>Versão 2. Substitui integralmente a versão anterior, cujo símbolo foi descartado por colisão pictográfica com o símbolo de Marte. Os perfis do teste de marca são simulações declaradas, não pesquisa com usuários. Valores CMYK são conversões aproximadas. A auditoria de colisão reduz risco mas não substitui busca figurativa formal; a originalidade do símbolo e a disponibilidade do nome não foram e não podem ser verificadas neste documento.</small></p>
+</section>
+
+<div style="height:60px"></div>
+</div>
+</body>
+</html>
