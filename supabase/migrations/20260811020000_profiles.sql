@@ -56,8 +56,24 @@ create policy profiles_insert_own
   to authenticated
   with check (user_id = (select auth.uid()));
 
+-- Privilégios de tabela.
+--
+-- No Supabase, `alter default privileges in schema public grant all on
+-- tables to anon, authenticated, ...` faz com que TODA tabela criada em
+-- public nasça com o conjunto completo de privilégios para anon e
+-- authenticated — incluindo TRUNCATE, que NÃO é submetido a RLS. Habilitar
+-- RLS, isoladamente, não impede o esvaziamento da tabela.
+--
+-- Por isso a posição de partida é revogar tudo e conceder apenas o
+-- necessário. `revoke all` é usado deliberadamente no lugar de uma lista
+-- enumerada: o conjunto de privilégios varia por versão do PostgreSQL
+-- (MAINTAIN existe no 17 e não no 16), e uma lista fixa deixaria escapar
+-- privilégios de versões futuras.
+--
+-- anon não recebe privilégio algum: o modelo de identidade opera
+-- exclusivamente no papel authenticated (§3.2).
+--
 -- Não existe política de UPDATE nem de DELETE: nenhuma fonte normativa as
--- autoriza, e a tabela não possui coluna mutável. Com RLS habilitada e sem
--- política permissiva, ambas as operações são negadas.
+-- autoriza, e a tabela não possui coluna mutável.
+revoke all on public.profiles from anon, authenticated;
 grant select, insert on public.profiles to authenticated;
-revoke update, delete on public.profiles from authenticated;

@@ -53,3 +53,23 @@ $$;
 grant usage on schema public to anon, authenticated, service_role;
 grant usage on schema auth to authenticated, service_role;
 grant execute on function auth.uid() to anon, authenticated, service_role;
+
+-- ---------------------------------------------------------------
+-- Postura de privilégios do Supabase, reproduzida deliberadamente.
+--
+-- O projeto Supabase alvo tem, em pg_default_acl para o schema public e
+-- objetos do tipo relação:
+--
+--   anon=arwdDxtm  authenticated=arwdDxtm  service_role=arwdDxtm
+--
+-- ou seja, toda tabela e toda view criada em public nasce com o conjunto
+-- COMPLETO de privilégios para esses papéis — incluindo TRUNCATE (D), que
+-- não é submetido a RLS.
+--
+-- Sem esta linha, o cluster local de teste seria mais restritivo que o
+-- ambiente-alvo e a suíte passaria verde escondendo justamente a classe de
+-- problema que precisa ser detectada. Executada como postgres, que é o
+-- papel que aplica as migrations em seguida.
+-- ---------------------------------------------------------------
+alter default privileges in schema public
+  grant all on tables to postgres, anon, authenticated, service_role;

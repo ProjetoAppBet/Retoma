@@ -65,19 +65,35 @@ function entreSentinelas(saida) {
   return linhas.slice(i + 1, f).join("\n").trim();
 }
 
-function naSessaoDoUsuario(userId, texto, fecho) {
-  const claims = JSON.stringify({ sub: userId, role: "authenticated" });
+function naSessao(papel, claims, texto, fecho) {
   return entreSentinelas(
     sql(
       `begin;
-       select set_config('request.jwt.claims', ${literal(claims)}, true);
-       set local role authenticated;
+       select set_config('request.jwt.claims', ${literal(JSON.stringify(claims))}, true);
+       set local role ${papel};
        select ${literal(INICIO)};
        ${texto};
        select ${literal(FIM)};
        ${fecho};`,
     ),
   );
+}
+
+function naSessaoDoUsuario(userId, texto, fecho) {
+  return naSessao(
+    "authenticated",
+    { sub: userId, role: "authenticated" },
+    texto,
+    fecho,
+  );
+}
+
+/**
+ * Executa SQL no papel `anon` — o papel de visitante sem sessão. Sempre em
+ * rollback: nada aqui deve conseguir persistir.
+ */
+export function sqlComoAnon(texto) {
+  return naSessao("anon", { role: "anon" }, texto, "rollback");
 }
 
 /**

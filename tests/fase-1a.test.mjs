@@ -21,6 +21,7 @@ import {
   pararSeRodando,
   recriarBanco,
   sql,
+  sqlComoAnon,
   sqlComoUsuario,
 } from "./support/local-db.mjs";
 
@@ -135,6 +136,96 @@ describe("RLS habilitada e políticas corretas", () => {
          and (coalesce(qual, '') || coalesce(with_check, '')) like '%is_anonymous%'`,
     );
     assert.equal(usa, "0");
+  });
+});
+
+/**
+ * RLS não é submetida a TRUNCATE. No Supabase, toda tabela em public nasce
+ * com o conjunto completo de privilégios para anon e authenticated, e o
+ * shim de teste reproduz essa postura. Estes testes falham se a migration
+ * deixar de revogar o excedente.
+ */
+describe("postura de privilégios (append-only real no ambiente-alvo)", () => {
+  const sensiveis = ["profiles", "consent_records"];
+
+  it("anon não tem privilégio algum nas tabelas sensíveis", () => {
+    for (const tabela of sensiveis) {
+      const privs = sql(
+        `select coalesce(string_agg(privilege_type, ','), '(nenhum)')
+         from information_schema.role_table_grants
+         where table_schema = 'public' and grantee = 'anon'
+           and table_name = ${literal(tabela)}`,
+      );
+      assert.equal(privs, "(nenhum)", `anon retém privilégios em ${tabela}`);
+    }
+  });
+
+  it("authenticated tem exatamente SELECT e INSERT", () => {
+    for (const tabela of sensiveis) {
+      const privs = sql(
+        `select coalesce(string_agg(privilege_type, ',' order by privilege_type), '(nenhum)')
+         from information_schema.role_table_grants
+         where table_schema = 'public' and grantee = 'authenticated'
+           and table_name = ${literal(tabela)}`,
+      );
+      assert.equal(privs, "INSERT,SELECT", `privilégios inesperados em ${tabela}`);
+    }
+  });
+
+  it("nem anon nem authenticated detêm TRUNCATE", () => {
+    const comTruncate = sql(
+      `select coalesce(string_agg(grantee || ':' || table_name, ', '), '(nenhum)')
+       from information_schema.role_table_grants
+       where table_schema = 'public'
+         and privilege_type = 'TRUNCATE'
+         and grantee in ('anon', 'authenticated')`,
+    );
+    assert.equal(comTruncate, "(nenhum)");
+  });
+
+  it("authenticated não consegue truncar as tabelas sensíveis", () => {
+    for (const tabela of sensiveis) {
+      const erro = falha(() =>
+        sqlComoUsuario(usuarioA, `truncate public.${tabela}`),
+      );
+      assert.ok(erro, `TRUNCATE de ${tabela} por authenticated deveria falhar`);
+      assert.match(erro, /permission denied/i);
+    }
+  });
+
+  it("anon não consegue truncar as tabelas sensíveis", () => {
+    for (const tabela of sensiveis) {
+      const erro = falha(() => sqlComoAnon(`truncate public.${tabela}`));
+      assert.ok(erro, `TRUNCATE de ${tabela} por anon deveria falhar`);
+      assert.match(erro, /permission denied/i);
+    }
+  });
+
+  it("anon não lê nem escreve nas tabelas sensíveis", () => {
+    for (const tabela of sensiveis) {
+      const leitura = falha(() =>
+        sqlComoAnon(`select count(*) from public.${tabela}`),
+      );
+      assert.ok(leitura, `anon não deveria conseguir ler ${tabela}`);
+    }
+  });
+
+  it("a view de invariante não é acessível a anon nem a authenticated", () => {
+    const privs = sql(
+      `select coalesce(string_agg(grantee, ','), '(nenhum)')
+       from information_schema.role_table_grants
+       where table_schema = 'public'
+         and table_name = 'consent_invariant_violations'
+         and grantee in ('anon', 'authenticated')`,
+    );
+    assert.equal(privs, "(nenhum)");
+  });
+
+  it("as linhas sobrevivem às tentativas de truncate", () => {
+    const profiles = sql("select count(*) from public.profiles");
+    const consentimentos = sql("select count(*) from public.consent_records");
+    assert.notEqual(profiles, "0", "profiles não pode ter sido esvaziada");
+    assert.notEqual(consentimentos, "0", "consent_records não pode ter sido esvaziada");
   });
 });
 

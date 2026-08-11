@@ -67,6 +67,15 @@ with (security_invoker = true) as
 comment on view public.consent_invariant_violations is
   'Consulta de invariante (D-02.9 §9.3.1). Resultado esperado: conjunto vazio, sempre.';
 
--- A view é artefato de verificação e operação, não de aplicação: nenhum
--- privilégio é concedido a anon ou authenticated. Ela lê auth.users, que
--- não é legível por esses papéis.
+-- A view é artefato de verificação e operação, não de aplicação.
+--
+-- Correção de uma afirmação anterior que era falsa no ambiente-alvo: no
+-- Supabase, `alter default privileges in schema public grant all on tables`
+-- alcança também as views, então a view NASCE com SELECT concedido a anon e
+-- authenticated. Não basta "não conceder": é preciso revogar.
+--
+-- Mesmo antes do revoke não havia vazamento de dados, porque
+-- security_invoker = true faz a leitura de auth.users ser barrada por
+-- permissão para esses papéis. O revoke elimina a exposição na origem, em
+-- vez de depender desse efeito colateral.
+revoke all on public.consent_invariant_violations from anon, authenticated;

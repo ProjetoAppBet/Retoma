@@ -76,9 +76,23 @@ create policy consent_records_insert_own
   to authenticated
   with check (user_id = (select auth.uid()));
 
--- §8.2 / AA-16 / §14.2.10: não existe política de UPDATE nem de DELETE,
--- nem para o próprio dono. Append-only é garantido pela ausência de
--- política permissiva sob RLS; o revoke abaixo é defesa adicional, caso o
--- privilégio padrão do schema conceda essas operações ao papel.
+-- Privilégios de tabela — aqui está o que efetivamente sustenta o
+-- append-only exigido por §8.2, AA-15 e AA-16.
+--
+-- RLS sozinha NÃO garante append-only. TRUNCATE não é submetido a row
+-- level security: um papel que detenha o privilégio TRUNCATE esvazia a
+-- tabela inteira com a RLS habilitada. E no Supabase toda tabela criada em
+-- public nasce com o conjunto completo de privilégios para anon e
+-- authenticated, por causa de `alter default privileges ... grant all on
+-- tables`. Sem os revokes abaixo, o histórico de consentimento — que é
+-- trilha de auditoria (§8.1) — seria destrutível.
+--
+-- `revoke all` em vez de lista enumerada: o conjunto de privilégios muda
+-- entre versões do PostgreSQL (MAINTAIN existe no 17 e não no 16). Revogar
+-- tudo e reconceder o mínimo é determinístico em qualquer versão.
+--
+-- anon não recebe privilégio algum. authenticated recebe apenas SELECT e
+-- INSERT: sem UPDATE, sem DELETE e sem TRUNCATE, em nenhuma hipótese —
+-- nem para o próprio dono (§8.2, AA-16, §14.2.10).
+revoke all on public.consent_records from anon, authenticated;
 grant select, insert on public.consent_records to authenticated;
-revoke update, delete on public.consent_records from authenticated;
