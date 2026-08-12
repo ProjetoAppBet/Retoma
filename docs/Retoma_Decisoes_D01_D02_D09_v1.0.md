@@ -11,6 +11,15 @@
 | Destinatário | Claude Code, na etapa de implementação da Fase 1 |
 | Fora de escopo | D-03, D-04, PGSI, protocolo clínico, revisão jurídica, demais módulos |
 
+### Histórico de emendas
+
+| # | Alteração | Efeito |
+|---|---|---|
+| E-01 | Fechamento de **P-01** e **P-02**, com resolução do conflito **CF-09**. Acrescenta a seção 11.5; atualiza CF-09 na seção 2.1, a seção 11.4, as tabelas de pendências da seção 13, a proibição 26 da seção 14.4 e a seção 16 | **Desbloqueia a Fase 1B.** Nenhuma outra decisão deste documento é alterada |
+
+O identificador de versão deste documento não foi alterado por esta emenda —
+defini-lo é decisão do responsável de produto.
+
 ---
 
 ## 1. Objetivo
@@ -52,7 +61,7 @@ Este documento cumpre, para as três decisões que trata, o objetivo declarado n
 | CF-06 | Téc. §20 descreve a Fase 1 como "schema + migrations + RLS", cuja leitura literal implica criar todas as entidades de uma vez; Func. §25 estabelece a regra de ouro de questionar escopo, e o projeto proíbe overengineering | Téc. §20 vs. Func. §25 | **Resolvido por D-09.** A Fase 1 é incremental |
 | CF-07 | RNF-09, AC-20 e BR-15 exigem recuperabilidade de histórico e histórico longitudinal suficiente para D30; D-01.8 estabelece que a perda de sessão pseudônima é irreversível | Func. RNF-09/AC-20/BR-15 vs. D-01.8 | **Consequência aceita, registrada.** A mitigação prevista é a conversão em conta permanente. O momento do convite à criação de conta permanece pendente (P-11) |
 | CF-08 | Téc. §15 e §21 exigem trilha de auditoria para eventos de segurança; Func. §18 e a LGPD exigem exclusão a pedido do titular | Téc. §15/§21 vs. Func. §18 | **NÃO RESOLVIDO.** Pendência jurídica P-04. Não afeta a Fase 1 |
-| CF-09 | Op. §4 atribui "tentativas anteriores de parar" ao perfil do usuário; Op. §5 atribui "tentativas anteriores" ao histórico de apostas. A Etapa 2 do onboarding alimenta ambos | Op. §4 vs. Op. §5 | **NÃO RESOLVIDO.** Pendência de produto P-01. **Bloqueia a Fase 1B** — ver seção 11 |
+| CF-09 | Op. §4 atribui "tentativas anteriores de parar" ao perfil do usuário; Op. §5 atribui "tentativas anteriores" ao histórico de apostas. A Etapa 2 do onboarding alimenta ambos | Op. §4 vs. Op. §5 | **RESOLVIDO pela seção 11.5** (emenda E-01). A tentativa anterior de parar pertence a `gambling_history`; `profiles` fica com o histórico de ajuda e recursos. Não bloqueia mais a Fase 1B |
 | CF-10 | Func. §22 define onboarding concluído como "seis etapas mínimas"; AC-02 exige adaptação das perguntas. Um indicador fixo "Etapa 1 de 6" afirma uma precisão que o sistema pode não ter, o que colide com BR-12 | Func. §22 e AC-02 vs. estado atual da interface | **NÃO RESOLVIDO.** Depende de D-03. Não afeta a Fase 1 |
 
 ---
@@ -412,18 +421,75 @@ Não criar antecipadamente: módulos completos de check-in; recaída; estratégi
 
 ### 11.4 Subdivisão obrigatória da Fase 1
 
-Duas pendências afetam diretamente tabelas do núcleo mínimo. Por isso a Fase 1 se divide:
+Duas pendências afetavam diretamente tabelas do núcleo mínimo. Por isso a Fase 1 se divide:
 
 | Sub-fase | Conteúdo | Pré-requisito |
 |---|---|---|
 | **Fase 1A** | `profiles`, entidade de consentimento, RLS de ambas, infraestrutura de invariante, testes de acesso cruzado | **Nenhum. Pode começar imediatamente** |
-| **Fase 1B** | `recovery_goals`, `gambling_history`, `commitments`, com RLS | **Bloqueada** por P-01 e P-02 |
+| **Fase 1B** | `recovery_goals`, `gambling_history`, `commitments`, com RLS | **Desbloqueada** pela emenda E-01. P-01 e P-02 estão fechadas na seção 11.5 |
 
-**P-01 (CF-09) — propriedade do dado da Etapa 2.** Op. §4 atribui as tentativas anteriores de parar ao perfil; Op. §5 as atribui ao histórico de apostas. Sem decisão, o Claude Code escolherá arbitrariamente e a escolha ficará enterrada numa migration.
+**P-01 (CF-09) — propriedade do dado da Etapa 2.** Era: Op. §4 atribui as tentativas anteriores de parar ao perfil; Op. §5 as atribui ao histórico de apostas. **Fechada na seção 11.5.1.**
 
-**P-02 — representação de estimativas.** BR-12 proíbe inventar precisão, e Func. §5 registra que frequência e valores são estimativas. A forma de representar incerteza em `gambling_history` precisa estar decidida antes da migration, não depois.
+**P-02 — representação de estimativas.** Era: BR-12 proíbe inventar precisão, e Func. §5 registra que frequência e valores são estimativas. A forma de representar incerteza em `gambling_history` precisava estar decidida antes da migration. **Fechada na seção 11.5.2.**
 
-Nada impede que a Fase 1A comece enquanto P-01 e P-02 são fechadas.
+### 11.5 Fechamento de P-01 e P-02 (emenda E-01)
+
+Esta seção fecha as duas pendências que bloqueavam a Fase 1B. Ela não altera
+nenhuma outra decisão deste documento e não afeta a Fase 1A, já implementada.
+
+#### 11.5.1 P-01 — propriedade do dado da Etapa 2
+
+**Decisão.** A **tentativa anterior de parar pertence a `gambling_history`.**
+`profiles` fica com o **histórico de ajuda e recursos** — psicólogo,
+psiquiatra, Jogadores Anônimos, outros recursos e acompanhamento atual
+(Op. §4).
+
+Regras vinculantes:
+
+1. O mesmo fato **não é duplicado** em `profiles`. Estado duplicado é estado
+   que diverge — mesma razão já registrada em §6.2.4 para o consentimento.
+2. A **declaração original do usuário é preservada**. A estrutura não pode
+   descartar o que a pessoa disse em favor apenas de uma classificação.
+3. **Dado retrospectivo declarado não se confunde com evento observado.** O
+   que o usuário relata sobre o passado e o que o sistema registra depois são
+   naturezas distintas e não podem ocupar o mesmo campo sem distinção
+   explícita. Isso decorre de Op. §3, que separa *declarado* de *observado*.
+
+Consequência para CF-09: o conflito está resolvido em favor de Op. §5 para
+este item específico. Op. §4 permanece válido para o restante do histórico
+de ajuda.
+
+#### 11.5.2 P-02 — representação de estimativas
+
+**Decisão.** Frequência e valor são representados preservando o que foi
+declarado, sem conversão silenciosa e sem precisão inventada.
+
+**Frequência.** Usa as categorias **já definidas no Modelo Operacional §5**:
+ocasional; semanal; várias vezes por semana; diariamente; várias vezes ao
+dia. **Não converter categoria em número, nem número em categoria, sem
+confirmação do usuário.**
+
+**Valor.** Preservar, quando existirem: valor declarado; moeda; período;
+base; natureza (declarada ou estimada); data; e a expressão original quando
+relevante.
+
+**Períodos admitidos:** por aposta; dia; semana; mês; ano; acumulado/total;
+outro.
+
+- Quando o período for **"outro"**, preservar **obrigatoriamente** a
+  expressão original do usuário.
+- **"Não informado" não é período.** A ausência de valor é representada no
+  estado da resposta, nunca como período.
+
+**Estados da resposta:** informado; não sabe; recusou informar; não
+perguntado.
+
+Regras vinculantes:
+
+1. **Não inventar precisão**, intervalos nem conversões. Fonte: BR-12.
+2. **Confiança não se aplica a dado declarado ou estimado.** O atributo de
+   confiança permanece exclusivo de inferências e padrões (Op. §7). Aplicá-lo
+   a uma declaração transformaria o relato do usuário em hipótese do sistema.
 
 ---
 
@@ -450,14 +516,17 @@ Enquanto o protocolo clínico de segurança (P-05) e a revisão jurídica (P-04)
 
 ## 13. Pendências futuras
 
-Nenhuma destas bloqueia a Fase 1A. As que bloqueiam a Fase 1B ou o lançamento estão marcadas.
+Nenhuma destas bloqueia a Fase 1A. As que bloqueiam o lançamento estão
+marcadas. **P-01 e P-02, que bloqueavam a Fase 1B, foram fechadas pela
+emenda E-01 (seção 11.5) e permanecem listadas apenas como registro
+histórico.**
 
 ### Decisão de produto
 
 | ID | Pendência | Bloqueia |
 |---|---|---|
-| P-01 | Propriedade do dado da Etapa 2 — perfil ou histórico de apostas (CF-09) | **Fase 1B** |
-| P-02 | Representação de estimativas de frequência e valor, conforme BR-12 | **Fase 1B** |
+| ~~P-01~~ | ~~Propriedade do dado da Etapa 2 — perfil ou histórico de apostas (CF-09)~~ | **FECHADA** pela emenda E-01 — seção 11.5.1 |
+| ~~P-02~~ | ~~Representação de estimativas de frequência e valor, conforme BR-12~~ | **FECHADA** pela emenda E-01 — seção 11.5.2 |
 | P-03 | Definição operacional de "primeiro valor" e se o número pessoal entra no MVP | Fase 3 |
 | P-08 | Esquema de identificação de versão do documento e local imutável | Primeiro aceite em produção |
 | P-09 | C-CONTA é consentimento próprio ou absorvido pelo ato de criar conta | Fase 2 |
@@ -545,7 +614,12 @@ Esta seção é vinculante. Diante de qualquer item abaixo, o Claude Code **inte
 ### 14.4 Escopo
 
 25. Criar entidades além do núcleo mínimo da seção 11.2.
-26. Iniciar a Fase 1B antes de P-01 e P-02 estarem fechadas.
+26. Contrariar, na Fase 1B, as regras de propriedade e de representação
+    fixadas na seção 11.5 — duplicar a tentativa anterior de parar em
+    `profiles`, converter categoria de frequência em número ou o inverso sem
+    confirmação, descartar a expressão original quando o período for "outro",
+    tratar ausência de valor como período, ou aplicar confiança a dado
+    declarado.
 27. Adicionar funcionalidades fora do MVP.
 28. Alterar o onboarding definido em Func. §5 e Op. §12.
 29. Adicionar dependências relevantes sem justificar.
@@ -621,7 +695,7 @@ Executada em duas partes, conforme a seção 11.4:
 
 **Fase 1A — pode começar imediatamente.** `profiles`, entidade de consentimento, RLS de ambas na mesma migration, infraestrutura de verificação de invariante e testes de acesso cruzado.
 
-**Fase 1B — bloqueada até que P-01 e P-02 estejam fechadas.** `recovery_goals`, `gambling_history` e `commitments`, com RLS.
+**Fase 1B — desbloqueada pela emenda E-01.** `recovery_goals`, `gambling_history` e `commitments`, com RLS, observando as regras de propriedade e de representação da seção 11.5.
 
 Precede ambas a verificação de estado real do repositório prevista em Téc. §19, incluindo a versão efetiva do Next.js registrada como divergência em Téc. §1.
 
