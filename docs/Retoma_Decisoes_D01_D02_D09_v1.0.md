@@ -16,6 +16,7 @@
 | # | Alteração | Efeito |
 |---|---|---|
 | E-01 | Fechamento de **P-01** e **P-02**, com resolução do conflito **CF-09**. Acrescenta a seção 11.5; atualiza CF-09 na seção 2.1, a seção 11.4, as tabelas de pendências da seção 13, a proibição 26 da seção 14.4 e a seção 16 | **Desbloqueia a Fase 1B.** Nenhuma outra decisão deste documento é alterada |
+| E-02 | Fechamento das lacunas de atributo da Fase 1B — decisões **Q-01** a **Q-10**. Acrescenta a seção 11.6; atualiza a seção 11.4, a proibição 26 da seção 14.4 e a seção 16 | **Fixa os atributos e as regras de `recovery_goals`, `gambling_history` e `commitments`.** Não cria entidade nova nem altera qualquer outra decisão deste documento |
 
 O identificador de versão deste documento não foi alterado por esta emenda —
 defini-lo é decisão do responsável de produto.
@@ -426,7 +427,7 @@ Duas pendências afetavam diretamente tabelas do núcleo mínimo. Por isso a Fas
 | Sub-fase | Conteúdo | Pré-requisito |
 |---|---|---|
 | **Fase 1A** | `profiles`, entidade de consentimento, RLS de ambas, infraestrutura de invariante, testes de acesso cruzado | **Nenhum. Pode começar imediatamente** |
-| **Fase 1B** | `recovery_goals`, `gambling_history`, `commitments`, com RLS | **Desbloqueada** pela emenda E-01. P-01 e P-02 estão fechadas na seção 11.5 |
+| **Fase 1B** | `recovery_goals`, `gambling_history`, `commitments`, com RLS | **Desbloqueada** pela emenda E-01 — P-01 e P-02 fechadas na seção 11.5. Atributos e regras fixados pela emenda E-02, seção 11.6 |
 
 **P-01 (CF-09) — propriedade do dado da Etapa 2.** Era: Op. §4 atribui as tentativas anteriores de parar ao perfil; Op. §5 as atribui ao histórico de apostas. **Fechada na seção 11.5.1.**
 
@@ -490,6 +491,75 @@ Regras vinculantes:
 2. **Confiança não se aplica a dado declarado ou estimado.** O atributo de
    confiança permanece exclusivo de inferências e padrões (Op. §7). Aplicá-lo
    a uma declaração transformaria o relato do usuário em hipótese do sistema.
+
+### 11.6 Atributos e regras da Fase 1B (emenda E-02)
+
+E-01 fixou a quem pertence o dado e como estimativas são representadas, mas
+não descia ao nível de atributo das três entidades da Fase 1B. Esta seção
+fecha essa lacuna.
+
+Ela **não cria entidade alguma** além das já listadas em 11.2, **não altera**
+nenhuma outra decisão deste documento e **não revoga** 11.3.
+
+#### 11.6.1 `recovery_goals`
+
+**Q-01 — cardinalidade.** `recovery_goals` mantém **um objetivo ativo por
+usuário**.
+
+**Q-02 — tipo do objetivo.** O tipo é um entre: **interromper**, **reduzir**,
+**ainda não decidido**. **Não criar meta numérica de redução na Fase 1B** —
+coerente com a proibição de inventar precisão fixada em 11.5.2.
+
+**Q-03 — versionamento.** Mudança relevante de objetivo ou de motivos **gera
+nova versão do plano**, alinhado a Op. §8 ("planos terão versões; versões
+anteriores não serão apagadas").
+
+> Nota de escopo: 11.3 mantém "planos e versionamento de planos" fora do
+> núcleo mínimo. Q-03 vale a partir do momento em que o plano existir;
+> **nenhuma tabela de plano é criada na Fase 1B**.
+
+#### 11.6.2 `gambling_history`
+
+**Q-04 — tentativas anteriores.** Registradas como **agregado**, não como
+coleção de tentativas individuais. Compatível com Op. §5, cujos itens de
+tentativa anterior já são agregados por natureza — quantidade aproximada e
+maior período sem apostar.
+
+**Q-05 — consequências.** **Múltiplas categorias** do Modelo Operacional §5 —
+financeiras, familiares, relacionamentos, profissionais, emocionais, outras
+relevantes — com **texto livre para "outras"**. A **consequência principal é
+campo separado**, correspondente à Etapa 5 do onboarding (Op. §12).
+
+**Q-08 — início do histórico.** O início **não pode ganhar precisão
+inventada**. Preservar a **expressão original** e, **quando possível**, um
+valor normalizado acompanhado de **estado de precisão**. Op. §5 já admite
+estimativa quando necessário; 11.5.2 já proíbe inventar precisão.
+
+#### 11.6.3 `commitments`
+
+**Q-06 — resultado.** O resultado de um compromisso é um entre: **cumprido**,
+**não_cumprido**, **sem_resposta**.
+
+**Q-07 — independência.** `commitments` é **independente de
+`recovery_plans`**; o vínculo com plano é **opcional**. **O compromisso
+inicial de 24 horas existe antes do plano** (Op. §12: "síntese inicial +
+compromisso mínimo para as próximas 24 horas").
+
+> Nota de escopo: como 11.3 mantém planos fora do núcleo mínimo, na Fase 1B
+> o vínculo opcional simplesmente não tem contraparte. Isso não autoriza
+> criar `recovery_plans`.
+
+#### 11.6.4 Regras transversais
+
+**Q-09 — natureza da informação.** Manter a separação entre **declarado**,
+**observado**, **inferido** e **segurança**, conforme Op. §3. **Não
+transformar inferência em fato** e **não misturar observado com declaração**.
+Estende a 11.5.1.3, que já separava declarado de observado.
+
+**Q-10 — correção de declaração.** Corrigir uma declaração **não apaga
+histórico**: a declaração anterior é preservada e o novo estado declarado é
+registrado. Mesma lógica append-only já adotada para o consentimento em 8.2 e
+para a trajetória em Op. §18.
 
 ---
 
@@ -619,7 +689,11 @@ Esta seção é vinculante. Diante de qualquer item abaixo, o Claude Code **inte
     `profiles`, converter categoria de frequência em número ou o inverso sem
     confirmação, descartar a expressão original quando o período for "outro",
     tratar ausência de valor como período, ou aplicar confiança a dado
-    declarado.
+    declarado — ou as regras de atributo fixadas na seção 11.6: mais de um
+    objetivo ativo por usuário, meta numérica de redução, tentativas
+    anteriores como coleção em vez de agregado, precisão inventada para o
+    início do histórico, criação de `recovery_plans`, ou perda da declaração
+    anterior ao corrigir uma declaração.
 27. Adicionar funcionalidades fora do MVP.
 28. Alterar o onboarding definido em Func. §5 e Op. §12.
 29. Adicionar dependências relevantes sem justificar.
@@ -695,7 +769,7 @@ Executada em duas partes, conforme a seção 11.4:
 
 **Fase 1A — pode começar imediatamente.** `profiles`, entidade de consentimento, RLS de ambas na mesma migration, infraestrutura de verificação de invariante e testes de acesso cruzado.
 
-**Fase 1B — desbloqueada pela emenda E-01.** `recovery_goals`, `gambling_history` e `commitments`, com RLS, observando as regras de propriedade e de representação da seção 11.5.
+**Fase 1B — desbloqueada pela emenda E-01.** `recovery_goals`, `gambling_history` e `commitments`, com RLS, observando as regras de propriedade e de representação da seção 11.5 e os atributos e regras da seção 11.6, fixados pela emenda E-02.
 
 Precede ambas a verificação de estado real do repositório prevista em Téc. §19, incluindo a versão efetiva do Next.js registrada como divergência em Téc. §1.
 
