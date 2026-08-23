@@ -17,6 +17,7 @@
 |---|---|---|
 | E-01 | Fechamento de **P-01** e **P-02**, com resolução do conflito **CF-09**. Acrescenta a seção 11.5; atualiza CF-09 na seção 2.1, a seção 11.4, as tabelas de pendências da seção 13, a proibição 26 da seção 14.4 e a seção 16 | **Desbloqueia a Fase 1B.** Nenhuma outra decisão deste documento é alterada |
 | E-02 | Fechamento das lacunas de atributo da Fase 1B — decisões **Q-01** a **Q-10**. Acrescenta a seção 11.6; atualiza a seção 11.4, a proibição 26 da seção 14.4 e a seção 16 | **Fixa os atributos e as regras de `recovery_goals`, `gambling_history` e `commitments`.** Não cria entidade nova nem altera qualquer outra decisão deste documento |
+| E-03 | Fechamento de **L-01**, **L-02** e **L-03** — os três termos que 11.5.2 e Q-08 usavam sem domínio ou definição. Acrescenta a seção 11.7; atualiza a seção 11.4, a proibição 26 da seção 14.4 e a seção 16 | **Define estado de precisão, início normalizado e base.** Complementa 11.5.2 e Q-08 sem alterá-los; não cria entidade nova |
 
 O identificador de versão deste documento não foi alterado por esta emenda —
 defini-lo é decisão do responsável de produto.
@@ -427,7 +428,7 @@ Duas pendências afetavam diretamente tabelas do núcleo mínimo. Por isso a Fas
 | Sub-fase | Conteúdo | Pré-requisito |
 |---|---|---|
 | **Fase 1A** | `profiles`, entidade de consentimento, RLS de ambas, infraestrutura de invariante, testes de acesso cruzado | **Nenhum. Pode começar imediatamente** |
-| **Fase 1B** | `recovery_goals`, `gambling_history`, `commitments`, com RLS | **Desbloqueada** pela emenda E-01 — P-01 e P-02 fechadas na seção 11.5. Atributos e regras fixados pela emenda E-02, seção 11.6 |
+| **Fase 1B** | `recovery_goals`, `gambling_history`, `commitments`, com RLS | **Desbloqueada** pela emenda E-01 — P-01 e P-02 fechadas na seção 11.5. Atributos e regras fixados pela emenda E-02, seção 11.6; termos de precisão, início normalizado e base definidos pela emenda E-03, seção 11.7 |
 
 **P-01 (CF-09) — propriedade do dado da Etapa 2.** Era: Op. §4 atribui as tentativas anteriores de parar ao perfil; Op. §5 as atribui ao histórico de apostas. **Fechada na seção 11.5.1.**
 
@@ -561,6 +562,51 @@ histórico**: a declaração anterior é preservada e o novo estado declarado é
 registrado. Mesma lógica append-only já adotada para o consentimento em 8.2 e
 para a trajetória em Op. §18.
 
+### 11.7 Fechamento de L-01, L-02 e L-03 (emenda E-03)
+
+O portão de implementação da Fase 1B identificou três termos usados por
+11.5.2 e por Q-08 sem domínio ou definição: **estado de precisão**, **valor
+normalizado do início** e **base**. Sem eles, `gambling_history` não podia
+ser escrita sem inventar.
+
+Esta seção **complementa** 11.5.2 e Q-08 sem alterá-los, **não cria entidade
+alguma** e **não modifica** nenhuma outra decisão deste documento.
+
+#### 11.7.1 L-01 — estado de precisão
+
+O estado de precisão é um entre: **exato**, **aproximado**, **estimado**.
+
+> Não confundir com a **natureza do valor financeiro** de 11.5.2, que é
+> *declarada* ou *estimada*. São campos distintos sobre objetos distintos: a
+> natureza qualifica o valor financeiro; o estado de precisão qualifica o
+> início normalizado. A coincidência de vocabulário não os torna o mesmo
+> atributo.
+
+#### 11.7.2 L-02 — início normalizado
+
+1. A **expressão original é preservada**, sempre.
+2. A normalização vai **somente até o nível de precisão efetivamente
+   suportado pela declaração**: **ano**, **mês/ano** ou **data completa**.
+3. **Nunca inventar precisão.** Reafirma 11.5.2.1 e Q-08.
+4. O **estado de precisão acompanha o valor normalizado** — um não existe
+   sem o outro.
+
+Nenhum mapeamento automático entre nível de normalização e estado de
+precisão é estabelecido: um ano declarado pode ser exato ou aproximado, e
+determinar isso é leitura da declaração, não regra estrutural.
+
+#### 11.7.3 L-03 — base
+
+**Base** designa a **base de cálculo associada ao valor financeiro
+declarado**.
+
+1. Preservar como **texto livre** quando informada.
+2. **Não criar enumeração sem base documental.**
+
+> Este termo não guarda relação com "base legal", que 4.2 proíbe afirmar em
+> qualquer artefato do projeto. A base de que trata esta seção é de cálculo,
+> não jurídica.
+
 ---
 
 ## 12. Regras de segurança
@@ -693,7 +739,10 @@ Esta seção é vinculante. Diante de qualquer item abaixo, o Claude Code **inte
     objetivo ativo por usuário, meta numérica de redução, tentativas
     anteriores como coleção em vez de agregado, precisão inventada para o
     início do histórico, criação de `recovery_plans`, ou perda da declaração
-    anterior ao corrigir uma declaração.
+    anterior ao corrigir uma declaração — ou as definições da seção 11.7:
+    normalizar o início além do nível de precisão suportado pela declaração,
+    gravar valor normalizado sem o estado de precisão que o acompanha, ou
+    enumerar a base de cálculo sem base documental.
 27. Adicionar funcionalidades fora do MVP.
 28. Alterar o onboarding definido em Func. §5 e Op. §12.
 29. Adicionar dependências relevantes sem justificar.
@@ -769,7 +818,7 @@ Executada em duas partes, conforme a seção 11.4:
 
 **Fase 1A — pode começar imediatamente.** `profiles`, entidade de consentimento, RLS de ambas na mesma migration, infraestrutura de verificação de invariante e testes de acesso cruzado.
 
-**Fase 1B — desbloqueada pela emenda E-01.** `recovery_goals`, `gambling_history` e `commitments`, com RLS, observando as regras de propriedade e de representação da seção 11.5 e os atributos e regras da seção 11.6, fixados pela emenda E-02.
+**Fase 1B — desbloqueada pela emenda E-01.** `recovery_goals`, `gambling_history` e `commitments`, com RLS, observando as regras de propriedade e de representação da seção 11.5, os atributos e regras da seção 11.6 fixados pela emenda E-02, e as definições da seção 11.7 fixadas pela emenda E-03.
 
 Precede ambas a verificação de estado real do repositório prevista em Téc. §19, incluindo a versão efetiva do Next.js registrada como divergência em Téc. §1.
 
