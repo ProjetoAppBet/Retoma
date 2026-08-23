@@ -45,10 +45,14 @@ describe("migrations reproduzem o schema do zero", () => {
     assert.ok(listarMigracoes().length > 0, "nenhuma migration encontrada");
   });
 
-  it("cria exatamente as tabelas do núcleo mínimo da Fase 1A (AA-26)", () => {
+  it("cria o núcleo mínimo da Fase 1A (AA-26)", () => {
+    // Este arquivo afirma o núcleo da Fase 1A. O recenseamento exato do
+    // schema pertence à fase mais recente — ver tests/fase-1b.test.mjs,
+    // "cria exatamente as três entidades, e nada além".
     const tabelas = sql(
       `select table_name from information_schema.tables
        where table_schema = 'public' and table_type = 'BASE TABLE'
+         and table_name in ('profiles', 'consent_records')
        order by table_name`,
     )
       .split("\n")
@@ -56,15 +60,12 @@ describe("migrations reproduzem o schema do zero", () => {
     assert.deepEqual(tabelas, ["consent_records", "profiles"]);
   });
 
-  it("não cria nenhuma entidade da Fase 1B", () => {
-    const proibidas = ["recovery_goals", "gambling_history", "commitments", "users"];
-    for (const nome of proibidas) {
-      const existe = sql(
-        `select count(*) from information_schema.tables
-         where table_schema = 'public' and table_name = ${literal(nome)}`,
-      );
-      assert.equal(existe, "0", `tabela proibida existe: ${nome}`);
-    }
+  it("não cria public.users — a identidade é auth.users (D-01, AA-01)", () => {
+    const existe = sql(
+      `select count(*) from information_schema.tables
+       where table_schema = 'public' and table_name = 'users'`,
+    );
+    assert.equal(existe, "0", "public.users duplicaria a identidade");
   });
 
   it("não usa owner_id, account_id nem profile_id (AA-03)", () => {
@@ -77,9 +78,14 @@ describe("migrations reproduzem o schema do zero", () => {
   });
 
   it("referencia auth.users(id) por user_id (AA-02)", () => {
-    const fks = sql(
-      `select tc.table_name || '.' || kcu.column_name || ' -> ' ||
-              ccu.table_schema || '.' || ccu.table_name || '.' || ccu.column_name
+    // Propriedade durável, e não uma lista fixa de tabelas: toda referência
+    // de public ao schema auth precisa ser user_id -> auth.users.id. Assim a
+    // afirmação continua valendo — e continua tendo dentes — a cada fase nova.
+    const desviantes = sql(
+      `select coalesce(string_agg(
+                tc.table_name || '.' || kcu.column_name || ' -> ' ||
+                ccu.table_schema || '.' || ccu.table_name || '.' ||
+                ccu.column_name, ', ' order by tc.table_name), '(nenhuma)')
        from information_schema.table_constraints tc
        join information_schema.key_column_usage kcu
          on kcu.constraint_name = tc.constraint_name
@@ -88,14 +94,27 @@ describe("migrations reproduzem o schema do zero", () => {
        where tc.constraint_type = 'FOREIGN KEY'
          and tc.table_schema = 'public'
          and ccu.table_schema = 'auth'
-       order by 1`,
-    )
-      .split("\n")
-      .filter(Boolean);
-    assert.deepEqual(fks, [
-      "consent_records.user_id -> auth.users.id",
-      "profiles.user_id -> auth.users.id",
-    ]);
+         and (kcu.column_name <> 'user_id'
+              or ccu.table_name <> 'users'
+              or ccu.column_name <> 'id')`,
+    );
+    assert.equal(desviantes, "(nenhuma)");
+
+    // E o núcleo da Fase 1A de fato tem essa referência.
+    const nucleo = sql(
+      `select count(*)
+       from information_schema.table_constraints tc
+       join information_schema.key_column_usage kcu
+         on kcu.constraint_name = tc.constraint_name
+       join information_schema.constraint_column_usage ccu
+         on ccu.constraint_name = tc.constraint_name
+       where tc.constraint_type = 'FOREIGN KEY'
+         and tc.table_schema = 'public'
+         and tc.table_name in ('profiles', 'consent_records')
+         and kcu.column_name = 'user_id'
+         and ccu.table_schema = 'auth' and ccu.table_name = 'users'`,
+    );
+    assert.equal(nucleo, "2");
   });
 });
 
