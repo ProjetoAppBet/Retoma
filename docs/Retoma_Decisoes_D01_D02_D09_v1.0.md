@@ -18,6 +18,7 @@
 | E-01 | Fechamento de **P-01** e **P-02**, com resolução do conflito **CF-09**. Acrescenta a seção 11.5; atualiza CF-09 na seção 2.1, a seção 11.4, as tabelas de pendências da seção 13, a proibição 26 da seção 14.4 e a seção 16 | **Desbloqueia a Fase 1B.** Nenhuma outra decisão deste documento é alterada |
 | E-02 | Fechamento das lacunas de atributo da Fase 1B — decisões **Q-01** a **Q-10**. Acrescenta a seção 11.6; atualiza a seção 11.4, a proibição 26 da seção 14.4 e a seção 16 | **Fixa os atributos e as regras de `recovery_goals`, `gambling_history` e `commitments`.** Não cria entidade nova nem altera qualquer outra decisão deste documento |
 | E-03 | Fechamento de **L-01**, **L-02** e **L-03** — os três termos que 11.5.2 e Q-08 usavam sem domínio ou definição. Acrescenta a seção 11.7; atualiza a seção 11.4, a proibição 26 da seção 14.4 e a seção 16 | **Define estado de precisão, início normalizado e base.** Complementa 11.5.2 e Q-08 sem alterá-los; não cria entidade nova |
+| E-04 | Registro e fechamento de **P-27**, e fechamento de **P-08**, **P-09**, **P-13**, **P-14** e **P-15**. Acrescenta a seção 17; atualiza as seções 3.5, 4.3, 5.1, 5.4, 10.3, as tabelas de pendências da seção 13 e a seção 16 | **Desbloqueia a Fase 2.** Não altera E-01, E-02 nem E-03, não cria entidade nova e não altera nenhuma outra decisão deste documento |
 
 O identificador de versão deste documento não foi alterado por esta emenda —
 defini-lo é decisão do responsável de produto.
@@ -120,6 +121,11 @@ O UUID da identidade permanece o mesmo quando o usuário cria conta permanente. 
 
 **Proibido:** implementar, sugerir ou simular qualquer mecanismo de recuperação. Os dados permanecem no banco, sem titular alcançável, corretamente bloqueados pela RLS.
 
+**Duração da sessão (E-04, seção 17.4):** 30 dias, com refresh automático
+enquanto houver atividade válida. **Encerrar sessão (E-04, seção 17.5):** o
+logout existe, é irreversível para identidade anônima e exige confirmação
+explícita.
+
 ### 3.6 Restrição de funcionalidade por tipo de identidade
 
 Nenhuma funcionalidade é restringida por `is_anonymous` no MVP. A claim pode existir no JWT, mas nenhuma política de RLS ou regra de aplicação deve condicionar acesso a ela nesta fase.
@@ -145,7 +151,7 @@ A estrutura de registro definida aqui é deliberadamente neutra quanto à base l
 | **C-PRINCIPAL** — aceite de entrada | Antes da identidade | Sim | Ver 4.6 | Fase 1–3 |
 | **C-APOIO** — compartilhamento com pessoa de confiança | Ao configurar a rede de apoio | Não | Sim | Fase 8 |
 | **C-NOTIF** — notificações | Ao ativar notificações | Não | Sim | Fase 10 |
-| **C-CONTA** — criação de conta permanente | Ao vincular credencial | Não | Pendência P-09 | Fase 2 |
+| **C-CONTA** — criação de conta permanente | Ao vincular credencial | Não | Ver 17.6 (P-09 fechada por E-04) | Fase 2 |
 
 **Regra inegociável:** nenhum consentimento contextual é pré-marcado, antecipado na entrada, agrupado com outro, nem usado como condição para funcionalidades centrais. Fonte: Func. §14, §18, BR-09, AC-12, AC-13.
 
@@ -224,6 +230,12 @@ ONBOARDING
 PRIMEIRA PERSISTÊNCIA DE DADO DE DOMÍNIO
 ```
 
+**Atomicidade de `profiles` e do registro de aceite (E-04, seção 17.1).** A
+ordem acima é mantida, mas os dois passos formam **uma única operação
+atômica**. Executados na mesma transação, recebem timestamp idêntico, e a
+igualdade admitida pela seção 9.2 elimina o conflito. Duas chamadas sucessivas
+à API de dados são duas transações e não satisfazem esta regra.
+
 ### 5.2 Fluxo de recusa
 
 ```
@@ -248,7 +260,7 @@ Idêntico à recusa. Ausência de ato não é ato. Nenhuma persistência.
 
 Existe um intervalo entre a criação da identidade e a gravação do registro de aceite, e os dois passos não compartilham transação.
 
-**Regra:** se a gravação do registro de aceite falhar, a identidade recém-criada deve ser descartada ou a sessão invalidada, e o usuário informado de que não foi possível iniciar. **Não pode restar identidade utilizável sem registro de aceite.** A forma exata da compensação é decisão técnica pendente (P-14), não bloqueante para a Fase 1.
+**Regra:** se a gravação do registro de aceite falhar, a identidade recém-criada deve ser descartada ou a sessão invalidada, e o usuário informado de que não foi possível iniciar. **Não pode restar identidade utilizável sem registro de aceite.** A forma exata da compensação foi **fixada pela emenda E-04, seção 17.3**: prioriza-se remover a identidade recém-criada quando tecnicamente possível; quando não for, invalida-se a sessão.
 
 ---
 
@@ -391,7 +403,7 @@ O documento correspondente a cada versão deve existir **separadamente, em vers�
 
 ### 10.3 Pendência
 
-O esquema de identificação de versão — numérico, data ou hash — e o local de armazenamento imutável do documento não estão decididos. Pendência P-08. **Não bloqueia a Fase 1**; bloqueia o primeiro aceite gravado em produção.
+O esquema de identificação de versão e a imutabilidade do documento foram **fixados pela emenda E-04, seção 17.2**: slug + versão explícita, no formato `consentimento-principal-v1.0`. A revisão jurídica do conteúdo permanece pendente (P-04).
 
 A definição jurídica sobre retenção, prova e exclusão desses registros permanece pendente de revisão jurídica (P-04).
 
@@ -644,12 +656,12 @@ histórico.**
 | ~~P-01~~ | ~~Propriedade do dado da Etapa 2 — perfil ou histórico de apostas (CF-09)~~ | **FECHADA** pela emenda E-01 — seção 11.5.1 |
 | ~~P-02~~ | ~~Representação de estimativas de frequência e valor, conforme BR-12~~ | **FECHADA** pela emenda E-01 — seção 11.5.2 |
 | P-03 | Definição operacional de "primeiro valor" e se o número pessoal entra no MVP | Fase 3 |
-| P-08 | Esquema de identificação de versão do documento e local imutável | Primeiro aceite em produção |
-| P-09 | C-CONTA é consentimento próprio ou absorvido pelo ato de criar conta | Fase 2 |
+| ~~P-08~~ | ~~Esquema de identificação de versão do documento e local imutável~~ | **FECHADA** pela emenda E-04 — seção 17.2 |
+| ~~P-09~~ | ~~C-CONTA é consentimento próprio ou absorvido pelo ato de criar conta~~ | **FECHADA** pela emenda E-04 — seção 17.6 |
 | P-10 | C-NOTIF: registro na entidade de consentimento ou preferência | Fase 10 |
 | P-11 | Momento e frequência do convite à criação de conta permanente | Fase 3 |
 | P-12 | Conteúdo da tela de recusa | Fase 3 |
-| P-13 | Ação de encerrar sessão em dispositivo compartilhado | Fase 2 |
+| ~~P-13~~ | ~~Ação de encerrar sessão em dispositivo compartilhado~~ | **FECHADA** pela emenda E-04 — seção 17.5 |
 | P-16 | Idade mínima e se há verificação | **Lançamento** |
 | P-17 | Se a taxa de aceite é medida de forma agregada | Não bloqueante |
 | P-18 | Material já compartilhado após revogação de C-APOIO | Fase 8 |
@@ -660,8 +672,8 @@ histórico.**
 
 | ID | Pendência | Bloqueia |
 |---|---|---|
-| P-14 | Forma da compensação quando o registro de aceite falha após criar a identidade | Fase 2 |
-| P-15 | Duração da sessão e política de expiração do refresh token | Fase 2 |
+| ~~P-14~~ | ~~Forma da compensação quando o registro de aceite falha após criar a identidade~~ | **FECHADA** pela emenda E-04 — seção 17.3 |
+| ~~P-15~~ | ~~Duração da sessão e política de expiração do refresh token~~ | **FECHADA** pela emenda E-04 — seção 17.4. **Decisão inexequível no plano Free**; ver 17.4 |
 | P-21 | Mecanismo antiabuso na criação de identidade | Antes de exposição pública |
 | P-22 | Onde a telemetria de produto é armazenada — tabela própria ou ferramenta externa | Fase 3 |
 | P-23 | Versão efetiva do Next.js, conforme divergência registrada em Téc. §1 | Antes de alterar dependências |
@@ -823,6 +835,137 @@ Executada em duas partes, conforme a seção 11.4:
 Precede ambas a verificação de estado real do repositório prevista em Téc. §19, incluindo a versão efetiva do Next.js registrada como divergência em Téc. §1.
 
 Nada além disso está autorizado nesta etapa. Autenticação, sessão, tela de aceite, onboarding e telemetria pertencem às Fases 2 e 3 e não devem ser antecipados.
+
+**FASE 2 — desbloqueada pela emenda E-04.** Fechadas P-27, P-08, P-14, P-15,
+P-13 e P-09 na seção 17, a Fase 2 pode ser implementada: anonymous sign-in,
+criação atômica de `profiles` com o registro do aceite, tela e fluxo de
+consentimento, proteção de rotas, manutenção de sessão, logout irreversível com
+confirmação, tratamento de falha do aceite e conversão para conta permanente
+com C-CONTA. O onboarding em si e a telemetria permanecem na Fase 3.
+
+A seção 12.1 continua valendo: enquanto P-04 e P-05 estiverem abertas, o
+ambiente não deve estar acessível a usuários reais.
+
+---
+
+## 17. Fase 2 — fechamento de P-27, P-08, P-14, P-15, P-13 e P-09 (emenda E-04)
+
+Esta seção fecha as seis pendências que bloqueavam a Fase 2. Não altera E-01,
+E-02 nem E-03, não cria entidade nova e não modifica o schema das Fases 1A/1B.
+
+### 17.1 P-27 — ordem entre `profiles` e o registro de aceite
+
+**P-27 não constava da seção 13.** Foi identificada durante a auditoria de
+porta da Fase 2 e é **registrada e fechada nesta mesma emenda**.
+
+**O conflito.** A seção 5.1 ordena `auth.users → profiles → REGISTRO DO
+ACEITE`. A seção 9.2 exige que nenhuma linha exista cujo `user_id` não possua
+aceite principal com timestamp **anterior ou igual** ao da própria linha.
+Executada em duas transações, a ordem de 5.1 produz
+`profiles.created_at < consent_records.recorded_at` — e a consulta de
+invariante acusa `public.profiles`.
+
+**Decisão.** A ordem da seção 5.1 é **mantida**. A criação de `profiles` e o
+registro do aceite principal passam a ser **uma única operação atômica**.
+
+**Consequência normativa.** `now()` em PostgreSQL devolve o horário da
+transação, não o do comando. Executados na mesma transação, os dois registros
+recebem timestamp **idêntico** — e 9.2 admite explicitamente a igualdade. A
+ordem de 5.1 e o invariante de 9.2 deixam de se contradizer sem que nenhum dos
+dois seja emendado.
+
+**Consequência técnica vinculante.** Atomicidade aqui significa uma transação
+de banco. Duas chamadas sucessivas à API de dados são duas transações e **não**
+satisfazem esta decisão. A operação é exposta como função de banco em migration
+versionada, executada com o papel do próprio usuário, de modo que a RLS
+continue valendo dentro dela. Isto **não** é um trigger: 9.1 e a proibição
+14.3.21 seguem íntegras.
+
+**Não pode existir estado utilizável em que `profiles` exista sem o aceite
+principal correspondente.**
+
+### 17.2 P-08 — identificação de versão do documento de consentimento
+
+**Decisão.** O identificador é **slug + versão explícita**, no formato
+`consentimento-principal-v1.0`. `consent_records.document_version_id` registra
+exatamente esse identificador, sem abreviação e sem derivação.
+
+O documento correspondente é **versionado e imutável**: uma versão publicada
+nunca é editada. Alteração de conteúdo produz nova versão com novo
+identificador, e as versões anteriores permanecem recuperáveis. Isto satisfaz a
+exigência da seção 10.2 — recuperar, a partir de um registro, exatamente o
+texto que aquele usuário viu.
+
+**Permanece pendente:** a revisão jurídica do conteúdo (P-04). O identificador
+e a imutabilidade estão fechados; a redação definitiva do texto não. Enquanto
+P-04 e P-05 estiverem abertas, a seção 12.1 continua proibindo exposição a
+usuários reais.
+
+### 17.3 P-14 — falha na gravação do registro de aceite
+
+**Decisão.** Se o registro do consentimento falhar, a identidade recém-criada
+**não pode permanecer utilizável**. Prioriza-se remover a identidade recém-criada
+quando tecnicamente possível; quando não for, a sessão é invalidada.
+
+Isto **não** relaxa a regra da seção 5.4 — apenas escolhe entre as duas saídas
+que ela oferecia sem decidir. O piso permanece: nunca resta identidade
+utilizável sem aceite.
+
+**Nota de execução.** Remover linha de `auth.users` exige credencial
+administrativa. Onde ela não estiver disponível, a invalidação de sessão é o
+comportamento correto por esta decisão, e a identidade órfã permanece
+detectável pelo ramo AA-08 da consulta de invariante.
+
+### 17.4 P-15 — duração da sessão e refresh
+
+**Decisão.** Sessão de **30 dias**, com refresh automático enquanto houver
+atividade válida.
+
+**Nenhum mecanismo de recuperação** da identidade anônima após perda definitiva
+da sessão. A seção 3.5 permanece integralmente em vigor, inclusive a proibição
+de implementar, sugerir ou simular recuperação.
+
+**Nota de execução.** Duração de sessão e expiração de refresh token são
+configuração do projeto Supabase, não schema. Não são definíveis por migration.
+Caminho: Dashboard → Authentication → Sessions → *Time-box user sessions* = 30
+dias, *Inactivity timeout* = 0. A expiração do JWT fica noutro lugar e não deve
+ser alterada sem necessidade.
+
+**INEXEQUÍVEL NO PLANO ATUAL.** A organização `ProjetoAppBet` está no plano
+**Free**, e *Time-box user sessions* exige plano Pro ou superior. A decisão dos
+30 dias **permanece válida como objetivo** e não foi substituída por outro
+prazo — substituí-la exigiria nova decisão de produto. Enquanto não for
+aplicável, o comportamento efetivo é o padrão do Supabase: sessão sem prazo
+máximo, encerrada por logout ou perda dos dados do navegador (§3.5).
+
+**Consequência vinculante:** nenhum artefato pode afirmar ao usuário que a
+sessão dura 30 dias enquanto a configuração não estiver aplicada. Afirmá-lo
+seria descrever um comportamento que o sistema não tem.
+
+### 17.5 P-13 — encerrar sessão
+
+**Decisão.** O logout **existe** e, para identidade anônima, é
+**irreversível**. Exige **confirmação explícita** e deve deixar claro, antes do
+ato, que a identidade não poderá ser recuperada depois.
+
+Isto não conflita com a proibição 10 da seção 12: o ato explícito do usuário é
+justamente a condição que aquela regra exige.
+
+### 17.6 P-09 — C-CONTA na conversão para conta permanente
+
+**Decisão.** **C-CONTA é consentimento próprio e auditável.** A conversão para
+conta permanente registra C-CONTA explicitamente em `consent_records`, como
+qualquer outro consentimento.
+
+Os dados existentes permanecem vinculados à identidade convertida — o UUID não
+muda, conforme a seção 3.4. Não há migração de dados, não há re-vinculação.
+
+A regra inegociável da seção 4.3 continua valendo: C-CONTA não é pré-marcado,
+não é antecipado na entrada, não é agrupado com o aceite principal, e não
+condiciona funcionalidade central. A coluna "Revogável isoladamente" da tabela
+4.3, antes marcada como pendência P-09, é resolvida pela natureza da própria
+conversão: revogar C-CONTA equivale a desfazer a conta permanente, o que não
+está no MVP e permanece fora de escopo.
 
 ---
 

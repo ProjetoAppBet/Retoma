@@ -63,7 +63,7 @@ export default function Home() {
 
         <div className="pt-10">
           <Link
-            href="/onboarding"
+            href="/aceite"
             className="flex h-12 w-full items-center justify-center rounded-md bg-botao-primario px-5 text-center text-base font-semibold text-botao-primario-texto transition hover:bg-botao-primario-hover"
           >
             Começar
