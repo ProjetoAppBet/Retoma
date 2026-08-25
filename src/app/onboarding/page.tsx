@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { exigirAceite } from "@/lib/auth/sessao";
 
-import { PrimeiraPergunta } from "./primeira-pergunta";
+import { Fluxo } from "./fluxo";
 
 export const metadata: Metadata = {
   title: "Onboarding — Retoma",
@@ -16,7 +16,7 @@ export default async function OnboardingPage() {
   return (
     <main className="min-h-screen bg-fundo text-texto">
       <div className="mx-auto flex min-h-screen max-w-md flex-col px-6 py-10">
-        <PrimeiraPergunta />
+        <Fluxo />
       </div>
     </main>
   );

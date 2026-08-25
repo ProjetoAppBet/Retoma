@@ -656,6 +656,7 @@ histórico.**
 | ~~P-01~~ | ~~Propriedade do dado da Etapa 2 — perfil ou histórico de apostas (CF-09)~~ | **FECHADA** pela emenda E-01 — seção 11.5.1 |
 | ~~P-02~~ | ~~Representação de estimativas de frequência e valor, conforme BR-12~~ | **FECHADA** pela emenda E-01 — seção 11.5.2 |
 | P-03 | Definição operacional de "primeiro valor" e se o número pessoal entra no MVP | Fase 3 |
+| P-28 | Origem de `goal_type`: nenhuma das seis etapas de Op. §12 o coleta, mas a coluna é NOT NULL e Q-02 fecha o domínio. A Fase 3 pergunta os três valores explicitamente na Etapa 6, como **solução técnica provisória** — classificar o texto livre exigiria inferência (bloqueada por D-03) e preencher por conta própria inventaria declaração, contra §11.5.1.2. Formalizar ou substituir essa extensão da Etapa 6 é decisão de produto | Fase 3 |
 | ~~P-08~~ | ~~Esquema de identificação de versão do documento e local imutável~~ | **FECHADA** pela emenda E-04 — seção 17.2 |
 | ~~P-09~~ | ~~C-CONTA é consentimento próprio ou absorvido pelo ato de criar conta~~ | **FECHADA** pela emenda E-04 — seção 17.6 |
 | P-10 | C-NOTIF: registro na entidade de consentimento ou preferência | Fase 10 |
