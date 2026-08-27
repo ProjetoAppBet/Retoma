@@ -1,0 +1,15 @@
+<!-- App icon — fundo Ardósia, símbolo Cal.
+     Sem texto, sem círculo, sem gradiente, sem sombra.
+     Ícone em Ardósia (não em Mineral) por decisão de discrição: numa tela
+     inicial cheia de apps coloridos, o quase-preto é o que menos chama
+     atenção de terceiros.
+     Área de segurança: o símbolo mede 70 un. de largura no canvas de 106,
+     deixando 18 un. de respiro de cada lado = 1,5 x a espessura do traço,
+     que é o mínimo exigido pela identidade.
+     Cantos deixados retos de propósito: iOS e Android aplicam a própria
+     máscara; assar um raio aqui produziria canto duplo. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 106 106" width="512" height="512" role="img" aria-label="Retoma">
+  <title>Retoma</title>
+  <rect x="-5" y="-5" width="106" height="106" fill="#0F1719"/>
+  <path d="M 19 62 L 43 62 L 43 34 L 77 34" fill="none" stroke="#E9E7E2" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

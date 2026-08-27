@@ -1,0 +1,11 @@
+<!-- Barra assimétrica do "T" do wordmark RETOMA.
+     Construção do Brand Book (path único, sem rx), conforme decisão oficial.
+     Altura de caixa = 100 un. Barra: 0..71. Fuste: 20..35.
+     Saliência à esquerda = 20 un. = 0,20 x altura de caixa.
+     Saliência à direita  = 36 un. = 0,36 x altura de caixa.
+     Repete a razão 1,4 entre os braços do símbolo.
+     Abaixo de 32 px de altura de caixa NÃO usar: aplicar T padrão da fonte. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 71 100" width="71" height="100" role="img" aria-label="T">
+  <title>Retoma — barra assimétrica do T</title>
+  <path d="M0 0h71v15H35v85H20V15H0z" fill="currentColor"/>
+</svg>

@@ -1,6 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
+import { chavePublicaDoSupabase, urlDoSupabase } from "@/lib/supabase/ambiente";
+
 /**
  * Supabase client for use in Server Components, Server Actions and Route
  * Handlers. Must be created per-request (cookies() is request-scoped).
@@ -9,8 +11,8 @@ export async function createClient() {
   const cookieStore = await cookies();
 
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    urlDoSupabase(),
+    chavePublicaDoSupabase(),
     {
       cookies: {
         getAll() {
