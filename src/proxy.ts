@@ -1,6 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+import { chavePublicaDoSupabase, urlDoSupabase } from "@/lib/supabase/ambiente";
+
 /**
  * Refreshes the Supabase auth session on every request so server components
  * always see a valid session. Runs before routes are rendered (Next.js 16
@@ -10,8 +12,8 @@ export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    urlDoSupabase(),
+    chavePublicaDoSupabase(),
     {
       cookies: {
         getAll() {

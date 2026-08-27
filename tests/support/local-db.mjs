@@ -16,7 +16,7 @@
  * tests/support/supabase-auth-shim.sql.
  */
 
-import { execFileSync } from "node:child_process";
+import { execFile, execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readdirSync, rmSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -120,8 +120,81 @@ export function falha(fn) {
   }
 }
 
+/**
+ * As tabelas que o schema pode ter, e por qual autorização.
+ *
+ * As cinco primeiras são o núcleo mínimo da seção 11.2. As duas últimas
+ * existem por exceção NOMINAL da proibição 14.4.25, concedida pela seção
+ * 20.2 (emenda E-07) e modelada pela seção 21 (E-08).
+ *
+ * Acrescentar nome a esta lista é o momento de perguntar qual emenda
+ * autoriza a entidade. Sem isso, uma tabela nova entraria no schema e sete
+ * testes ficariam verdes por terem sido ajustados um a um.
+ */
+export const TABELAS_AUTORIZADAS = [
+  "commitments",
+  "consent_records",
+  "conversations",
+  "gambling_history",
+  "messages",
+  "profiles",
+  "recovery_goals",
+].join(",");
+
 export function literal(valor) {
   return `'${String(valor).replace(/'/g, "''")}'`;
+}
+
+/**
+ * Executa vários comandos SQL em processos psql SIMULTÂNEOS, cada um na sua
+ * própria conexão e portanto na sua própria transação.
+ *
+ * Existe por um motivo específico: a garantia de Q-12 (§18.2, §19.1.1) é a
+ * trava por usuário, e trava só se exercita com concorrência real. Um teste
+ * sequencial passa igual com e sem trava — não distingue garantia de
+ * aparência de garantia.
+ *
+ * Devolve, para cada comando, `{ ok, saida }`. Nunca lança: quem chama
+ * decide quantas execuções deveriam ter falhado.
+ */
+export function emParalelo(comandos) {
+  return Promise.all(
+    comandos.map(
+      (texto) =>
+        new Promise((resolve) => {
+          execFile(
+            "runuser",
+            [
+              "-u", "postgres", "--", "psql",
+              "-h", BASE, "-p", PORTA, "-d", DB,
+              "-v", "ON_ERROR_STOP=1",
+              "-t", "-A", "-F", "",
+              "-c", texto,
+            ],
+            { encoding: "utf8" },
+            (erro, stdout, stderr) =>
+              resolve({
+                ok: !erro,
+                saida: String(erro ? (stderr ?? erro.message) : stdout).trim(),
+              }),
+          );
+        }),
+    ),
+  );
+}
+
+/**
+ * Monta o SQL de uma transação executada como o usuário dado — mesma forma
+ * de `escreverComoUsuario`, mas devolvida como texto, para uso com
+ * `emParalelo`.
+ */
+export function transacaoDoUsuario(userId, texto) {
+  const claims = JSON.stringify({ sub: userId, role: "authenticated" });
+  return `begin;
+     select set_config('request.jwt.claims', ${literal(claims)}, true);
+     set local role authenticated;
+     ${texto};
+     commit;`;
 }
 
 export function listarMigracoes() {
