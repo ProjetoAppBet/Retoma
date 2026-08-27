@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 
 import { VERSAO_ACEITE_CONTA } from "@/lib/consentimento/versao";
+import { exigirAceite } from "@/lib/auth/sessao";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -57,12 +58,13 @@ export async function converterParaConta(formData: FormData): Promise<Resultado>
     return { erro: "É preciso concordar em criar a conta permanente." };
   }
 
-  const supabase = await createClient();
+  // §4.3: C-CONTA não antecipa nem substitui o aceite principal. Uma ação de
+  // servidor é endereçável por si só — a porta da página não a protege —, e
+  // sem esta verificação seria possível gravar C-CONTA para uma identidade
+  // sem C-PRINCIPAL, contra §4.3 e contra a ordem de §5.1.
+  const usuario = await exigirAceite();
 
-  const { data: sessao } = await supabase.auth.getUser();
-  if (!sessao.user) {
-    return { erro: "Sua sessão expirou. Não é possível criar a conta agora." };
-  }
+  const supabase = await createClient();
 
   // §3.4: se a credencial já pertence a outra conta, a operação FALHA — nada
   // é gravado e nada é mesclado. Nenhuma lógica de fusão é escrita aqui.
@@ -84,7 +86,7 @@ export async function converterParaConta(formData: FormData): Promise<Resultado>
   const { error: erroConsentimento } = await supabase
     .from("consent_records")
     .insert({
-      user_id: sessao.user.id,
+      user_id: usuario.id,
       consent_type: "C-CONTA",
       state: "concedido",
       document_version_id: VERSAO_ACEITE_CONTA,

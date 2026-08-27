@@ -67,13 +67,16 @@ function gravarObjetivo(id) {
   );
 }
 
+/**
+ * §19.1.2: `insert` direto em `commitments` foi revogado do papel do
+ * cliente. O caminho de escrita — aqui e na aplicação — é a função
+ * transacional que impõe Q-12.
+ */
 function gravarCompromisso(id) {
   return escreverComoUsuario(
     id,
-    `insert into public.commitments
-       (user_id, commitment_declaration, due_at, information_nature)
-     values (${literal(id)}, 'nao abrir o aplicativo de apostas hoje',
-             now() + interval '24 hours', 'declarado')`,
+    `select public.declarar_compromisso(
+       'nao abrir o aplicativo de apostas hoje', now() + interval '24 hours')`,
   );
 }
 
@@ -239,10 +242,11 @@ describe("garantias das fases anteriores continuam valendo", () => {
   it("sem aceite, gravar dado de domínio viola o invariante", () => {
     const u = sql("select gen_random_uuid()");
     sql(`insert into auth.users (id) values (${literal(u)})`);
+    // Pelo caminho real de escrita (§19.1.2): a função não verifica aceite,
+    // e é justamente por isso que o invariante precisa acusar a linha.
     escreverComoUsuario(
       u,
-      `insert into public.commitments (user_id, information_nature)
-       values (${literal(u)}, 'declarado')`,
+      `select public.declarar_compromisso('qualquer coisa', now() + interval '24 hours')`,
     );
     assert.equal(
       sql(`select count(*) from public.consent_invariant_violations

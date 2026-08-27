@@ -2,6 +2,9 @@
 
 import { useState, useTransition } from "react";
 
+import { Aviso } from "@/components/ui/aviso";
+import { Botao } from "@/components/ui/botao";
+
 import { aceitar, recusar } from "./acoes";
 
 /**
@@ -15,17 +18,9 @@ export function FormularioAceite() {
 
   return (
     <div className="pt-8">
-      {erro && (
-        <p
-          role="alert"
-          className="tipo-corpo mb-4 rounded-md border border-borda bg-superficie p-4 text-texto"
-        >
-          {erro}
-        </p>
-      )}
+      {erro && <Aviso className="mb-4">{erro}</Aviso>}
 
-      <button
-        type="button"
+      <Botao
         disabled={pendente}
         onClick={() =>
           iniciar(async () => {
@@ -34,19 +29,19 @@ export function FormularioAceite() {
             if (resultado?.erro) setErro(resultado.erro);
           })
         }
-        className="flex h-12 w-full items-center justify-center rounded-md bg-botao-primario px-5 text-base font-semibold text-botao-primario-texto transition hover:bg-botao-primario-hover disabled:opacity-60"
       >
         {pendente ? "Um instante…" : "Aceitar e começar"}
-      </button>
+      </Botao>
 
-      <button
-        type="button"
+      {/* §5.2: recusar tem o mesmo peso visual que aceitar. */}
+      <Botao
+        variante="secundario"
+        className="mt-3"
         disabled={pendente}
         onClick={() => iniciar(() => recusar())}
-        className="mt-3 flex h-12 w-full items-center justify-center rounded-md border border-borda px-5 text-base font-medium text-texto transition hover:bg-superficie disabled:opacity-60"
       >
         Não aceitar
-      </button>
+      </Botao>
     </div>
   );
 }

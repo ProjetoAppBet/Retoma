@@ -1,7 +1,15 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useTransition } from "react";
 
+import { Aviso } from "@/components/ui/aviso";
+import { Botao } from "@/components/ui/botao";
+import { CampoLinha, CampoTexto, Rotulo } from "@/components/ui/campo";
+import { Cabecalho } from "@/components/ui/cabecalho";
+import { Escolha, Multiescolha } from "@/components/ui/escolha";
+import { Passo } from "@/components/ui/passo";
+import { Trilho } from "@/components/ui/trilho";
 import {
   CONSEQUENCIAS,
   FREQUENCIAS,
@@ -145,35 +153,54 @@ export function Fluxo() {
   }
 
   const rotulo = (t: string) => (
-    <label className="tipo-apoio mt-4 block text-texto-secundario">{t}</label>
+    <label className="mt-4 block">
+      <Rotulo>{t}</Rotulo>
+    </label>
   );
   const campoTexto = (campo: keyof Estado, linhas = 4) => (
-    <textarea
+    <CampoTexto
       rows={linhas}
       value={e[campo] as string}
       onChange={(ev) => muda(campo, ev.target.value)}
-      className="mt-2 w-full rounded-md border border-borda bg-superficie p-4 text-texto"
+      className="mt-2"
     />
   );
+  /*
+    §11.5.2: "não sabe" e "recusou informar" são ESTADOS DA RESPOSTA, não
+    opções de igual valor. Na lista principal competiam visualmente com as
+    categorias reais; como fichas, ficam disponíveis sem disputar.
+  */
+  const fichas = (campo: keyof Estado, selecionado: string) => (
+    <div className="mt-3.5 flex gap-2">
+      {(["não sabe", "recusou informar"] as const).map((o) => (
+        <button
+          key={o}
+          type="button"
+          onClick={() => muda(campo, o)}
+          aria-pressed={selecionado === o}
+          className={`rounded-sm px-3.5 py-1.5 text-[0.8125rem] ${
+            selecionado === o
+              ? "bg-superficie-elevada text-texto"
+              : "bg-superficie text-texto-terciario"
+          }`}
+        >
+          {o === "não sabe" ? "Não sei" : "Prefiro não dizer"}
+        </button>
+      ))}
+    </div>
+  );
+
   const escolha = (
     campo: keyof Estado,
     opcoes: readonly string[],
     selecionado: string,
   ) => (
-    <div className="mt-3 space-y-2">
-      {opcoes.map((o) => (
-        <label key={o} className="flex gap-3">
-          <input
-            type="radio"
-            name={String(campo)}
-            checked={selecionado === o}
-            onChange={() => muda(campo, o)}
-            className="mt-1 size-4 shrink-0"
-          />
-          <span className="tipo-corpo text-texto-secundario">{o}</span>
-        </label>
-      ))}
-    </div>
+    <Escolha
+      nome={String(campo)}
+      opcoes={opcoes}
+      valor={selecionado}
+      aoEscolher={(o) => muda(campo, o)}
+    />
   );
 
   /* Op. §12: uma pergunta por vez, no texto literal das fontes. */
@@ -182,18 +209,18 @@ export function Fluxo() {
       case 1:
         return (
           <>
-            <h1 className="tipo-titulo-tela mt-4">
+            <Cabecalho>
               O que te trouxe ao Retoma hoje?
-            </h1>
+            </Cabecalho>
             {campoTexto("motivacao")}
           </>
         );
       case 2:
         return (
           <>
-            <h1 className="tipo-titulo-tela mt-4">
+            <Cabecalho>
               Você já tentou parar antes?
-            </h1>
+            </Cabecalho>
             <p className="tipo-corpo mt-3 text-texto-secundario">
               Conte como foi, se quiser. Pode deixar em branco.
             </p>
@@ -203,30 +230,25 @@ export function Fluxo() {
       case 3:
         return (
           <>
-            <h1 className="tipo-titulo-tela mt-4">
+            <Cabecalho>
               Com que frequência você tem apostado?
-            </h1>
+            </Cabecalho>
             {escolha("frequencia", FREQUENCIAS, e.frequencia)}
-            {rotulo("Ou:")}
-            {escolha(
-              "frequenciaEstado",
-              ["não sabe", "recusou informar"],
-              e.frequenciaEstado,
-            )}
+            {fichas("frequenciaEstado", e.frequenciaEstado)}
           </>
         );
       case 4:
         return (
           <>
-            <h1 className="tipo-titulo-tela mt-4">
+            <Cabecalho>
               Quanto dinheiro costuma estar envolvido?
-            </h1>
+            </Cabecalho>
             {rotulo("Valor")}
-            <input
+            <CampoLinha
               inputMode="decimal"
               value={e.valor}
               onChange={(ev) => muda("valor", ev.target.value)}
-              className="mt-2 h-12 w-full rounded-md border border-borda bg-superficie px-4 text-texto"
+              className="mt-2"
             />
             {rotulo("Por período")}
             {escolha("periodo", PERIODOS, e.periodo)}
@@ -236,20 +258,15 @@ export function Fluxo() {
                 {campoTexto("periodoOutro", 2)}
               </>
             )}
-            {rotulo("Ou:")}
-            {escolha(
-              "valorEstado",
-              ["não sabe", "recusou informar"],
-              e.valorEstado,
-            )}
+            {fichas("valorEstado", e.valorEstado)}
           </>
         );
       case 5:
         return (
           <>
-            <h1 className="tipo-titulo-tela mt-4">
+            <Cabecalho>
               Qual o principal prejuízo que você percebe hoje?
-            </h1>
+            </Cabecalho>
             {campoTexto("consequenciaTexto", 3)}
             {rotulo("Principal")}
             {escolha(
@@ -258,28 +275,20 @@ export function Fluxo() {
               e.consequenciaPrincipal,
             )}
             {rotulo("Outras áreas afetadas")}
-            <div className="mt-2 space-y-2">
-              {CONSEQUENCIAS.map((c) => (
-                <label key={c} className="flex gap-3">
-                  <input
-                    type="checkbox"
-                    checked={e.consequencias.includes(c)}
-                    onChange={() => alternaConsequencia(c)}
-                    className="mt-1 size-4 shrink-0"
-                  />
-                  <span className="tipo-corpo text-texto-secundario">{c}</span>
-                </label>
-              ))}
-            </div>
+            <Multiescolha
+              opcoes={CONSEQUENCIAS}
+              valores={e.consequencias}
+              aoAlternar={alternaConsequencia}
+            />
           </>
         );
       case 6:
         return (
           <>
-            <h1 className="tipo-titulo-tela mt-4">
+            <Cabecalho>
               Se o Retoma pudesse te ajudar com uma única coisa a partir de
               hoje, o que você mais gostaria de conseguir?
-            </h1>
+            </Cabecalho>
             {campoTexto("objetivo")}
             {/* P-28: esta pergunta é extensão da Etapa 6, não etapa nova.
                 Op. §12 não coleta goal_type, mas a coluna é NOT NULL e Q-02
@@ -292,9 +301,9 @@ export function Fluxo() {
       case 7:
         return (
           <>
-            <h1 className="tipo-titulo-tela mt-4">
+            <Cabecalho>
               Um passo para as próximas 24 horas
-            </h1>
+            </Cabecalho>
             <p className="tipo-corpo mt-3 text-texto-secundario">
               Escolha algo pequeno e possível.
             </p>
@@ -304,11 +313,33 @@ export function Fluxo() {
       default:
         return (
           <>
-            <h1 className="tipo-titulo-tela mt-4">Está guardado.</h1>
-            <p className="tipo-corpo mt-5 text-texto-secundario">
-              Suas respostas foram registradas e seu compromisso para as
-              próximas 24 horas também.
+            <Cabecalho className="text-[1.75rem]">Está guardado.</Cabecalho>
+            <p className="tipo-corpo mt-3.5 text-texto-secundario">
+              Suas respostas foram registradas.
             </p>
+            {/*
+              O cartão tem dois planos: a declaração em Grafite, o prazo em
+              Grafite Elevado. Não é síntese — nada aqui resume as respostas,
+              e o formato da síntese continua NÃO DEFINIDO (depende de D-03).
+            */}
+            <div className="mt-[30px] overflow-hidden rounded-lg bg-superficie">
+              <div className="p-5">
+                <p className="tipo-rotulo mb-2.5 text-texto-terciario">
+                  Seu compromisso
+                </p>
+                <p className="text-[1.1875rem] leading-[1.42]">
+                  {e.compromisso.trim()}
+                </p>
+              </div>
+              <div className="flex items-baseline gap-2 bg-superficie-elevada px-5 py-4">
+                <span className="font-mono text-[1.75rem] font-medium tabular-nums text-destaque-sobre-escuro">
+                  24
+                </span>
+                <span className="tipo-apoio text-texto-terciario">
+                  horas a partir de agora
+                </span>
+              </div>
+            </div>
           </>
         );
     }
@@ -322,37 +353,67 @@ export function Fluxo() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="flex-1">
-        {etapa <= TOTAL_DE_ETAPAS && (
-          <p className="tipo-rotulo text-texto-secundario">
-            Etapa{" "}
-            <span className="font-mono tabular-nums">{etapa}</span> de{" "}
-            <span className="font-mono tabular-nums">{TOTAL_DE_ETAPAS}</span>
-          </p>
-        )}
+      {etapa > TOTAL_DE_ETAPAS && <div className="pt-5"><Trilho fracao={1} /></div>}
+
+      {etapa <= TOTAL_DE_ETAPAS && (
+        <>
+          {/*
+            Voltar é NAVEGAÇÃO, não desfazer: o estado vive em `e`, aqui no
+            cliente, então rever uma resposta não toca o banco. Nenhuma
+            gravação é feita nem desfeita ao voltar — as entidades só nascem
+            nas etapas 5, 6 e final, e voltar antes delas simplesmente não
+            grava nada.
+          */}
+          <div className="flex items-center justify-between px-[22px] pt-[18px] pb-3">
+            {etapa > 1 ? (
+              <button
+                type="button"
+                onClick={() => {
+                  setErro(null);
+                  setEtapa(etapa - 1);
+                }}
+                aria-label="Voltar para a etapa anterior"
+                className="-ml-1 flex size-8 items-center justify-center text-texto-terciario"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  className="size-5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M14 6 H10 V18" />
+                </svg>
+              </button>
+            ) : (
+              <span className="size-8" />
+            )}
+            <Passo atual={etapa} total={TOTAL_DE_ETAPAS} />
+            <span className="size-8" />
+          </div>
+          <Trilho fracao={etapa / TOTAL_DE_ETAPAS} />
+        </>
+      )}
+
+      <div className="flex flex-1 flex-col pt-[30px]">
         {conteudo()}
-        {erro && (
-          <p
-            role="alert"
-            className="tipo-corpo mt-4 rounded-md border border-borda bg-superficie p-4 text-texto"
-          >
-            {erro}
-          </p>
-        )}
+        {erro && <Aviso className="mt-4">{erro}</Aviso>}
       </div>
 
-      {etapa <= 7 && (
-        <div className="pt-8">
-          <button
-            type="button"
-            disabled={pendente || !podeAvancar()}
-            onClick={avancar}
-            className="flex h-12 w-full items-center justify-center rounded-md bg-botao-primario px-5 text-base font-semibold text-botao-primario-texto transition hover:bg-botao-primario-hover disabled:opacity-60"
-          >
+      <div className="px-[22px] pt-[18px] pb-6">
+        {etapa <= 7 ? (
+          <Botao disabled={pendente || !podeAvancar()} onClick={avancar}>
             {pendente ? "Um instante…" : etapa === 7 ? "Assumir" : "Continuar"}
-          </button>
-        </div>
-      )}
+          </Botao>
+        ) : (
+          <Link href="/hoje">
+            <Botao>Ir para o Retoma</Botao>
+          </Link>
+        )}
+      </div>
     </div>
   );
 }

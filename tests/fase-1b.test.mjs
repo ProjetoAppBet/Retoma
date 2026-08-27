@@ -13,6 +13,7 @@ import assert from "node:assert/strict";
 import { after, before, describe, it } from "node:test";
 
 import {
+  TABELAS_AUTORIZADAS,
   criarUsuarioComAceite,
   escreverComoUsuario,
   falha,
@@ -58,7 +59,7 @@ after(() => {
 });
 
 describe("schema da Fase 1B", () => {
-  it("cria exatamente as três entidades, e nada além", () => {
+  it("o schema tem exatamente as tabelas autorizadas, e nada além", () => {
     const tabelas = sql(
       `select table_name from information_schema.tables
        where table_schema = 'public' and table_type = 'BASE TABLE'
@@ -66,20 +67,18 @@ describe("schema da Fase 1B", () => {
     )
       .split("\n")
       .filter(Boolean);
-    assert.deepEqual(tabelas, [
-      "commitments",
-      "consent_records",
-      "gambling_history",
-      "profiles",
-      "recovery_goals",
-    ]);
+    assert.equal(tabelas.join(","), TABELAS_AUTORIZADAS);
   });
 
   it("não cria recovery_plans nem qualquer módulo futuro (§11.3)", () => {
+    // `conversations` e `messages` SAÍRAM desta lista: a seção 20.2 (emenda
+    // E-07) abriu exceção nominal na proibição 14.4.25 para as duas, e a
+    // seção 21 (E-08) fixou o modelo. Todo o resto de 11.3 segue vedado —
+    // inclusive `ai_memories`, porque 20.4.5 mantém memória e padrões fora.
     const proibidas = [
       "recovery_plans", "recovery_plan_versions", "check_ins", "relapses",
       "coping_strategies", "barriers", "support_people", "notifications",
-      "conversations", "messages", "ai_memories", "pgsi_assessments",
+      "ai_memories", "ai_patterns", "pgsi_assessments",
       "gambling_events", "users",
     ];
     for (const nome of proibidas) {
@@ -93,17 +92,20 @@ describe("schema da Fase 1B", () => {
 
   it("toda entidade referencia a identidade por user_id -> auth.users(id)", () => {
     for (const t of TABELAS) {
+      // A chave de identidade é a de UMA coluna. Desde a migration de R5,
+      // `user_id` também participa da chave COMPOSTA que prende a cadeia de
+      // supersessão à mesma identidade — por isso a consulta filtra por
+      // cardinalidade em vez de assumir que só existe uma.
       const fk = sql(
-        `select ccu.table_schema || '.' || ccu.table_name || '.' || ccu.column_name
-         from information_schema.table_constraints tc
-         join information_schema.key_column_usage kcu
-           on kcu.constraint_name = tc.constraint_name
-         join information_schema.constraint_column_usage ccu
-           on ccu.constraint_name = tc.constraint_name
-         where tc.constraint_type = 'FOREIGN KEY'
-           and tc.table_schema = 'public'
-           and tc.table_name = ${literal(t)}
-           and kcu.column_name = 'user_id'`,
+        `select confrelid::regclass::text || '.' ||
+                (select attname from pg_attribute
+                  where attrelid = c.confrelid and attnum = c.confkey[1])
+         from pg_constraint c
+         where c.conrelid = ${literal("public." + t)}::regclass
+           and c.contype = 'f'
+           and array_length(c.conkey, 1) = 1
+           and (select attname from pg_attribute
+                 where attrelid = c.conrelid and attnum = c.conkey[1]) = 'user_id'`,
       );
       assert.equal(fk, "auth.users.id", `${t}.user_id não aponta para auth.users`);
     }
@@ -608,14 +610,18 @@ describe("isolamento e privilégios (AA-21, AA-24)", () => {
       assert.ok(erro, `anon não pode truncar ${tabela}`);
     });
 
-    it(`${tabela}: authenticated tem exatamente SELECT e INSERT`, () => {
+    it(`${tabela}: authenticated tem exatamente os privilégios previstos`, () => {
       const privs = sql(
         `select coalesce(string_agg(privilege_type, ',' order by privilege_type), '(nenhum)')
          from information_schema.role_table_grants
          where table_schema = 'public' and grantee = 'authenticated'
            and table_name = ${literal(tabela)}`,
       );
-      assert.equal(privs, "INSERT,SELECT");
+      // §19.1.2: em `commitments` o INSERT saiu do papel do cliente — a
+      // escrita passa exclusivamente pelas funções transacionais que impõem
+      // Q-12. A leitura permanece sob RLS (§19.2.6). As outras duas
+      // entidades seguem escrevendo por insert.
+      assert.equal(privs, tabela === "commitments" ? "SELECT" : "INSERT,SELECT");
 
       const erro = falha(() => sqlComoUsuario(usuarioA, `truncate public.${tabela}`));
       assert.ok(erro, `authenticated não pode truncar ${tabela}`);

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { Tela } from "@/components/ui/cabecalho";
+
 export const metadata: Metadata = {
   title: "Retoma",
 };
@@ -18,16 +20,14 @@ export const metadata: Metadata = {
  */
 export default function RecusaPage() {
   return (
-    <main className="min-h-screen bg-fundo text-texto">
-      <div className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-6 py-10">
-        <h1 className="tipo-display">Tudo bem.</h1>
-        <p className="tipo-corpo mt-5 text-texto-secundario">
-          Nada foi criado e nada foi guardado.
-        </p>
-        <p className="tipo-apoio mt-10 text-texto-secundario">
-          O Retoma não substitui atendimento profissional.
-        </p>
-      </div>
-    </main>
+    <Tela className="justify-center">
+      <h1 className="tipo-display">Tudo bem.</h1>
+      <p className="tipo-corpo mt-5 text-texto-secundario">
+        Nada foi criado e nada foi guardado.
+      </p>
+      <p className="tipo-apoio mt-10 text-texto-secundario">
+        O Retoma não substitui atendimento profissional.
+      </p>
+    </Tela>
   );
 }

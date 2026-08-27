@@ -1,67 +1,60 @@
 import Link from "next/link";
 
+import { Linha, type Dia } from "@/components/marca/linha";
+import { Simbolo } from "@/components/marca/simbolo";
+import { Wordmark } from "@/components/marca/wordmark";
+
+/**
+ * Abertura.
+ *
+ * A Linha sangrada ocupa o lugar que antes era de três cards com borda. Ela
+ * não é dado de ninguém — é o elemento gráfico da marca, e diz o que o produto
+ * é (dias que continuam) em vez de listar benefícios.
+ *
+ * Não usa o container `Tela` porque precisa sangrar até a borda; o miolo de
+ * texto mantém a mesma largura de leitura do resto do produto.
+ */
+
+/* Composição fixa da marca. Nenhum dado real, nenhuma leitura. */
+const GESTO: readonly Dia[] = [
+  { rotulo: "", estado: "com-registro" },
+  { rotulo: "", estado: "com-registro" },
+  { rotulo: "", estado: "sem-registro" },
+  { rotulo: "", estado: "com-registro" },
+  { rotulo: "", estado: "com-aposta" },
+  { rotulo: "", estado: "com-registro" },
+  { rotulo: "", estado: "com-registro" },
+  { rotulo: "", estado: "sem-registro" },
+  { rotulo: "", estado: "com-registro" },
+  { rotulo: "", estado: "com-registro" },
+  { rotulo: "", estado: "com-aposta" },
+  { rotulo: "", estado: "com-registro" },
+  { rotulo: "", estado: "com-registro" },
+  { rotulo: "", estado: "com-registro" },
+];
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-fundo text-texto">
-      <div className="mx-auto flex min-h-screen max-w-md flex-col px-6 py-10">
-        <div className="flex-1">
-          <div className="mb-16">
-            {/* Símbolo oficial "A Retomada". Geometria imutável. */}
-            <svg
-              viewBox="13 28 70 40"
-              className="mb-8 h-8 w-14 text-texto"
-              role="img"
-              aria-label="Retoma"
-            >
-              <path
-                d="M 19 62 L 43 62 L 43 34 L 77 34"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="12"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-
-            <p className="tipo-wordmark mb-4 text-sm text-texto-secundario">
-              RETOMA
-            </p>
-
-            <h1 className="tipo-display">Você não precisa resolver tudo hoje.</h1>
-
-            <p className="tipo-corpo mt-5 text-texto-secundario">
-              O Retoma ajuda você a entender seu momento, acompanhar sua
-              recuperação e construir passos possíveis para seguir em frente.
-            </p>
-          </div>
-
-          <div className="space-y-3">
-            <div className="rounded-lg border border-borda bg-superficie p-5">
-              <p className="tipo-subtitulo text-texto">Sem julgamento</p>
-              <p className="tipo-corpo mt-1 text-texto-secundario">
-                Uma recaída não apaga o que você já construiu.
-              </p>
-            </div>
-
-            <div className="rounded-lg border border-borda bg-superficie p-5">
-              <p className="tipo-subtitulo text-texto">Feito para você</p>
-              <p className="tipo-corpo mt-1 text-texto-secundario">
-                O sistema aprende com sua própria história, sem presumir seus
-                gatilhos ou padrões.
-              </p>
-            </div>
-
-            <div className="rounded-lg border border-borda bg-superficie p-5">
-              <p className="tipo-subtitulo text-texto">Um passo de cada vez</p>
-              <p className="tipo-corpo mt-1 text-texto-secundario">
-                O objetivo é transformar recuperação em ações possíveis no
-                cotidiano.
-              </p>
-            </div>
-          </div>
+      <div className="mx-auto flex min-h-screen max-w-md flex-col">
+        <div className="flex flex-1 items-end opacity-55">
+          <Linha dias={GESTO} indiceDeHoje={GESTO.length - 1} />
         </div>
 
-        <div className="pt-10">
+        <div className="px-6 pt-10">
+          <Simbolo className="mb-5 h-8 w-14 text-texto" />
+          <Wordmark className="mb-4 text-sm text-texto-secundario" />
+
+          <h1 className="text-[2rem] leading-[1.1] font-semibold tracking-[-0.03em] text-balance">
+            Você não precisa resolver tudo hoje.
+          </h1>
+
+          <p className="tipo-corpo mt-4 text-texto-secundario">
+            Um passo por dia, guardado por você.
+          </p>
+        </div>
+
+        <div className="px-6 pt-8 pb-7">
           <Link
             href="/aceite"
             className="flex h-12 w-full items-center justify-center rounded-md bg-botao-primario px-5 text-center text-base font-semibold text-botao-primario-texto transition hover:bg-botao-primario-hover"
@@ -69,7 +62,7 @@ export default function Home() {
             Começar
           </Link>
 
-          <p className="tipo-apoio mt-4 text-center text-texto-secundario">
+          <p className="tipo-apoio mt-4 text-center text-texto-terciario">
             O Retoma não substitui atendimento profissional.
           </p>
         </div>
